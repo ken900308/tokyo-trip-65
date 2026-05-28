@@ -187,6 +187,18 @@ nav ul li a:hover {
 }
 
 /* 地圖 */
+/* 隱藏漢堡按鈕 (桌機版) */
+.menu-icon {
+    display: none;
+    font-size: 1.5rem;
+    color: #0284c7;
+    cursor: pointer;
+}
+
+#menu-toggle {
+    display: none;
+}
+
 .map-container {
     border-radius: 10px;
     overflow: hidden;
@@ -203,8 +215,39 @@ footer {
 
 /* 響應式手機版設定 */
 @media (max-width: 768px) {
+    header nav {
+        padding: 15px 20px;
+    }
+    .menu-icon {
+        display: block; /* 手機版顯示漢堡按鈕 */
+    }
     nav ul {
-        display: none; /* 手機版暫時隱藏導航或改為漢堡選單 */
+        position: fixed;
+        top: 0;
+        left: -250px; /* 預設側邊欄隱藏在左外側 */
+        width: 250px;
+        height: 100vh;
+        background-color: white;
+        flex-direction: column;
+        padding-top: 80px;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        transition: left 0.3s ease;
+        gap: 0;
+        z-index: 999;
+    }
+    nav ul li {
+        width: 100%;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: left;
+    }
+    nav ul li a {
+        display: block;
+        padding: 20px;
+        width: 100%;
+    }
+    /* 當 checkbox 被勾選時，將 ul 滑出 */
+    #menu-toggle:checked ~ ul {
+        left: 0;
     }
     .hero h1 {
         font-size: 2.5rem;

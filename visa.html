@@ -13,6 +13,8 @@
     <header>
         <nav>
             <div class="logo">🌴 Bali - 簽證教學</div>
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
             <ul>
                 <li><a href="index.html#overview">行程總覽</a></li>
                 <li><a href="index.html#schedule">日期班機</a></li>
@@ -121,5 +123,15 @@
     <footer>
         <p>Made with ❤️ for the Bali Trip 2026</p>
     </footer>
+
+    <script>
+        // 手機版點擊導覽列連結後自動收起側邊欄
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                const toggle = document.getElementById('menu-toggle');
+                if(toggle) toggle.checked = false;
+            });
+        });
+    </script>
 </body>
 </html>
