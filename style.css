@@ -302,6 +302,30 @@ nav ul li a:hover {
     margin-bottom: 12px;
 }
 
+.day-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.day-pill {
+    border: 1px solid #cbd5f5;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.day-pill.active,
+.day-pill:hover {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
 .map-btn {
     border: none;
     border-radius: 999px;

@@ -75,6 +75,7 @@
                     <div class="map-toolbar">
                         <button class="map-btn active" data-view="all"><i class="fas fa-wave-square"></i> 全程路線</button>
                         <button class="map-btn" data-view="day"><i class="fas fa-calendar-day"></i> 當天路線</button>
+                        <div class="day-selector" id="day-selector"></div>
                     </div>
                     <div class="map-frame" id="itinerary-map"></div>
                     <p class="map-hint"><i class="fas fa-mouse"></i> 提示：滑到左側行程項目即可定位點位</p>
@@ -540,6 +541,20 @@
             }).join("");
         }
 
+        function renderDaySelector() {
+            const selector = document.getElementById("day-selector");
+            if (!selector) return;
+            selector.innerHTML = days.map(day => {
+                return `<button class="day-pill" data-day-pill="${day.id}">${day.title.split("：")[0]}</button>`;
+            }).join("");
+        }
+
+        function setActiveDayPill(dayId) {
+            document.querySelectorAll(".day-pill").forEach(pill => {
+                pill.classList.toggle("active", pill.dataset.dayPill === dayId);
+            });
+        }
+
         function addMarkers() {
             days.forEach(day => {
                 day.stops.forEach(stop => {
@@ -675,6 +690,7 @@
             animateRoute(points, "#0284c7");
             fitRoute(points);
             setToolbarActive("day");
+            setActiveDayPill(dayId);
         }
 
         function setToolbarActive(view) {
@@ -710,6 +726,12 @@
                 button.addEventListener("click", event => {
                     const dayId = event.currentTarget.dataset.dayBtn;
                     showDayRoute(dayId);
+                    if (window.matchMedia("(max-width: 768px)").matches) {
+                        const mapFrame = document.getElementById("itinerary-map");
+                        if (mapFrame) {
+                            mapFrame.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
+                    }
                 });
             });
 
@@ -723,11 +745,20 @@
                     }
                 });
             });
+
+            document.querySelectorAll(".day-pill").forEach(button => {
+                button.addEventListener("click", event => {
+                    const dayId = event.currentTarget.dataset.dayPill;
+                    showDayRoute(dayId);
+                });
+            });
         }
 
         renderDayList();
+        renderDaySelector();
         addMarkers();
         showAllRoute();
+        setActiveDayPill(currentDay);
         setupInteractions();
 
         document.querySelectorAll("nav ul li a").forEach(link => {
