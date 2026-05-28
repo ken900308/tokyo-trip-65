@@ -23,6 +23,7 @@
                 <li><a href="#hotels">住宿飯店</a></li>
                 <li><a href="#budget">預算價格</a></li>
                 <li><a href="#map">旅遊地圖</a></li>
+                <li><a href="itinerary-map.html">動態地圖</a></li>
                 <li><a href="food.html">推薦美食</a></li>
                 <li><a href="visa.html">簽證申請</a></li>
             </ul>
@@ -58,7 +59,7 @@
                     <th>行程規劃</th>
                 </tr>
                 <tr><td>8/28 (五)</td><td>08:00 台北起飛 ➔ 17:40 抵達峇里島 ➔ 辦理入境與包車接送 ➔ 入住 The ONE Legian</td></tr>
-                <tr><td>8/29 (六)</td><td>退房 ➔ 包車前往烏布 ➔ 聖泉寺 ➔ 梯田鞦韆與午餐 ➔ 烏布皇宮/市集 ➔ 入住 Ubud Villa</td></tr>
+                <tr><td>8/29 (六)</td><td>Kuta 飯店出發 ➔ 聖泉寺 ➔ Cretya Ubud ➔ 烏布皇宮/市集 ➔ 薩拉斯瓦蒂神廟 ➔ 入住 Ubud Villa</td></tr>
                 <tr><td>8/30 (日)</td><td>Klook 探險一日遊：ATV越野車 ➔ 網美梯田鞦韆 ➔ 特格嫩甘瀑布</td></tr>
                 <tr><td>8/31 (一)</td><td>烏布逛街與午餐 ➔ 退房前往金巴蘭 ➔ 入住 RIMBA by AYANA</td></tr>
                 <tr><td>9/01 (二)</td><td>AYANA 渡假村全日放鬆 (享受飯店設施)</td></tr>
@@ -291,9 +292,21 @@
 
         <!-- 旅遊地圖 -->
         <section id="map" class="section">
-            <h2><i class="fas fa-map-marked-alt"></i> 互動式旅遊地圖</h2>
-            <p>地圖上標示了本次旅行的飯店與景點位置。點擊標記可查看名稱。</p>
-            <div id="map-container" style="height: 500px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1;"></div>
+            <h2><i class="fas fa-map-marked-alt"></i> 動態地圖總攬</h2>
+            <p>直接查看動態地圖總覽與路線視覺化，並可切換每日路線。</p>
+            <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);">
+                <iframe
+                    src="itinerary-map.html?embed=1"
+                    title="Bali Trip 動態地圖"
+                    style="width: 100%; height: 520px; border: 0;"
+                    loading="lazy"
+                ></iframe>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="itinerary-map.html" style="background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+                    <i class="fas fa-route"></i> 前往動態地圖分頁
+                </a>
+            </div>
         </section>
 
     </main>
@@ -302,63 +315,7 @@
         <p>Bali Trip 2026</p>
     </footer>
 
-    <!-- 引入 Leaflet JS 與 CSS 來做互動地圖 -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        // 初始化地圖，中心點設在峇里島
-        var map = L.map('map-container').setView([-8.6, 115.2], 10);
-        
-        // 加入 OpenStreetMap 圖層
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // 建立圖標資料，增加 type 來區分: hotel 或 attraction
-        var locations = [
-            { name: "The ONE Legian (第一晚住宿)", lat: -8.7145, lng: 115.1729, color: "blue", type: "hotel" },
-            { name: "Ubud Villa (烏布住宿)", lat: -8.5069, lng: 115.2625, color: "blue", type: "hotel" },
-            { name: "RIMBA by AYANA (金巴蘭住宿)", lat: -8.7885, lng: 115.1583, color: "blue", type: "hotel" },
-            { name: "Hard Rock Hotel (庫塔住宿)", lat: -8.7214, lng: 115.1691, color: "blue", type: "hotel" },
-            { name: "海神廟 (Tanah Lot)", lat: -8.6212, lng: 115.0868, color: "red", type: "attraction" },
-            { name: "聖泉寺 (Tirta Empul)", lat: -8.4150, lng: 115.3160, color: "red", type: "attraction" },
-            { name: "Cretya Ubud (景觀咖啡廳)", lat: -8.4344, lng: 115.2801, color: "red", type: "attraction" },
-            { name: "特格嫩甘瀑布 (Tegenungan)", lat: -8.5752, lng: 115.2789, color: "red", type: "attraction" },
-            { name: "烏魯瓦圖廟 (Uluwatu Temple)", lat: -8.8291, lng: 115.0844, color: "red", type: "attraction" },
-            { name: "珀尼達島 (Nusa Penida) 跳島", lat: -8.7278, lng: 115.5444, color: "green", type: "attraction" },
-            { name: "AYANA Rock Bar", lat: -8.7845, lng: 115.1555, color: "red", type: "attraction" },
-            { name: "KUTA 海灘", lat: -8.7185, lng: 115.1686, color: "red", type: "attraction" },
-            { name: "UBUD ATV", lat: -8.4619, lng: 115.2598, color: "red", type: "attraction" },
-            { name: "UBUD 藝術村", lat: -8.5062, lng: 115.2621, color: "red", type: "attraction" }
-        ];
-
-        // 建立不用顏色的自訂圖標 (飯店藍色，景點紅色)
-        var hotelIcon = new L.Icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-
-        var attrIcon = new L.Icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-
-        // 將圖標加到地圖上，依據 type 給予不同顏色
-        locations.forEach(function(loc) {
-            var iconToUse = loc.type === 'hotel' ? hotelIcon : attrIcon;
-            L.marker([loc.lat, loc.lng], { icon: iconToUse }).addTo(map)
-                .bindPopup(loc.name);
-        });
-
         // 手機版點擊導覽列連結後自動收起側邊欄
         document.querySelectorAll('nav ul li a').forEach(link => {
             link.addEventListener('click', () => {

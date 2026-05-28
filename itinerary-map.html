@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>峇里島動態行程地圖 - Bali Trip</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        .embed-only header,
+        .embed-only .section h2,
+        .embed-only .day-list,
+        .embed-only .map-toolbar,
+        .embed-only .map-hint,
+        .embed-only footer {
+            display: none;
+        }
+
+        .embed-only main {
+            padding: 0;
+        }
+
+        .embed-only .section {
+            padding: 0;
+            background: transparent;
+        }
+
+        .embed-only .map-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .embed-only .map-panel {
+            position: static;
+        }
+
+        .embed-only .map-frame {
+            height: 520px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html" style="color:inherit; text-decoration:none;">🌴 Bali - 動態地圖</a></div>
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <ul>
+                <li><a href="index.html#schedule">日期班機</a></li>
+                <li><a href="index.html#daily-details">詳細行程</a></li>
+                <li><a href="index.html#attractions">必去景點</a></li>
+                <li><a href="index.html#hotels">住宿飯店</a></li>
+                <li><a href="index.html#budget">預算價格</a></li>
+                <li><a href="index.html#map">旅遊地圖</a></li>
+                <li><a href="itinerary-map.html">動態地圖</a></li>
+                <li><a href="food.html">推薦美食</a></li>
+                <li><a href="visa.html">簽證申請</a></li>
+            </ul>
+        </nav>
+        <div class="hero" style="min-height: 45vh; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1920') center/cover;">
+            <h1><i class="fas fa-route"></i> 峇里島動態行程地圖</h1>
+            <p>每日地圖</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="section bg-light">
+            <h2><i class="fas fa-map-marked-alt"></i> 每日動態行程規劃</h2>
+            <div class="map-layout">
+                <div class="day-list" id="day-list"></div>
+                <div class="map-panel">
+                    <div class="map-toolbar">
+                        <button class="map-btn active" data-view="all"><i class="fas fa-wave-square"></i> 全程路線</button>
+                        <button class="map-btn" data-view="day"><i class="fas fa-calendar-day"></i> 當天路線</button>
+                    </div>
+                    <div class="map-frame" id="itinerary-map"></div>
+                    <p class="map-hint"><i class="fas fa-mouse"></i> 提示：滑到左側行程項目即可定位點位</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Bali Trip 2026</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("embed") === "1") {
+            document.body.classList.add("embed-only");
+        }
+
+        const days = [
+            {
+                id: "day1",
+                title: "Day 1 - 8/28 (五)：抵達峇里島",
+                subtitle: "機場 ➜ 入住 Legian ➜ Kuta 漫步",
+                stops: [
+                    {
+                        id: "day1-1",
+                        time: "17:40",
+                        title: "峇里島機場 (DPS)",
+                        desc: "抵達峇里島，辦理入境與集合。",
+                        image: "images/bali_airport.jpg",
+                        lat: -8.7482,
+                        lng: 115.1675,
+                        type: "transport"
+                    },
+                    {
+                        id: "day1-2",
+                        time: "18:30",
+                        title: "The ONE Legian",
+                        desc: "入住飯店、放行李，休息一下準備晚餐。",
+                        image: "images/TheONELegian_room.png",
+                        lat: -8.7145,
+                        lng: 115.1729,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day1-3",
+                        time: "20:00",
+                        title: "Kuta/Legian 商圈",
+                        desc: "晚餐與逛街，感受峇里島的第一晚。",
+                        image: "images/KUTA.jpg",
+                        lat: -8.7185,
+                        lng: 115.1686,
+                        type: "attraction"
+                    }
+                ]
+            },
+            {
+                id: "day2",
+                title: "Day 2 - 8/29 (六)：烏布文化＋市區＋Villa",
+                subtitle: "Kuta 飯店 ➜ 聖泉寺 ➜ Cretya ➜ 皇宮/市集 ➜ 神廟 ➜ Villa",
+                stops: [
+                    {
+                        id: "day2-0",
+                        time: "08:30",
+                        title: "The ONE Legian",
+                        desc: "從 Kuta 出發，前往烏布一日行程。",
+                        image: "images/TheONELegian_room.png",
+                        lat: -8.7145,
+                        lng: 115.1729,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day2-1",
+                        time: "10:00",
+                        title: "聖泉寺 (Tirta Empul)",
+                        desc: "千年聖泉洗禮，體驗當地祈福文化。",
+                        image: "images/聖泉寺.jpg",
+                        lat: -8.4150,
+                        lng: 115.3160,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day2-2",
+                        time: "12:00",
+                        title: "Cretya Ubud",
+                        desc: "景觀咖啡廳＋梯田視野＋泳池放鬆。",
+                        image: "images/crety_ubud.jpg",
+                        lat: -8.4344,
+                        lng: 115.2801,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day2-3",
+                        time: "14:30",
+                        title: "烏布皇宮 (Ubud Palace)",
+                        desc: "傳統宮殿建築與文化巡禮。",
+                        image: "images/Ubud_Palace.jpg",
+                        lat: -8.5062,
+                        lng: 115.2624,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day2-4",
+                        time: "15:30",
+                        title: "烏布市集 (Ubud Art Market)",
+                        desc: "手工藝、藤編包與伴手禮購物。",
+                        image: "images/UBUD_art.webp",
+                        lat: -8.5067,
+                        lng: 115.2620,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day2-5",
+                        time: "16:30",
+                        title: "薩拉斯瓦蒂神廟",
+                        desc: "黃昏時分的蓮花池非常漂亮。",
+                        image: "images/薩拉斯瓦蒂神廟.webp",
+                        lat: -8.5072,
+                        lng: 115.2620,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day2-6",
+                        time: "18:00",
+                        title: "Ubud Villa",
+                        desc: "入住 Villa，泳池放鬆、小酌聊天。",
+                        image: "images/Ubud_room.jpg",
+                        lat: -8.5069,
+                        lng: 115.2625,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day3",
+                title: "Day 3 - 8/30 (日)：ATV 探險＋瀑布",
+                subtitle: "越野車 ➜ 瀑布 ➜ 回 Villa",
+                stops: [
+                    {
+                        id: "day3-1",
+                        time: "08:00",
+                        title: "Ubud Villa",
+                        desc: "出發前往 ATV 場地。",
+                        image: "images/Ubud_room.jpg",
+                        lat: -8.5069,
+                        lng: 115.2625,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day3-2",
+                        time: "09:00",
+                        title: "UBUD ATV",
+                        desc: "叢林越野車體驗，刺激好玩。",
+                        image: "images/atv.jpg",
+                        lat: -8.4619,
+                        lng: 115.2598,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day3-3",
+                        time: "13:00",
+                        title: "特格嫩甘瀑布",
+                        desc: "保留一個瀑布景點就很足夠。",
+                        image: "images/waterfall.jpg",
+                        lat: -8.5752,
+                        lng: 115.2789,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day3-4",
+                        time: "14:30",
+                        title: "Ubud Villa",
+                        desc: "回 Villa 休息或 BBQ 放鬆。",
+                        image: "images/Ubud_room.jpg",
+                        lat: -8.5069,
+                        lng: 115.2625,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day4",
+                title: "Day 4 - 8/31 (一)：移動到 AYANA",
+                subtitle: "烏布午餐 ➜ 金巴蘭度假村",
+                stops: [
+                    {
+                        id: "day4-1",
+                        time: "10:00",
+                        title: "Ubud Villa",
+                        desc: "早上在 Villa 休息或簡單逛街。",
+                        image: "images/Ubud_room.jpg",
+                        lat: -8.5069,
+                        lng: 115.2625,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day4-2",
+                        time: "12:00",
+                        title: "烏布市區午餐",
+                        desc: "挑一間庭園餐廳慢慢享用。",
+                        image: "images/Ubud_Palace.jpg",
+                        lat: -8.5062,
+                        lng: 115.2624,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day4-3",
+                        time: "15:00",
+                        title: "RIMBA by AYANA",
+                        desc: "入住金巴蘭頂級度假村。",
+                        image: "images/ayana_room.webp",
+                        lat: -8.7885,
+                        lng: 115.1583,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day5",
+                title: "Day 5 - 9/01 (二)：AYANA 度假日",
+                subtitle: "度假村設施 ➜ Rock Bar",
+                stops: [
+                    {
+                        id: "day5-1",
+                        time: "10:00",
+                        title: "RIMBA by AYANA",
+                        desc: "泳池、沙灘、水療，慢慢享受。",
+                        image: "images/ayana_room.webp",
+                        lat: -8.7885,
+                        lng: 115.1583,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day5-2",
+                        time: "17:00",
+                        title: "AYANA Rock Bar",
+                        desc: "懸崖夕陽酒吧，峇里島必去。",
+                        image: "images/ayana_rockbar.webp",
+                        lat: -8.7845,
+                        lng: 115.1555,
+                        type: "attraction"
+                    }
+                ]
+            },
+            {
+                id: "day6",
+                title: "Day 6 - 9/02 (三)：南部海岸線",
+                subtitle: "Uluwatu ➜ 海神廟夕陽 ➜ Hard Rock",
+                stops: [
+                    {
+                        id: "day6-1",
+                        time: "11:30",
+                        title: "RIMBA by AYANA",
+                        desc: "午餐後退房，準備往南部海岸。",
+                        image: "images/ayana_room.webp",
+                        lat: -8.7885,
+                        lng: 115.1583,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day6-2",
+                        time: "14:00",
+                        title: "烏魯瓦圖廟",
+                        desc: "斷崖海景與猴子出沒的寺廟。",
+                        image: "images/Uiuwatu_temple.jpg",
+                        lat: -8.8291,
+                        lng: 115.0844,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6-3",
+                        time: "17:00",
+                        title: "海神廟",
+                        desc: "夕陽時分拍剪影最漂亮。",
+                        image: "images/TanahLot.webp",
+                        lat: -8.6212,
+                        lng: 115.0868,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6-4",
+                        time: "19:30",
+                        title: "Hard Rock Hotel",
+                        desc: "入住庫塔硬石酒店，夜晚可以逛街。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day7",
+                title: "Day 7 - 9/03 (四)：珀尼達島一日遊",
+                subtitle: "Sanur 出發 ➜ Nusa Penida",
+                stops: [
+                    {
+                        id: "day7-1",
+                        time: "07:30",
+                        title: "Hard Rock Hotel",
+                        desc: "清晨出發前往碼頭。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day7-2",
+                        time: "08:30",
+                        title: "Sanur Harbor",
+                        desc: "搭乘快艇前往珀尼達島。",
+                        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+                        lat: -8.6850,
+                        lng: 115.2627,
+                        type: "transport"
+                    },
+                    {
+                        id: "day7-3",
+                        time: "10:00",
+                        title: "Kelingking Beach",
+                        desc: "恐龍背脊海岸線，珀尼達島代表景點。",
+                        image: "images/Penida.jpg",
+                        lat: -8.7467,
+                        lng: 115.4836,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day7-4",
+                        time: "16:30",
+                        title: "Sanur Harbor",
+                        desc: "結束跳島，搭船回本島。",
+                        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+                        lat: -8.6850,
+                        lng: 115.2627,
+                        type: "transport"
+                    },
+                    {
+                        id: "day7-5",
+                        time: "18:30",
+                        title: "Hard Rock Hotel",
+                        desc: "返回飯店休息。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day8",
+                title: "Day 8 - 9/04 (五)：返程前放鬆",
+                subtitle: "Kuta 逛街 ➜ 機場",
+                stops: [
+                    {
+                        id: "day8-1",
+                        time: "09:30",
+                        title: "Hard Rock Hotel",
+                        desc: "睡到飽，準備最後採買。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day8-2",
+                        time: "11:00",
+                        title: "Kuta 商圈",
+                        desc: "最後逛街與午餐。",
+                        image: "images/KUTA.jpg",
+                        lat: -8.7185,
+                        lng: 115.1686,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day8-3",
+                        time: "13:30",
+                        title: "峇里島機場 (DPS)",
+                        desc: "前往機場準備回程。",
+                        image: "images/bali_airport.jpg",
+                        lat: -8.7482,
+                        lng: 115.1675,
+                        type: "transport"
+                    }
+                ]
+            }
+        ];
+
+        const map = L.map("itinerary-map").setView([-8.6, 115.2], 10);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18,
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        const iconMap = {
+            hotel: new L.Icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            }),
+            attraction: new L.Icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            }),
+            transport: new L.Icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        };
+
+        const markerGroup = L.layerGroup().addTo(map);
+        const markerMap = new Map();
+        const stopDayMap = new Map();
+        let activeRoute = null;
+        let currentDay = "day1";
+        let currentView = "all";
+
+        function buildPopup(stop) {
+            return `
+                <div class="popup-card">
+                    <img src="${stop.image}" alt="${stop.title}" />
+                    <div class="popup-body">
+                        <h4>${stop.title}</h4>
+                        <p>${stop.desc}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDayList() {
+            const container = document.getElementById("day-list");
+            container.innerHTML = days.map(day => {
+                const stopsHtml = day.stops.map(stop => `
+                    <li class="stop-item" data-stop-id="${stop.id}" data-day-id="${day.id}">
+                        <span class="stop-time">${stop.time}</span>
+                        <span class="stop-title">${stop.title}</span>
+                    </li>
+                `).join("");
+
+                return `
+                    <div class="day-card" data-day-id="${day.id}">
+                        <div class="day-header">
+                            <div>
+                                <h3>${day.title}</h3>
+                                <p>${day.subtitle}</p>
+                            </div>
+                            <button class="day-btn" data-day-btn="${day.id}">查看當天路線</button>
+                        </div>
+                        <ul class="stop-list">${stopsHtml}</ul>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function addMarkers() {
+            days.forEach(day => {
+                day.stops.forEach(stop => {
+                    const icon = iconMap[stop.type] || iconMap.attraction;
+                    const marker = L.marker([stop.lat, stop.lng], { icon })
+                        .bindPopup(buildPopup(stop));
+                    markerGroup.addLayer(marker);
+                    markerMap.set(stop.id, marker);
+                    stopDayMap.set(stop.id, day.id);
+                });
+            });
+        }
+
+        function setMarkersForDay(dayId) {
+            markerMap.forEach((marker, stopId) => {
+                const isActive = stopDayMap.get(stopId) === dayId;
+                marker.setOpacity(isActive ? 1 : 0);
+                if (!isActive) {
+                    marker.closePopup();
+                }
+            });
+        }
+
+        function resetMarkers() {
+            markerMap.forEach(marker => {
+                marker.setOpacity(1);
+            });
+        }
+
+        function getDayStops(dayId) {
+            return days.find(day => day.id === dayId)?.stops || [];
+        }
+
+        function getRoutePoints(stops) {
+            return stops.map(stop => [stop.lat, stop.lng]);
+        }
+
+        function buildSmoothRoute(points) {
+            if (points.length < 2) return points;
+            const smoothed = [];
+
+            for (let i = 0; i < points.length - 1; i += 1) {
+                const start = points[i];
+                const end = points[i + 1];
+                const mid = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2];
+                const dx = end[0] - start[0];
+                const dy = end[1] - start[1];
+                const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+                const offset = Math.min(distance * 0.2, 0.04);
+                const perp = [-dy / distance, dx / distance];
+                const control = [mid[0] + perp[0] * offset, mid[1] + perp[1] * offset];
+
+                if (i === 0) {
+                    smoothed.push(start);
+                }
+
+                for (let t = 0.1; t <= 1; t += 0.1) {
+                    const inv = 1 - t;
+                    const lat = inv * inv * start[0] + 2 * inv * t * control[0] + t * t * end[0];
+                    const lng = inv * inv * start[1] + 2 * inv * t * control[1] + t * t * end[1];
+                    smoothed.push([lat, lng]);
+                }
+            }
+
+            return smoothed;
+        }
+
+        function clearRoute() {
+            if (!activeRoute) return;
+            if (activeRoute.timer) {
+                clearInterval(activeRoute.timer);
+            }
+            map.removeLayer(activeRoute.glow);
+            map.removeLayer(activeRoute.line);
+            activeRoute = null;
+        }
+
+        function animateRoute(points, color) {
+            clearRoute();
+            const smoothPoints = buildSmoothRoute(points);
+            const glow = L.polyline([], {
+                color: "#38bdf8",
+                weight: 10,
+                opacity: 0.25,
+                lineCap: "round",
+                lineJoin: "round"
+            }).addTo(map);
+
+            const line = L.polyline([], {
+                color: color || "#0284c7",
+                weight: 4,
+                opacity: 0.95,
+                dashArray: "8 10",
+                lineCap: "round",
+                lineJoin: "round"
+            }).addTo(map);
+
+            let index = 0;
+            const timer = setInterval(() => {
+                glow.addLatLng(smoothPoints[index]);
+                line.addLatLng(smoothPoints[index]);
+                index += 1;
+                if (index >= smoothPoints.length) {
+                    clearInterval(timer);
+                }
+            }, 60);
+
+            activeRoute = { glow, line, timer };
+        }
+
+        function fitRoute(points) {
+            if (!points.length) return;
+            const bounds = L.latLngBounds(points);
+            map.fitBounds(bounds, { padding: [30, 30] });
+        }
+
+        function showAllRoute() {
+            currentView = "all";
+            resetMarkers();
+            const allStops = days.flatMap(day => day.stops);
+            const points = getRoutePoints(allStops);
+            animateRoute(points, "#0f172a");
+            fitRoute(points);
+            setToolbarActive("all");
+        }
+
+        function showDayRoute(dayId) {
+            currentView = "day";
+            currentDay = dayId;
+            setMarkersForDay(dayId);
+            const stops = getDayStops(dayId);
+            const points = getRoutePoints(stops);
+            animateRoute(points, "#0284c7");
+            fitRoute(points);
+            setToolbarActive("day");
+        }
+
+        function setToolbarActive(view) {
+            document.querySelectorAll(".map-btn").forEach(btn => {
+                const isActive = btn.dataset.view === view;
+                btn.classList.toggle("active", isActive);
+            });
+        }
+
+        function setupInteractions() {
+            document.querySelectorAll(".stop-item").forEach(item => {
+                const stopId = item.dataset.stopId;
+                const dayId = item.dataset.dayId;
+
+                const openStop = () => {
+                    const marker = markerMap.get(stopId);
+                    if (marker) {
+                        marker.openPopup();
+                        map.panTo(marker.getLatLng(), { animate: true, duration: 0.6 });
+                    }
+                    document.querySelectorAll(".stop-item").forEach(el => el.classList.remove("active"));
+                    item.classList.add("active");
+                    if (currentView === "day") {
+                        showDayRoute(dayId);
+                    }
+                };
+
+                item.addEventListener("mouseenter", openStop);
+                item.addEventListener("click", openStop);
+            });
+
+            document.querySelectorAll(".day-btn").forEach(button => {
+                button.addEventListener("click", event => {
+                    const dayId = event.currentTarget.dataset.dayBtn;
+                    showDayRoute(dayId);
+                });
+            });
+
+            document.querySelectorAll(".map-btn").forEach(button => {
+                button.addEventListener("click", event => {
+                    const view = event.currentTarget.dataset.view;
+                    if (view === "all") {
+                        showAllRoute();
+                    } else {
+                        showDayRoute(currentDay);
+                    }
+                });
+            });
+        }
+
+        renderDayList();
+        addMarkers();
+        showAllRoute();
+        setupInteractions();
+
+        document.querySelectorAll("nav ul li a").forEach(link => {
+            link.addEventListener("click", () => {
+                const toggle = document.getElementById("menu-toggle");
+                if (toggle) toggle.checked = false;
+            });
+        });
+    </script>
+</body>
+</html>

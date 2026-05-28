@@ -206,6 +206,150 @@ nav ul li a:hover {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
+/* 動態行程地圖頁 */
+.map-layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 1.1fr) minmax(320px, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.day-list .day-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.day-header h3 {
+    border: none;
+    margin-bottom: 6px;
+}
+
+.day-header p {
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+.day-btn {
+    border: none;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.day-btn:hover {
+    background: #0284c7;
+}
+
+.stop-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stop-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+}
+
+.stop-item:hover,
+.stop-item.active {
+    border-color: #0284c7;
+    background-color: #eff6ff;
+    transform: translateX(4px);
+}
+
+.stop-time {
+    font-weight: 700;
+    color: #0284c7;
+    min-width: 64px;
+}
+
+.stop-title {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.map-panel {
+    position: sticky;
+    top: 90px;
+}
+
+.map-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.map-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    background: #e2e8f0;
+    color: #0f172a;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.map-btn.active {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+.map-frame {
+    height: 600px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+}
+
+.map-hint {
+    margin-top: 12px;
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+.popup-card img {
+    width: 220px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.popup-card h4 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+.popup-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
 /* 頁尾 */
 footer {
     background-color: #1e293b;
@@ -261,5 +405,22 @@ footer {
         overflow-x: auto;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch; /* 讓手機(特別是iOS)滑動更順暢 */
+    }
+
+    .map-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .map-panel {
+        position: static;
+    }
+
+    .map-frame {
+        height: 420px;
+    }
+
+    .day-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
