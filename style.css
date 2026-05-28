@@ -1,0 +1,212 @@
+/* 基本重置與字體設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, '微軟正黑體', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth; /* 點擊導航時會有平滑滑動效果 */
+}
+
+body {
+    background-color: #f8fafc;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 頂部導航列 */
+header nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0284c7;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #0284c7;
+}
+
+/* 主視覺橫幅 (Hero Section) */
+.hero {
+    height: 60vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=1920') center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-top: 60px; /* 留出導航列的空間 */
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* 通用區塊樣式 */
+.section {
+    padding: 80px 10%;
+}
+
+.bg-light {
+    background-color: #e2e8f0;
+}
+
+.section h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #1e293b;
+    margin-bottom: 40px;
+}
+
+.section h2 i {
+    color: #0284c7;
+    margin-right: 10px;
+}
+
+/* 卡片排版 */
+.card-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    color: #0f172a;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #bae6fd;
+    padding-bottom: 10px;
+}
+
+.attraction-card {
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.attraction-card:hover {
+    transform: translateY(-5px);
+}
+
+.attraction-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.attraction-card h3, .attraction-card p {
+    padding: 15px;
+    margin: 0;
+    border: none;
+}
+
+/* 表格樣式 (預算) */
+.budget-table {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.budget-table th, .budget-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.budget-table th {
+    background-color: #0284c7;
+    color: white;
+}
+
+.budget-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 1.1rem;
+    background-color: #f8fafc;
+    color: #0369a1;
+}
+
+/* 地圖 */
+.map-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 頁尾 */
+footer {
+    background-color: #1e293b;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+/* 響應式手機版設定 */
+@media (max-width: 768px) {
+    nav ul {
+        display: none; /* 手機版暫時隱藏導航或改為漢堡選單 */
+    }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}
