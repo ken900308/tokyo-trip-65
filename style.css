@@ -255,4 +255,11 @@ footer {
     .hero h1 {
         font-size: 2.5rem;
     }
+    /* 修正手機版表格跑版問題 (讓表格可以左右滑動，文字不亂換行) */
+    .budget-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch; /* 讓手機(特別是iOS)滑動更順暢 */
+    }
 }
