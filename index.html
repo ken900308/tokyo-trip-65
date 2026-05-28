@@ -13,17 +13,17 @@
     <!-- 頂部導航列 -->
     <header>
         <nav>
-            <div class="logo">🌴 Bali </div>
+            <div class="logo"><a href="#" style="color:inherit; text-decoration:none;">🌴 Bali</a></div>
             <input type="checkbox" id="menu-toggle">
             <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
             <ul>
-                <li><a href="#overview">行程總覽</a></li>
                 <li><a href="#schedule">日期班機</a></li>
                 <li><a href="#daily-details">詳細行程</a></li>
                 <li><a href="#attractions">必去景點</a></li>
                 <li><a href="#hotels">住宿飯店</a></li>
                 <li><a href="#budget">預算價格</a></li>
                 <li><a href="#map">旅遊地圖</a></li>
+                <li><a href="food.html">推薦美食</a></li>
                 <li><a href="visa.html">簽證申請</a></li>
             </ul>
         </nav>
@@ -167,14 +167,24 @@
                     <p>壯麗的層疊梯田景觀，不容錯過的高空鞦韆體驗。</p>
                 </div>
                 <div class="card attraction-card">
-                    <img src="images/Uluwatu.jpg" alt="烏魯瓦圖廟" onerror="this.src='https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=400&q=80'">
+                    <img src="images/Uiuwatu_temple.jpg" alt="烏魯瓦圖廟">
                     <h3>烏魯瓦圖廟 (Uluwatu Temple)</h3>
                     <p>建於百米高懸崖上的古老寺廟，壯觀的斷崖海景與傳統猴舞。</p>
                 </div>
                 <div class="card attraction-card">
-                    <img src="images/RockBar.jpg" alt="AYANA Rock Bar" onerror="this.src='https://images.unsplash.com/photo-1499946981954-e7f4b234d7fa?auto=format&fit=crop&w=400&q=80'">
+                    <img src="images/ayana_rockbar.webp" alt="AYANA Rock Bar">
                     <h3>AYANA Rock Bar</h3>
                     <p>CNN評選世界最美懸崖酒吧之一，享受無敵夕陽與海浪聲。</p>
+                </div>
+                <div class="card attraction-card">
+                    <img src="images/waterfall.jpg" alt="特格嫩甘瀑布">
+                    <h3>特格嫩甘瀑布 (Tegenungan)</h3>
+                    <p>壯觀的叢林瀑布，享受大自然的芬多精與戲水樂趣。</p>
+                </div>
+                <div class="card attraction-card">
+                    <img src="images/聖泉寺.jpg" alt="聖泉寺">
+                    <h3>聖泉寺 (Tirta Empul)</h3>
+                    <p>擁有千年歷史的印度教聖地，體驗當地信徒在聖泉中沐浴祈福的儀式。</p>
                 </div>
                 <div class="card attraction-card">
                     <img src="images/KUTA.jpg" alt="Kuta 海灘">
@@ -305,23 +315,43 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // 建立圖標資料
+        // 建立圖標資料，增加 type 來區分: hotel 或 attraction
         var locations = [
-            { name: "The ONE Legian (第一晚住宿)", lat: -8.7145, lng: 115.1729, color: "blue" },
-            { name: "Ubud Villa (烏布住宿)", lat: -8.5069, lng: 115.2625, color: "blue" },
-            { name: "RIMBA by AYANA (金巴蘭住宿)", lat: -8.7885, lng: 115.1583, color: "blue" },
-            { name: "Hard Rock Hotel (庫塔住宿)", lat: -8.7214, lng: 115.1691, color: "blue" },
-            { name: "海神廟 (Tanah Lot)", lat: -8.6212, lng: 115.0868, color: "red" },
-            { name: "聖泉寺 (Tirta Empul)", lat: -8.4150, lng: 115.3160, color: "red" },
-            { name: "德哥拉朗梯田 (Tegallalang)", lat: -8.4344, lng: 115.2801, color: "red" },
-            { name: "特格嫩甘瀑布 (Tegenungan)", lat: -8.5752, lng: 115.2789, color: "red" },
-            { name: "烏魯瓦圖廟 (Uluwatu Temple)", lat: -8.8291, lng: 115.0844, color: "red" },
-            { name: "珀尼達島 (Nusa Penida) 跳島", lat: -8.7278, lng: 115.5444, color: "green" }
+            { name: "The ONE Legian (第一晚住宿)", lat: -8.7145, lng: 115.1729, color: "blue", type: "hotel" },
+            { name: "Ubud Villa (烏布住宿)", lat: -8.5069, lng: 115.2625, color: "blue", type: "hotel" },
+            { name: "RIMBA by AYANA (金巴蘭住宿)", lat: -8.7885, lng: 115.1583, color: "blue", type: "hotel" },
+            { name: "Hard Rock Hotel (庫塔住宿)", lat: -8.7214, lng: 115.1691, color: "blue", type: "hotel" },
+            { name: "海神廟 (Tanah Lot)", lat: -8.6212, lng: 115.0868, color: "red", type: "attraction" },
+            { name: "聖泉寺 (Tirta Empul)", lat: -8.4150, lng: 115.3160, color: "red", type: "attraction" },
+            { name: "德哥拉朗梯田 (Tegallalang)", lat: -8.4344, lng: 115.2801, color: "red", type: "attraction" },
+            { name: "特格嫩甘瀑布 (Tegenungan)", lat: -8.5752, lng: 115.2789, color: "red", type: "attraction" },
+            { name: "烏魯瓦圖廟 (Uluwatu Temple)", lat: -8.8291, lng: 115.0844, color: "red", type: "attraction" },
+            { name: "珀尼達島 (Nusa Penida) 跳島", lat: -8.7278, lng: 115.5444, color: "green", type: "attraction" }
         ];
 
-        // 將圖標加到地圖上
+        // 建立不用顏色的自訂圖標 (飯店藍色，景點紅色)
+        var hotelIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        var attrIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        // 將圖標加到地圖上，依據 type 給予不同顏色
         locations.forEach(function(loc) {
-            L.marker([loc.lat, loc.lng]).addTo(map)
+            var iconToUse = loc.type === 'hotel' ? hotelIcon : attrIcon;
+            L.marker([loc.lat, loc.lng], { icon: iconToUse }).addTo(map)
                 .bindPopup(loc.name);
         });
 

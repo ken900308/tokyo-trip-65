@@ -8,6 +8,7 @@
 
 html {
     scroll-behavior: smooth; /* 點擊導航時會有平滑滑動效果 */
+    scroll-padding-top: 70px; /* 修正點擊錨點後被固定導航列遮擋的問題 */
 }
 
 body {
@@ -220,6 +221,8 @@ footer {
     }
     .menu-icon {
         display: block; /* 手機版顯示漢堡按鈕 */
+        position: relative;
+        z-index: 1001; /* 確保漢堡選單在最上層，不會被覆蓋而導致無法點擊 */
     }
     nav ul {
         position: fixed;
