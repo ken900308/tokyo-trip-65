@@ -503,6 +503,8 @@
         let activeRoute = null;
         let currentDay = "day1";
         let currentView = "all";
+        let inactivityTimer = null;
+        let autoPopup = false;
 
         function buildPopup(stop) {
             return `
@@ -561,6 +563,8 @@
                     const icon = iconMap[stop.type] || iconMap.attraction;
                     const marker = L.marker([stop.lat, stop.lng], { icon })
                         .bindPopup(buildPopup(stop));
+                    marker.on("click", pauseAndSchedule);
+                    marker.on("popupclose", pauseAndSchedule);
                     markerGroup.addLayer(marker);
                     markerMap.set(stop.id, marker);
                     stopDayMap.set(stop.id, day.id);
@@ -632,8 +636,66 @@
             activeRoute = null;
         }
 
-        function animateRoute(points, color) {
+        function pauseAndSchedule() {
+            if (autoPopup) return;
+            pauseAnimation();
+            scheduleResume();
+        }
+
+        function pauseAnimation() {
+            if (!activeRoute || !activeRoute.timer) return;
+            clearInterval(activeRoute.timer);
+            activeRoute.timer = null;
+            activeRoute.paused = true;
+        }
+
+        function scheduleResume() {
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+            }
+            inactivityTimer = setTimeout(() => {
+                resumeAnimation();
+            }, 10000);
+        }
+
+        function resumeAnimation() {
+            if (!activeRoute || !activeRoute.paused) return;
+            activeRoute.paused = false;
+            startRouteTimer(activeRoute);
+        }
+
+        function focusStop(stop, shouldPan) {
+            const marker = markerMap.get(stop.id);
+            if (!marker) return;
+            autoPopup = true;
+            marker.openPopup();
+            setTimeout(() => {
+                autoPopup = false;
+            }, 0);
+            if (shouldPan) {
+                map.panTo(marker.getLatLng(), { animate: true, duration: 0.4 });
+            }
+        }
+
+        function startRouteTimer(route) {
+            route.timer = setInterval(() => {
+                route.glow.addLatLng(route.smoothPoints[route.index]);
+                route.line.addLatLng(route.smoothPoints[route.index]);
+                if (route.stopIndex < route.stops.length && route.index >= route.stepForStop * route.stopIndex) {
+                    focusStop(route.stops[route.stopIndex], route.shouldPan);
+                    route.stopIndex += 1;
+                }
+                route.index += 1;
+                if (route.index >= route.smoothPoints.length) {
+                    clearInterval(route.timer);
+                    route.timer = null;
+                }
+            }, 300);
+        }
+
+        function animateRoute(stops, color, shouldPan) {
             clearRoute();
+            const points = getRoutePoints(stops);
             const smoothPoints = buildSmoothRoute(points);
             const glow = L.polyline([], {
                 color: "#38bdf8",
@@ -651,18 +713,30 @@
                 lineCap: "round",
                 lineJoin: "round"
             }).addTo(map);
+            const stepForStop = stops.length > 1
+                ? Math.floor((smoothPoints.length - 1) / (stops.length - 1))
+                : 0;
 
-            let index = 0;
-            const timer = setInterval(() => {
-                glow.addLatLng(smoothPoints[index]);
-                line.addLatLng(smoothPoints[index]);
-                index += 1;
-                if (index >= smoothPoints.length) {
-                    clearInterval(timer);
-                }
-            }, 60);
+            const route = {
+                glow,
+                line,
+                stops,
+                smoothPoints,
+                shouldPan,
+                stepForStop,
+                index: 0,
+                stopIndex: 0,
+                timer: null,
+                paused: false
+            };
 
-            activeRoute = { glow, line, timer };
+            if (stops.length) {
+                focusStop(stops[0], shouldPan);
+                route.stopIndex = 1;
+            }
+
+            startRouteTimer(route);
+            activeRoute = route;
         }
 
         function fitRoute(points) {
@@ -676,7 +750,7 @@
             resetMarkers();
             const allStops = days.flatMap(day => day.stops);
             const points = getRoutePoints(allStops);
-            animateRoute(points, "#0f172a");
+            animateRoute(allStops, "#0f172a", false);
             fitRoute(points);
             setToolbarActive("all");
         }
@@ -687,7 +761,7 @@
             setMarkersForDay(dayId);
             const stops = getDayStops(dayId);
             const points = getRoutePoints(stops);
-            animateRoute(points, "#0284c7");
+            animateRoute(stops, "#0284c7", true);
             fitRoute(points);
             setToolbarActive("day");
             setActiveDayPill(dayId);
