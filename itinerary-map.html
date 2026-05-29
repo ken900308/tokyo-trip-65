@@ -56,7 +56,7 @@
                 <li><a href="index.html#budget">預算價格</a></li>
                 <li><a href="index.html#map">旅遊地圖</a></li>
                 <li><a href="itinerary-map.html">動態地圖</a></li>
-                <li><a href="food.html">推薦美食</a></li>
+                <li><a href="food.html">美食地圖</a></li>
                 <li><a href="visa.html">簽證申請</a></li>
             </ul>
         </nav>
@@ -503,8 +503,9 @@
         let activeRoute = null;
         let currentDay = "day1";
         let currentView = "all";
-        let inactivityTimer = null;
+        let popupSuppressUntil = 0;
         let autoPopup = false;
+        let routeToken = 0;
 
         function buildPopup(stop) {
             return `
@@ -563,8 +564,8 @@
                     const icon = iconMap[stop.type] || iconMap.attraction;
                     const marker = L.marker([stop.lat, stop.lng], { icon })
                         .bindPopup(buildPopup(stop));
-                    marker.on("click", pauseAndSchedule);
-                    marker.on("popupclose", pauseAndSchedule);
+                    marker.on("click", suppressPopups);
+                    marker.on("popupclose", suppressPopups);
                     markerGroup.addLayer(marker);
                     markerMap.set(stop.id, marker);
                     stopDayMap.set(stop.id, day.id);
@@ -631,47 +632,29 @@
             if (activeRoute.timer) {
                 clearInterval(activeRoute.timer);
             }
+            if (activeRoute.restartTimer) {
+                clearTimeout(activeRoute.restartTimer);
+            }
             map.removeLayer(activeRoute.glow);
             map.removeLayer(activeRoute.line);
             activeRoute = null;
         }
 
-        function pauseAndSchedule() {
+        function suppressPopups() {
             if (autoPopup) return;
-            pauseAnimation();
-            scheduleResume();
-        }
-
-        function pauseAnimation() {
-            if (!activeRoute || !activeRoute.timer) return;
-            clearInterval(activeRoute.timer);
-            activeRoute.timer = null;
-            activeRoute.paused = true;
-        }
-
-        function scheduleResume() {
-            if (inactivityTimer) {
-                clearTimeout(inactivityTimer);
-            }
-            inactivityTimer = setTimeout(() => {
-                resumeAnimation();
-            }, 10000);
-        }
-
-        function resumeAnimation() {
-            if (!activeRoute || !activeRoute.paused) return;
-            activeRoute.paused = false;
-            startRouteTimer(activeRoute);
+            popupSuppressUntil = Date.now() + 10000;
         }
 
         function focusStop(stop, shouldPan) {
             const marker = markerMap.get(stop.id);
             if (!marker) return;
-            autoPopup = true;
-            marker.openPopup();
-            setTimeout(() => {
-                autoPopup = false;
-            }, 0);
+            if (Date.now() >= popupSuppressUntil) {
+                autoPopup = true;
+                marker.openPopup();
+                setTimeout(() => {
+                    autoPopup = false;
+                }, 0);
+            }
             if (shouldPan) {
                 map.panTo(marker.getLatLng(), { animate: true, duration: 0.4 });
             }
@@ -689,6 +672,11 @@
                 if (route.index >= route.smoothPoints.length) {
                     clearInterval(route.timer);
                     route.timer = null;
+                    route.restartTimer = setTimeout(() => {
+                        if (activeRoute && activeRoute.token === route.token) {
+                            animateRoute(route.stops, route.color, route.shouldPan);
+                        }
+                    }, 3000);
                 }
             }, 300);
         }
@@ -697,6 +685,8 @@
             clearRoute();
             const points = getRoutePoints(stops);
             const smoothPoints = buildSmoothRoute(points);
+            const token = routeToken + 1;
+            routeToken = token;
             const glow = L.polyline([], {
                 color: "#38bdf8",
                 weight: 10,
@@ -723,11 +713,14 @@
                 stops,
                 smoothPoints,
                 shouldPan,
+                color,
                 stepForStop,
                 index: 0,
                 stopIndex: 0,
                 timer: null,
-                paused: false
+                restartTimer: null,
+                paused: false,
+                token
             };
 
             if (stops.length) {
