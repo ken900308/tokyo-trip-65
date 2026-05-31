@@ -88,6 +88,44 @@
         <p>Bali Trip 2026</p>
     </footer>
 
+    <!-- 匯率轉換小工具（右下） -->
+    <div class="fx-widget" id="fxWidget">
+        <div class="fx-panel" id="fxPanel">
+            <button id="fxClose" style="float:right;border:none;background:transparent;font-size:1.1rem;cursor:pointer;">✕</button>
+            <h4>匯率換算</h4>
+            <div class="fx-row">
+                <select id="fxFrom" class="fx-select">
+                    <option value="IDR" selected>印尼盾 IDR</option>
+                    <option value="TWD">台幣 TWD</option>
+                    <option value="USD">美金 USD</option>
+                </select>
+                <input id="fxAmount" class="fx-input" type="number" step="any" value="1">
+            </div>
+            <div class="fx-row">
+                <select id="fxTo" class="fx-select">
+                    <option value="TWD" selected>台幣 TWD</option>
+                    <option value="IDR">印尼盾 IDR</option>
+                    <option value="USD">美金 USD</option>
+                </select>
+                <input id="fxToAmount" class="fx-input" type="number" step="any" value="" placeholder="結果">
+            </div>
+            <div class="fx-row fx-swap-row">
+                <button id="fxSwap" class="fx-swap">⇄</button>
+            </div>
+        </div>
+        <button class="fx-button" id="fxToggle" title="匯率轉換">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+    </div>
+
+    <script>
+        (function(){
+            var s = document.createElement('script');
+            s.src = 'fx-widget.js';
+            document.body.appendChild(s);
+        })();
+    </script>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -322,12 +360,12 @@
                 ]
             },
             {
-                id: "day6",
-                title: "Day 6 - 9/02 (三)：南部海岸線",
+                id: "day6a",
+                title: "Day 6A - 9/02 (三)：南部海岸線原版",
                 subtitle: "Uluwatu ➜ 海神廟夕陽 ➜ Hard Rock",
                 stops: [
                     {
-                        id: "day6-1",
+                        id: "day6a-1",
                         time: "11:30",
                         title: "RIMBA by AYANA",
                         desc: "午餐後退房，準備往南部海岸。",
@@ -337,7 +375,7 @@
                         type: "hotel"
                     },
                     {
-                        id: "day6-2",
+                        id: "day6a-2",
                         time: "14:00",
                         title: "烏魯瓦圖廟",
                         desc: "斷崖海景與猴子出沒的寺廟。",
@@ -347,7 +385,7 @@
                         type: "attraction"
                     },
                     {
-                        id: "day6-3",
+                        id: "day6a-3",
                         time: "17:00",
                         title: "海神廟",
                         desc: "夕陽時分拍剪影最漂亮。",
@@ -357,7 +395,7 @@
                         type: "attraction"
                     },
                     {
-                        id: "day6-4",
+                        id: "day6a-4",
                         time: "19:30",
                         title: "Hard Rock Hotel",
                         desc: "入住庫塔硬石酒店，夜晚可以逛街。",
@@ -369,12 +407,79 @@
                 ]
             },
             {
-                id: "day7",
-                title: "Day 7 - 9/03 (四)：珀尼達島一日遊",
+                id: "day6b",
+                title: "Day 6B - 9/02 (三)：南部海灘＋Kecak",
+                subtitle: "GWK ➜ Melasti Beach ➜ Uluwatu ➜ Kecak Dance",
+                stops: [
+                    {
+                        id: "day6b-1",
+                        time: "11:30",
+                        title: "RIMBA by AYANA",
+                        desc: "退房後出發，直接往南部景點移動。",
+                        image: "images/ayana_room.webp",
+                        lat: -8.7885,
+                        lng: 115.1583,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day6b-2",
+                        time: "12:00",
+                        title: "GWK Cultural Park",
+                        desc: "大雕像與文化園區，適合拍照與短暫停留。",
+                        image: "images/GWK_Cultural_Park.webp",
+                        lat: -8.8136,
+                        lng: 115.1750,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6b-3",
+                        time: "13:30",
+                        title: "Melasti Beach",
+                        desc: "峭壁海岸公路與海灘景色很適合放慢節奏。",
+                        image: "images/MelastiBeach.jpg",
+                        lat: -8.8476,
+                        lng: 115.1170,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6b-4",
+                        time: "16:00",
+                        title: "烏魯瓦圖廟",
+                        desc: "傍晚前進入斷崖寺廟，準備接夕陽。",
+                        image: "images/Uiuwatu_temple.jpg",
+                        lat: -8.8291,
+                        lng: 115.0844,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6b-5",
+                        time: "17:30",
+                        title: "Kecak Dance",
+                        desc: "夕陽下欣賞火舞表演，是南部行程重點。",
+                        image: "images/KecakDance.jpg",
+                        lat: -8.8295,
+                        lng: 115.0850,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day6b-6",
+                        time: "19:30",
+                        title: "Hard Rock Hotel",
+                        desc: "表演結束後回庫塔入住。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day7a",
+                title: "Day 7A - 9/03 (四)：珀尼達島一日遊",
                 subtitle: "Sanur 出發 ➜ Nusa Penida",
                 stops: [
                     {
-                        id: "day7-1",
+                        id: "day7a-1",
                         time: "07:30",
                         title: "Hard Rock Hotel",
                         desc: "清晨出發前往碼頭。",
@@ -384,7 +489,7 @@
                         type: "hotel"
                     },
                     {
-                        id: "day7-2",
+                        id: "day7a-2",
                         time: "08:30",
                         title: "Sanur Harbor",
                         desc: "搭乘快艇前往珀尼達島。",
@@ -394,7 +499,7 @@
                         type: "transport"
                     },
                     {
-                        id: "day7-3",
+                        id: "day7a-3",
                         time: "10:00",
                         title: "Kelingking Beach",
                         desc: "恐龍背脊海岸線，珀尼達島代表景點。",
@@ -404,7 +509,7 @@
                         type: "attraction"
                     },
                     {
-                        id: "day7-4",
+                        id: "day7a-4",
                         time: "16:30",
                         title: "Sanur Harbor",
                         desc: "結束跳島，搭船回本島。",
@@ -414,10 +519,67 @@
                         type: "transport"
                     },
                     {
-                        id: "day7-5",
+                        id: "day7a-5",
                         time: "18:30",
                         title: "Hard Rock Hotel",
                         desc: "返回飯店休息。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    }
+                ]
+            },
+            {
+                id: "day7b",
+                title: "Day 7B - 9/03 (四)：Hard Rock 放鬆＋Tanah Lot",
+                subtitle: "Kuta 休閒 ➜ Tanah Lot 夕陽",
+                stops: [
+                    {
+                        id: "day7b-1",
+                        time: "09:30",
+                        title: "Hard Rock Hotel",
+                        desc: "睡到自然醒，享受飯店設施。",
+                        image: "images/HradRock_room.jpg",
+                        lat: -8.7214,
+                        lng: 115.1691,
+                        type: "hotel"
+                    },
+                    {
+                        id: "day7b-2",
+                        time: "11:00",
+                        title: "Kuta 商圈",
+                        desc: "最後逛街與午餐。",
+                        image: "images/KUTA.jpg",
+                        lat: -8.7185,
+                        lng: 115.1686,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day7b-3",
+                        time: "15:00",
+                        title: "Tanah Lot",
+                        desc: "提早前往海神廟，避開太晚車潮。",
+                        image: "images/TanahLot.webp",
+                        lat: -8.6212,
+                        lng: 115.0868,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day7b-4",
+                        time: "16:30",
+                        title: "海神廟夕陽",
+                        desc: "看夕陽與拍剪影，保留更多放鬆時間。",
+                        image: "images/TanahLot.webp",
+                        lat: -8.6212,
+                        lng: 115.0868,
+                        type: "attraction"
+                    },
+                    {
+                        id: "day7b-5",
+                        time: "19:30",
+                        title: "Hard Rock Hotel",
+                        desc: "回飯店休息，準備隔天返程。",
                         image: "images/HradRock_room.jpg",
                         lat: -8.7214,
                         lng: 115.1691,

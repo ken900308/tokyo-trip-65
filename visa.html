@@ -134,5 +134,43 @@
             });
         });
     </script>
+
+    <!-- 匯率轉換小工具 (同 index.html) -->
+    <div class="fx-widget" id="fxWidget">
+        <div class="fx-panel" id="fxPanel">
+            <button id="fxClose" style="float:right;border:none;background:transparent;font-size:1.1rem;cursor:pointer;">✕</button>
+            <h4>匯率換算</h4>
+            <div class="fx-row">
+                <select id="fxFrom" class="fx-select">
+                    <option value="IDR" selected>印尼盾 IDR</option>
+                    <option value="TWD">台幣 TWD</option>
+                    <option value="USD">美金 USD</option>
+                </select>
+                <input id="fxAmount" class="fx-input" type="number" step="any" value="1">
+            </div>
+            <div class="fx-row">
+                <select id="fxTo" class="fx-select">
+                    <option value="TWD" selected>台幣 TWD</option>
+                    <option value="IDR">印尼盾 IDR</option>
+                    <option value="USD">美金 USD</option>
+                </select>
+                <input id="fxToAmount" class="fx-input" type="number" step="any" value="" placeholder="結果">
+            </div>
+            <div class="fx-row fx-swap-row">
+                <button id="fxSwap" class="fx-swap">⇄</button>
+            </div>
+        </div>
+        <button class="fx-button" id="fxToggle" title="匯率轉換">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+    </div>
+
+    <script>
+        (function(){
+            var s = document.createElement('script');
+            s.src = 'fx-widget.js';
+            document.body.appendChild(s);
+        })();
+    </script>
 </body>
 </html>
