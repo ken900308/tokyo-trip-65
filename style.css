@@ -447,6 +447,31 @@ footer {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .fx-widget {
+        right: 16px;
+        top: 76px;
+        bottom: auto;
+        z-index: 1200;
+    }
+
+    .fx-button {
+        width: 60px;
+        height: 60px;
+        box-shadow: 0 8px 20px rgba(2,132,199,0.28);
+    }
+
+    .fx-panel {
+        right: 0;
+        top: 0;
+        bottom: auto;
+        width: min(300px, calc(100vw - 32px));
+        transform: translateY(8px);
+    }
+
+    .fx-panel.show {
+        transform: translateY(0);
+    }
 }
 
 /* 匯率轉換浮動小工具 */
