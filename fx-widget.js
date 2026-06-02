@@ -1,22 +1,56 @@
 // fx-widget.js - 共用匯率小工具 (支援 TWD / IDR / USD)
 (function(){
-    const FALLBACK_RATES = { IDR: 480.769226, USD: 0.032 }; // 備用：1 TWD = X
-    const CACHE_KEY = 'fx_rates_twd';
-    const CACHE_TS_KEY = 'fx_rates_ts';
+    const FALLBACK_RATES = { IDR: 570.31, USD: 0.032 }; // 備用：1 TWD = X
+    const CACHE_KEY = 'fx_rates_twd_v2';
+    const CACHE_TS_KEY = 'fx_rates_ts_v2';
     const CACHE_TTL = 1000 * 60 * 60 * 12; // 12 小時
 
     function $(id){ return document.getElementById(id); }
 
-    async function fetchRatesFromAPI(){
+    function normalizeRates(rates){
+        if(!rates) return null;
+        const idr = Number(rates.IDR);
+        const usd = Number(rates.USD);
+        if(!Number.isFinite(idr) || !Number.isFinite(usd) || idr <= 0 || usd <= 0) return null;
+        return { IDR: idr, USD: usd };
+    }
+
+    function saveRates(rates){
+        try{
+            localStorage.setItem(CACHE_KEY, JSON.stringify(rates));
+            localStorage.setItem(CACHE_TS_KEY, String(Date.now()));
+        }catch(e){}
+    }
+
+    async function fetchOpenExchangeRateApiRates(){
+        try{
+            const res = await fetch('https://open.er-api.com/v6/latest/TWD');
+            if(!res.ok) throw new Error('network');
+            const data = await res.json();
+            const rates = normalizeRates(data && data.rates);
+            if(rates) return rates;
+        }catch(e){ /* ignore */ }
+        return null;
+    }
+
+    async function fetchFrankfurterRates(){
+        try{
+            const res = await fetch('https://api.frankfurter.dev/v1/latest?base=TWD&symbols=IDR,USD');
+            if(!res.ok) throw new Error('network');
+            const data = await res.json();
+            const rates = normalizeRates(data && data.rates);
+            if(rates) return rates;
+        }catch(e){ /* ignore */ }
+        return null;
+    }
+
+    async function fetchExchangeRateHostRates(){
         try{
             const res = await fetch('https://api.exchangerate.host/latest?base=TWD&symbols=IDR,USD');
             if(!res.ok) throw new Error('network');
             const data = await res.json();
-            if(data && data.rates){
-                const rates = { IDR: data.rates.IDR, USD: data.rates.USD };
-                try{ localStorage.setItem(CACHE_KEY, JSON.stringify(rates)); localStorage.setItem(CACHE_TS_KEY, String(Date.now())); }catch(e){}
-                return rates;
-            }
+            const rates = normalizeRates(data && data.rates);
+            if(rates) return rates;
         }catch(e){ /* ignore */ }
         return null;
     }
@@ -36,8 +70,21 @@
     async function getRates(){
         const cached = getCachedRates();
         if(cached) return { rates: cached, from: 'cache' };
-        const api = await fetchRatesFromAPI();
-        if(api) return { rates: api, from: 'api' };
+        const openExchangeRateApi = await fetchOpenExchangeRateApiRates();
+        if(openExchangeRateApi){
+            saveRates(openExchangeRateApi);
+            return { rates: openExchangeRateApi, from: 'api' };
+        }
+        const frankfurter = await fetchFrankfurterRates();
+        if(frankfurter){
+            saveRates(frankfurter);
+            return { rates: frankfurter, from: 'api' };
+        }
+        const exchangerateHost = await fetchExchangeRateHostRates();
+        if(exchangerateHost){
+            saveRates(exchangerateHost);
+            return { rates: exchangerateHost, from: 'api' };
+        }
         return { rates: FALLBACK_RATES, from: 'fallback' };
     }
 
@@ -51,6 +98,7 @@
     const fxToAmount = $('fxToAmount'); // 右邊可編輯輸入
     const fxSwap = $('fxSwap');
     const fxClose = $('fxClose');
+    const fxRateNote = $('fxRateNote');
 
     if(!fxToggle || !fxPanel || !fxFrom || !fxTo || !fxAmount || !fxToAmount || !fxSwap) return;
 
@@ -79,6 +127,17 @@
 
     let syncing = false;
 
+    function updateRateNote(info){
+        if(!fxRateNote) return;
+        const idr = formatNum(info.rates.IDR);
+        const labels = {
+            api: '即時匯率',
+            cache: '快取匯率',
+            fallback: '備用匯率'
+        };
+        fxRateNote.textContent = `${labels[info.from] || '匯率'}：1 TWD = ${idr} IDR`;
+    }
+
     async function computeForward(){
         const from = fxFrom.value;
         const to = fxTo.value;
@@ -88,6 +147,7 @@
         }
         fxToAmount.value = '計算中...';
         const info = await getRates();
+        updateRateNote(info);
         const rates = info.rates;
         const out = convertAmount(amt, from, to, rates);
         syncing = true; fxToAmount.value = Number(out).toLocaleString(undefined, {useGrouping:false, maximumFractionDigits:6}); syncing = false;
@@ -102,6 +162,7 @@
         }
         fxAmount.value = '計算中...';
         const info = await getRates();
+        updateRateNote(info);
         const rates = info.rates;
         // reverse: convert amt (toCur) -> fromCur
         const out = convertAmount(amt, to, from, rates);
