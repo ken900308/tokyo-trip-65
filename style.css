@@ -190,6 +190,25 @@ nav ul li a:hover {
     right: 10px;
 }
 
+.packing-card h3 i {
+    color: #0284c7;
+    margin-right: 8px;
+}
+
+.packing-list {
+    margin-left: 18px;
+    color: #475569;
+}
+
+.packing-list li {
+    padding: 7px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.packing-list li:last-child {
+    border-bottom: none;
+}
+
 .attraction-card {
     padding: 0;
     overflow: hidden;
