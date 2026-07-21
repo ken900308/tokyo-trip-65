@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>峇里島行前準備清單 - Bali Trip</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --ink: #0f172a; --muted: #64748b; --line: #dbeafe; --blue: #0284c7; --cyan: #06b6d4; }
+        body { background: #f8fafc; }
+        .preview-nav { padding: 14px 6%; }
+        .preview-nav ul { gap: 18px; }
+        .packing-hero {
+            min-height: 48vh;
+            height: auto;
+            padding: 90px 20px 55px;
+            background: linear-gradient(120deg, rgba(2, 132, 199, .88), rgba(15, 23, 42, .82)),
+                        url('images/MelastiBeach.jpg') center/cover;
+        }
+        .packing-hero .eyebrow { font-size: .85rem; letter-spacing: .18em; font-weight: 800; margin-bottom: 12px; }
+        .packing-hero h1 { font-size: clamp(2.2rem, 6vw, 4.5rem); }
+        .packing-hero p { max-width: 680px; padding: 0 16px; }
+        .status-bar {
+            width: min(1080px, 88%); margin: -34px auto 20px; position: relative; z-index: 2;
+            background: white; padding: 22px 26px; border-radius: 18px; box-shadow: 0 16px 40px rgba(15, 23, 42, .13);
+            display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center;
+        }
+        .status-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: #e0f2fe; color: var(--blue); font-size: 1.25rem; }
+        .progress-track { height: 9px; background: #e2e8f0; border-radius: 99px; overflow: hidden; margin-top: 7px; }
+        .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width .25s ease; }
+        .progress-number { font-weight: 800; color: var(--blue); min-width: 52px; text-align: right; }
+        .section.compact { padding-top: 58px; padding-bottom: 58px; }
+        .section-heading { max-width: 760px; margin: 0 auto 34px; text-align: center; color: var(--muted); }
+        .section-heading h2 { margin-bottom: 8px; }
+        .buy-grid, .checklist-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 1120px; margin: auto; }
+        .buy-card, .check-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 24px rgba(15, 23, 42, .06); }
+        .buy-card { padding: 24px; display: flex; flex-direction: column; min-height: 295px; }
+        .buy-card.featured { border: 2px solid #38bdf8; background: linear-gradient(145deg, #fff, #f0f9ff); }
+        .tag { align-self: flex-start; padding: 5px 10px; border-radius: 99px; background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: .76rem; margin-bottom: 16px; }
+        .buy-icon { font-size: 1.55rem; color: var(--blue); margin-bottom: 14px; }
+        .buy-card h3 { color: var(--ink); margin-bottom: 8px; }
+        .buy-card p { color: var(--muted); font-size: .94rem; margin-bottom: 12px; }
+        .buy-card ul { margin: 0 0 20px 18px; color: #475569; font-size: .9rem; }
+        .buy-card .action { margin-top: auto; }
+        .product-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 10px; background: var(--ink); color: white; text-decoration: none; font-weight: 800; }
+        .check-card h3 { padding: 20px 20px 14px; color: var(--ink); display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #f1f5f9; }
+        .check-card h3 i { color: var(--blue); }
+        .check-list { list-style: none; padding: 8px 18px 18px; }
+        .check-item label { display: flex; align-items: flex-start; gap: 11px; padding: 11px 3px; cursor: pointer; border-bottom: 1px dashed #e2e8f0; }
+        .check-item:last-child label { border-bottom: 0; }
+        .check-item input { appearance: none; width: 20px; height: 20px; flex: 0 0 20px; margin-top: 2px; border: 2px solid #94a3b8; border-radius: 6px; display: grid; place-items: center; }
+        .check-item input:checked { background: var(--blue); border-color: var(--blue); }
+        .check-item input:checked::after { content: '✓'; color: white; font-size: 13px; font-weight: 900; }
+        .check-item input:checked + span { color: #94a3b8; text-decoration: line-through; }
+        .tip-box { max-width: 1120px; margin: 28px auto 0; padding: 22px 24px; border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; }
+        .tip-box strong { display: block; margin-bottom: 5px; }
+        .reset-wrap { max-width: 1120px; margin: 24px auto 0; text-align: right; }
+        .reset-btn { border: 0; background: transparent; color: #64748b; cursor: pointer; font-weight: 700; padding: 8px; }
+        .outfit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 1120px; margin: auto; }
+        .outfit-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 22px; display: grid; grid-template-columns: 78px 1fr; gap: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, .05); }
+        .day-badge { width: 78px; height: 78px; border-radius: 18px; color: white; background: linear-gradient(145deg, #0284c7, #06b6d4); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; line-height: 1.15; }
+        .day-badge small { font-size: .72rem; opacity: .85; margin-top: 5px; }
+        .outfit-card h3 { color: var(--ink); margin-bottom: 5px; }
+        .route-note { color: var(--muted); font-size: .86rem; margin-bottom: 12px; }
+        .outfit-row { margin: 7px 0; color: #475569; font-size: .93rem; }
+        .outfit-row strong { color: var(--ink); }
+        .rafting-guide { width: 100%; margin: 12px 0 4px; border-collapse: collapse; font-size: .82rem; overflow: hidden; border-radius: 10px; }
+        .rafting-guide th, .rafting-guide td { padding: 8px 9px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .rafting-guide th { background: #f8fafc; color: var(--ink); }
+        .rafting-guide td:first-child { font-weight: 800; color: var(--ink); white-space: nowrap; }
+        .rafting-guide .avoid { color: #b91c1c; }
+        .rafting-guide .recommend { color: #047857; }
+        .swim-tag { display: inline-flex; gap: 6px; align-items: center; padding: 5px 9px; margin-top: 8px; border-radius: 99px; background: #cffafe; color: #0e7490; font-size: .78rem; font-weight: 900; }
+        .swim-tag.optional { background: #fef3c7; color: #a16207; }
+        .swim-tag.no { background: #f1f5f9; color: #64748b; }
+        .palette { display: inline-flex; gap: 5px; vertical-align: middle; margin-left: 5px; }
+        .color-dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid rgba(15, 23, 42, .12); }
+        .outfit-summary { max-width: 1120px; margin: 28px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .summary-note { padding: 18px; border-radius: 16px; background: #f0f9ff; color: #075985; }
+        .summary-note strong { display: block; margin-bottom: 4px; }
+        footer { text-align: center; padding: 30px; color: #64748b; background: #0f172a; }
+        @media (max-width: 900px) { .buy-grid, .checklist-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 620px) {
+            .buy-grid, .checklist-grid, .outfit-grid, .outfit-summary { grid-template-columns: 1fr; }
+            .outfit-card { grid-template-columns: 62px 1fr; padding: 18px; gap: 13px; }
+            .day-badge { width: 62px; height: 68px; }
+            .status-bar { grid-template-columns: auto 1fr; }
+            .progress-number { grid-column: 2; text-align: left; }
+            .section.compact { padding: 48px 6%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="preview-nav">
+            <div class="logo"><a href="packing-preview.html" style="color:inherit; text-decoration:none;">🌴 Bali - 行前準備</a></div>
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <ul>
+                <li><a href="#buy-first">提前購買</a></li>
+                <li><a href="#packing-list">行李清單</a></li>
+                <li><a href="#daily-outfits">每日穿搭</a></li>
+                <li class="nav-dropdown">
+                    <a href="index.html#map">地圖 <i class="fas fa-chevron-down"></i></a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#map">旅遊地圖總覽</a></li>
+                        <li><a href="itinerary-map.html">每日動態地圖</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html">回行程首頁</a></li>
+            </ul>
+        </nav>
+        <div class="hero packing-hero">
+            <div class="eyebrow">BALI 2026 · BEFORE YOU GO</div>
+            <h1><i class="fas fa-suitcase-rolling"></i> 峇里島行前準備</h1>
+            <p>該買的先買、該帶的一件不漏。勾選進度會自動保留在這台裝置。</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="status-bar" aria-live="polite">
+            <div class="status-icon"><i class="fas fa-plane-departure"></i></div>
+            <div><strong>準備進度</strong><div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div></div>
+            <div class="progress-number" id="progress-number">0%</div>
+        </div>
+
+        <section id="buy-first" class="section compact">
+            <div class="section-heading"><h2><i class="fas fa-cart-shopping"></i> 出發前先買／先辦</h2><p>有期限、名額或需要收信啟用的項目，建議不要留到最後一天。</p></div>
+            <div class="buy-grid">
+                <article class="buy-card featured">
+                    <span class="tag">這趟建議 8 天</span><i class="fas fa-signal buy-icon"></i>
+                    <h3>印尼 eSIM｜4G 上網</h3>
+                    <p>8/28 抵達至 9/4 離境，可先看 8 天方案；依用量選吃到飽、每日 2GB 或每日 1GB。</p>
+                    <ul><li>先確認手機支援 eSIM</li><li>一機一組 QR Code</li><li>出發當日在穩定 Wi‑Fi 下安裝</li></ul>
+                    <div class="action"><a class="product-link" href="https://waysim.net/products/%E5%8D%B0%E5%B0%BCesim-4g%E9%AB%98%E9%80%9F%E5%90%83%E5%88%B0%E9%A3%BD-3-30%E5%A4%A9" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i> 查看 Waysim 方案</a></div>
+                </article>
+                <article class="buy-card"><span class="tag">出發前完成</span><i class="fas fa-passport buy-icon"></i><h3>簽證與入境文件</h3><p>確認護照效期、印尼簽證／落地簽規定及入境申報資料。</p><ul><li>護照資料頁電子備份</li><li>回程機票與住宿證明</li><li>簽證／申報完成畫面</li></ul><div class="action"><a class="product-link" href="visa.html">查看簽證整理</a></div></article>
+                <article class="buy-card"><span class="tag">少量即可</span><i class="fas fa-money-bill-wave buy-icon"></i><h3>現金與支付</h3><p>準備可海外刷卡的信用卡與少量印尼盾；出發前開啟海外交易通知。</p><ul><li>信用卡海外回饋確認</li><li>分開放置備用卡與現金</li></ul></article>
+            </div>
+        </section>
+
+        <section id="packing-list" class="section compact bg-light">
+            <div class="section-heading"><h2><i class="fas fa-list-check"></i> 行李必帶清單</h2><p>點一下就能勾選，重新整理頁面也不會消失。</p></div>
+            <div class="checklist-grid" id="checklist">
+                <article class="check-card"><h3><i class="fas fa-id-card"></i> 證件與金錢</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="passport"><span>護照（效期至少 6 個月）</span></label></li><li class="check-item"><label><input type="checkbox" data-key="visa"><span>簽證與入境申報資料</span></label></li><li class="check-item"><label><input type="checkbox" data-key="tickets"><span>機票、飯店與行程憑證</span></label></li><li class="check-item"><label><input type="checkbox" data-key="money"><span>信用卡、印尼盾與備用現金</span></label></li></ul></article>
+                <article class="check-card"><h3><i class="fas fa-shirt"></i> 衣物與鞋子</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="summer"><span>透氣短袖、短褲與薄長褲</span></label></li><li class="check-item"><label><input type="checkbox" data-key="swim"><span>泳衣、泳褲與罩衫</span></label></li><li class="check-item"><label><input type="checkbox" data-key="temple"><span>寺廟適用的過膝衣物</span></label></li><li class="check-item"><label><input type="checkbox" data-key="jacket"><span>薄外套（日出行程／飛機）</span></label></li><li class="check-item"><label><input type="checkbox" data-key="shoes"><span>好走涼鞋、運動鞋與拖鞋</span></label></li></ul></article>
+                <article class="check-card"><h3><i class="fas fa-sun"></i> 防曬與海島用品</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="sunscreen"><span>防曬乳與曬後修護</span></label></li><li class="check-item"><label><input type="checkbox" data-key="hat"><span>帽子、太陽眼鏡</span></label></li><li class="check-item"><label><input type="checkbox" data-key="mosquito"><span>防蚊液與止癢藥</span></label></li><li class="check-item"><label><input type="checkbox" data-key="drybag"><span>防水袋／手機防水套</span></label></li><li class="check-item"><label><input type="checkbox" data-key="bottle"><span>隨身水壺</span></label></li></ul></article>
+                <article class="check-card"><h3><i class="fas fa-plug"></i> 3C 與網路</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="phone"><span>手機與充電線</span></label></li><li class="check-item"><label><input type="checkbox" data-key="esim"><span>eSIM QR Code／安裝完成</span></label></li><li class="check-item"><label><input type="checkbox" data-key="powerbank"><span>行動電源（隨身行李）</span></label></li><li class="check-item"><label><input type="checkbox" data-key="adapter"><span>轉接頭與多孔充電器</span></label></li><li class="check-item"><label><input type="checkbox" data-key="camera"><span>相機、記憶卡與充電器</span></label></li></ul></article>
+                <article class="check-card"><h3><i class="fas fa-kit-medical"></i> 藥品與衛生</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="medicine"><span>個人處方藥與藥袋</span></label></li><li class="check-item"><label><input type="checkbox" data-key="stomach"><span>腸胃藥、止瀉藥與電解質</span></label></li><li class="check-item"><label><input type="checkbox" data-key="pain"><span>止痛、退燒與暈車藥</span></label></li><li class="check-item"><label><input type="checkbox" data-key="wound"><span>OK 繃與簡易消毒用品</span></label></li><li class="check-item"><label><input type="checkbox" data-key="toiletries"><span>盥洗用品與濕紙巾</span></label></li></ul></article>
+                <article class="check-card"><h3><i class="fas fa-bag-shopping"></i> 隨身包</h3><ul class="check-list"><li class="check-item"><label><input type="checkbox" data-key="copies"><span>護照影本與緊急聯絡資料</span></label></li><li class="check-item"><label><input type="checkbox" data-key="tissue"><span>衛生紙、乾洗手</span></label></li><li class="check-item"><label><input type="checkbox" data-key="umbrella"><span>輕便雨具／折傘</span></label></li><li class="check-item"><label><input type="checkbox" data-key="snack"><span>小零食與空水壺</span></label></li><li class="check-item"><label><input type="checkbox" data-key="pen"><span>原子筆與行李吊牌</span></label></li></ul></article>
+            </div>
+            <div class="tip-box"><strong><i class="fas fa-circle-exclamation"></i> 建議放在隨身行李</strong>護照、現金、信用卡、手機、相機、充電電池、藥物與一天份換洗衣物。行動電源不可托運。</div>
+            <div class="reset-wrap"><button class="reset-btn" id="reset-checklist" type="button"><i class="fas fa-rotate-left"></i> 清除全部勾選</button></div>
+        </section>
+
+        <section id="daily-outfits" class="section compact">
+            <div class="section-heading"><h2>每日穿搭建議</h2><p>以舒適、防曬和拍照效果為主；峇里島炎熱潮濕，盡量選亞麻、棉質或快乾布料。</p></div>
+            <div class="outfit-grid">
+                <article class="outfit-card"><div class="day-badge">DAY 1<small>8/28</small></div><div><h3>搭機抵達＋Kuta 晚餐</h3><p class="route-note">台北 → 峇里島 → YELLO Hotel</p><p class="outfit-row"><strong>穿：</strong>寬鬆短袖、薄長褲、好穿脫的運動鞋；機上加薄外套。</p><p class="outfit-row"><strong>顏色：</strong>米白、淺灰、霧藍 <span class="palette"><i class="color-dot" style="background:#f5f0e6"></i><i class="color-dot" style="background:#cbd5e1"></i><i class="color-dot" style="background:#93c5d8"></i></span></p><span class="swim-tag no"><i class="fas fa-xmark"></i> 不需泳裝</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 2<small>8/29</small></div><div><h3>海神廟＋Ubud 寺廟與梯田</h3><p class="route-note">Tanah Lot → 藝術村 → 梯田 → 聖泉寺 → Villa</p><p class="outfit-row"><strong>穿：</strong>透氣上衣＋過膝長裙或薄長褲，搭防滑好走涼鞋。寺廟避免過度裸露。</p><p class="outfit-row"><strong>顏色：</strong>白、燕麥、橄欖綠；和梯田、寺廟最搭 <span class="palette"><i class="color-dot" style="background:#fff"></i><i class="color-dot" style="background:#d6c6a5"></i><i class="color-dot" style="background:#73845c"></i></span></p><span class="swim-tag"><i class="fas fa-person-swimming"></i> Villa 泳池需要泳裝</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 3<small>8/30</small></div><div><h3>泛舟／ATV＋Villa</h3><p class="route-note">戶外活動 → 返回 Villa 休息</p><p class="outfit-row"><strong>泛舟穿：</strong>排汗衫或快乾短袖、運動短褲或防潑水褲，搭有鞋帶的水陸兩用鞋；另外帶一套乾衣服。</p><table class="rafting-guide"><thead><tr><th>部位</th><th class="avoid">不要穿</th><th class="recommend">建議穿</th></tr></thead><tbody><tr><td>上衣</td><td>泳衣上衣、棉 T、長袖襯衫</td><td>排汗衫、快乾短袖</td></tr><tr><td>下身</td><td>牛仔褲、長裙</td><td>運動短褲、防潑水褲</td></tr><tr><td>鞋子</td><td>拖鞋、一般涼鞋</td><td>水陸兩用鞋、有鞋帶</td></tr></tbody></table><p class="outfit-row"><strong>顏色：</strong>黑、深綠、咖啡；泥巴與水漬較不明顯 <span class="palette"><i class="color-dot" style="background:#252525"></i><i class="color-dot" style="background:#315244"></i><i class="color-dot" style="background:#795548"></i></span></p><span class="swim-tag"><i class="fas fa-person-swimming"></i> 泳裝只留給 Villa 泳池</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 4<small>8/31</small></div><div><h3>日出吉普車＋瀑布＋AYANA</h3><p class="route-note">Mount Batur／Villa → 瀑布（拍照散步，不下水）→ AYANA</p><p class="outfit-row"><strong>穿：</strong>日出時短袖外加薄外套與長褲；白天可換輕便上衣，鞋子需防滑。</p><p class="outfit-row"><strong>顏色：</strong>磚紅、焦糖、奶油白；日出與火山背景突出 <span class="palette"><i class="color-dot" style="background:#b55239"></i><i class="color-dot" style="background:#b7793f"></i><i class="color-dot" style="background:#fff4d6"></i></span></p><span class="swim-tag"><i class="fas fa-person-swimming"></i> 泳裝給 Villa／AYANA 使用</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 5<small>9/01</small></div><div><h3>AYANA 渡假村放鬆</h3><p class="route-note">泳池、沙灘、Rock Bar</p><p class="outfit-row"><strong>穿：</strong>泳裝外搭罩衫或亞麻襯衫；傍晚換度假洋裝／襯衫短褲與好走涼鞋。</p><p class="outfit-row"><strong>顏色：</strong>白、珊瑚橘、寶藍；海景與夕陽都亮眼 <span class="palette"><i class="color-dot" style="background:#fff"></i><i class="color-dot" style="background:#f07862"></i><i class="color-dot" style="background:#2563a8"></i></span></p><span class="swim-tag"><i class="fas fa-person-swimming"></i> 一定要帶泳裝</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 6<small>9/02</small></div><div><h3>Melasti Beach＋Uluwatu</h3><p class="route-note">懸崖公路 → 海灘午餐 → 烏魯瓦圖 → Sanur</p><p class="outfit-row"><strong>穿：</strong>海灘可穿泳裝加罩衫；去寺廟前換乾爽衣服與過膝下身，搭涼鞋。</p><p class="outfit-row"><strong>顏色：</strong>純白、沙色、天空藍；懸崖與海景照片最乾淨 <span class="palette"><i class="color-dot" style="background:#fff"></i><i class="color-dot" style="background:#d8c3a5"></i><i class="color-dot" style="background:#70b7dc"></i></span></p><span class="swim-tag optional"><i class="fas fa-water"></i> 想在 Melasti 下水就帶</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 7<small>9/03</small></div><div><h3>跳島／浮潛＋ICON BALI</h3><p class="route-note">Sanur 碼頭 → 離島活動 → 商場晚餐</p><p class="outfit-row"><strong>穿：</strong>泳裝＋長袖防曬水母衣、快乾短褲與水陸鞋；帶乾衣服晚上換。</p><p class="outfit-row"><strong>顏色：</strong>亮黃、珊瑚紅、土耳其藍；在海上辨識度高 <span class="palette"><i class="color-dot" style="background:#f5cf3d"></i><i class="color-dot" style="background:#ee6b5b"></i><i class="color-dot" style="background:#20a4b5"></i></span></p><span class="swim-tag"><i class="fas fa-person-swimming"></i> 一定要帶泳裝</span></div></article>
+
+                <article class="outfit-card"><div class="day-badge">DAY 8<small>9/04</small></div><div><h3>Sanur 散步＋搭機返程</h3><p class="route-note">Sanur → 機場 → 香港轉機</p><p class="outfit-row"><strong>穿：</strong>舒適短袖、薄長褲與運動鞋，薄外套放隨身包應付機艙冷氣。</p><p class="outfit-row"><strong>顏色：</strong>米色、灰藍、深藍；耐髒又適合長途飛行 <span class="palette"><i class="color-dot" style="background:#ded2bd"></i><i class="color-dot" style="background:#829aaa"></i><i class="color-dot" style="background:#263b5e"></i></span></p><span class="swim-tag no"><i class="fas fa-xmark"></i> 不需泳裝</span></div></article>
+            </div>
+            <div class="outfit-summary">
+                <div class="summary-note"><strong><i class="fas fa-person-swimming"></i> 泳裝必帶日</strong>Day 2–3 Ubud Villa、Day 4–5 AYANA、Day 7 跳島／浮潛。</div>
+                <div class="summary-note"><strong><i class="fas fa-shirt"></i> 泛舟服裝</strong>Day 3 穿排汗快乾衣褲與有鞋帶的水陸鞋，不穿泳衣上衣；泳裝留給 Villa。</div>
+                <div class="summary-note"><strong><i class="fas fa-camera"></i> 最萬用配色</strong>白色、燕麥色、天空藍，再帶一件亮色泳裝拍海景。</div>
+            </div>
+        </section>
+    </main>
+    <footer>峇里島 2026 行前準備清單</footer>
+    <script>
+        (() => {
+            const storageKey = 'bali-packing-preview-v1';
+            const boxes = [...document.querySelectorAll('.check-item input[type="checkbox"]')];
+            const fill = document.getElementById('progress-fill');
+            const number = document.getElementById('progress-number');
+            const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            const update = () => {
+                const state = {};
+                boxes.forEach(box => { state[box.dataset.key] = box.checked; });
+                localStorage.setItem(storageKey, JSON.stringify(state));
+                const checked = boxes.filter(box => box.checked).length;
+                const percent = Math.round((checked / boxes.length) * 100);
+                fill.style.width = `${percent}%`;
+                number.textContent = `${percent}%`;
+            };
+            boxes.forEach(box => { box.checked = Boolean(saved[box.dataset.key]); box.addEventListener('change', update); });
+            document.getElementById('reset-checklist').addEventListener('click', () => { boxes.forEach(box => { box.checked = false; }); update(); });
+            document.getElementById('menu-toggle').addEventListener('change', event => { document.querySelector('nav ul').classList.toggle('active', event.target.checked); });
+            update();
+        })();
+    </script>
+</body>
+</html>

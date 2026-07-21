@@ -54,8 +54,14 @@
                 <li><a href="index.html#attractions">必去景點</a></li>
                 <li><a href="index.html#hotels">住宿飯店</a></li>
                 <li><a href="index.html#budget">預算價格</a></li>
-                <li><a href="index.html#map">旅遊地圖</a></li>
-                <li><a href="itinerary-map.html">動態地圖</a></li>
+                <li class="nav-dropdown">
+                    <a href="index.html#map">地圖 <i class="fas fa-chevron-down"></i></a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#map">旅遊地圖總覽</a></li>
+                        <li><a href="itinerary-map.html">每日動態地圖</a></li>
+                    </ul>
+                </li>
+                <li><a href="packing-preview.html">行前準備</a></li>
                 <li><a href="visa.html">簽證申請</a></li>
             </ul>
         </nav>
@@ -172,8 +178,8 @@
             },
             {
                 id: "day2",
-                title: "Day 2 - 8/29 (六)：烏布自然景觀＋文化巡禮＋Villa BBQ",
-                subtitle: "Kuta ➜ Tegenungan 瀑布 ➜ 午餐 ➜ 藝術村 ➜ 德格拉朗梯田 ➜ 聖泉寺 ➜ Villa",
+                title: "Day 2 - 8/29 (六)：海神廟＋進入 Ubud＋Villa BBQ",
+                subtitle: "Kuta ➜ 海神廟 ➜ 午餐 ➜ Ubud 藝術村 ➜ 德格拉朗梯田 ➜ 聖泉寺 ➜ Villa",
                 stops: [
                     {
                         id: "day2-0",
@@ -188,18 +194,18 @@
                     {
                         id: "day2-1",
                         time: "10:00",
-                        title: "Tegenungan Waterfall",
-                        desc: "欣賞瀑布、拍照並在觀景區散步，不特別安排下水。",
-                        image: "images/waterfall.jpg",
-                        lat: -8.5752,
-                        lng: 115.2789,
+                        title: "海神廟 (Tanah Lot)",
+                        desc: "欣賞海上寺廟與海岸景觀，作為進入 Ubud 前的第一站。",
+                        image: "images/TanahLot.webp",
+                        lat: -8.6212,
+                        lng: 115.0868,
                         type: "attraction"
                     },
                     {
                         id: "day2-2",
                         time: "12:00",
-                        title: "午餐",
-                        desc: "途中安排午餐，餐點及飲料需自行付費。",
+                        title: "午餐＋前往 Ubud",
+                        desc: "途中安排午餐，餐後一路往 Ubud 方向移動。",
                         image: "images/UBUD_art.webp",
                         lat: -8.5067,
                         lng: 115.2620,
@@ -207,7 +213,7 @@
                     },
                     {
                         id: "day2-3",
-                        time: "14:00",
+                        time: "14:30",
                         title: "Ubud Art Village 烏布藝術村",
                         desc: "參觀木雕、銀飾、繪畫與峇里島傳統手工藝。",
                         image: "images/UBUD_art.webp",
@@ -217,7 +223,7 @@
                     },
                     {
                         id: "day2-4",
-                        time: "15:30",
+                        time: "16:00",
                         title: "Tegalalang Rice Terrace 德格拉朗梯田",
                         desc: "拍照、散步並欣賞峇里島傳統稻田景觀。",
                         image: "images/Tegallalang.jpg",
@@ -227,7 +233,7 @@
                     },
                     {
                         id: "day2-5",
-                        time: "17:00",
+                        time: "17:30",
                         title: "聖泉寺 (Tirta Empul)",
                         desc: "參觀天然聖泉、寺廟建築與祭祀文化。",
                         image: "images/聖泉寺.jpg",
@@ -237,7 +243,7 @@
                     },
                     {
                         id: "day2-6",
-                        time: "18:00",
+                        time: "18:30",
                         title: "Ubud Villa",
                         desc: "入住 Villa，晚上享用 American BBQ 晚餐。",
                         image: "images/Ubud_room_new4.jpg",
@@ -249,8 +255,8 @@
             },
             {
                 id: "day3",
-                title: "Day 3 - 8/30 (日)：泛舟／ATV＋海神廟＋Villa 晚餐",
-                subtitle: "泛舟或 ATV 二選一 ➜ 午餐與休息 ➜ 海神廟 ➜ Balinese Treasure 晚餐",
+                title: "Day 3 - 8/30 (日)：泛舟／ATV 二選一＋Villa 晚餐",
+                subtitle: "泛舟或 ATV 二選一 ➜ 午餐與休息 ➜ 返回 Villa ➜ Balinese Treasure 晚餐",
                 stops: [
                     {
                         id: "day3-1",
@@ -293,16 +299,6 @@
                         type: "hotel"
                     },
                     {
-                        id: "day3-5",
-                        time: "16:00",
-                        title: "海神廟 (Tanah Lot)",
-                        desc: "前往海神廟欣賞落日與海上寺廟剪影。",
-                        image: "images/TanahLot.webp",
-                        lat: -8.6212,
-                        lng: 115.0868,
-                        type: "attraction"
-                    },
-                    {
                         id: "day3-6",
                         time: "19:30",
                         title: "Ubud Villa",
@@ -316,8 +312,8 @@
             },
             {
                 id: "day4",
-                title: "Day 4 - 8/31 (一)：日出吉普車／Villa 休息＋AYANA",
-                subtitle: "03:00 日出吉普車或 Villa 休息 ➜ 中午前往 AYANA",
+                title: "Day 4 - 8/31 (一)：日出吉普車／Villa 休息＋瀑布午餐＋AYANA",
+                subtitle: "日出吉普車或 Villa 休息 ➜ 瀑布景點＋午餐 ➜ AYANA",
                 stops: [
                     {
                         id: "day4-1",
@@ -331,12 +327,12 @@
                     },
                     {
                         id: "day4-2",
-                        time: "12:00",
-                        title: "前往 AYANA",
-                        desc: "退房後前往金巴蘭；午餐與接送時間待確認。",
-                        image: "images/ayana_room.webp",
-                        lat: -8.7885,
-                        lng: 115.1583,
+                        time: "中午",
+                        title: "瀑布景點＋午餐",
+                        desc: "退房後前往順路瀑布拍照、散步並享用午餐。",
+                        image: "images/waterfall.jpg",
+                        lat: -8.5752,
+                        lng: 115.2789,
                         type: "attraction"
                     },
                     {
@@ -380,12 +376,12 @@
             },
             {
                 id: "day6",
-                title: "Day 6 - 9/02 (三)：南部海灘＋烏魯瓦圖＋入住 Sanur Resort Watujimbar",
-                subtitle: "GWK ➜ Melasti Beach ➜ Uluwatu Temple ➜ Kecak Dance ➜ Sanur",
+                title: "Day 6 - 9/02 (三)：Melasti 懸崖公路＋烏魯瓦圖＋回 Sanur",
+                subtitle: "AYANA ➜ Melasti 懸崖公路 ➜ Melasti Beach ➜ Uluwatu Temple ➜ Sanur",
                 stops: [
                     {
                         id: "day6-1",
-                        time: "11:30",
+                        time: "11:00",
                         title: "RIMBA by AYANA",
                         desc: "退房後出發，直接往南部景點移動。",
                         image: "images/ayana_room.webp",
@@ -395,19 +391,19 @@
                     },
                     {
                         id: "day6-2",
-                        time: "12:00",
-                        title: "GWK Cultural Park",
-                        desc: "大雕像與文化園區，適合拍照與短暫停留。",
-                        image: "images/GWK_Cultural_Park.webp",
-                        lat: -8.8136,
-                        lng: 115.1750,
+                        time: "11:30",
+                        title: "Melasti 懸崖公路",
+                        desc: "拍攝峭壁公路、海景與南部海岸線大景。",
+                        image: "images/MelastiBeach.jpg",
+                        lat: -8.8464,
+                        lng: 115.1190,
                         type: "attraction"
                     },
                     {
                         id: "day6-3",
-                        time: "13:30",
+                        time: "12:30",
                         title: "Melasti Beach",
-                        desc: "峭壁海岸公路與海灘景色很適合放慢節奏。",
+                        desc: "海邊散步並在海灘餐廳或 beach club 享用午餐。",
                         image: "images/MelastiBeach.jpg",
                         lat: -8.8476,
                         lng: 115.1170,
@@ -415,29 +411,19 @@
                     },
                     {
                         id: "day6-4",
-                        time: "16:00",
+                        time: "15:30",
                         title: "烏魯瓦圖廟",
-                        desc: "先看斷崖寺廟和夕陽，Kecak 另外安排在後面。",
+                        desc: "欣賞斷崖寺廟與海景，時間允許可停留到夕陽前後。",
                         image: "images/Uiuwatu_temple.jpg",
                         lat: -8.8291,
                         lng: 115.0844,
                         type: "attraction"
                     },
                     {
-                        id: "day6-5",
-                        time: "18:15",
-                        title: "選擇性 Kecak Dance",
-                        desc: "想看火舞再加；如果想休息，也可以直接提早回 Sanur。",
-                        image: "images/KecakDance.jpg",
-                        lat: -8.8295,
-                        lng: 115.0850,
-                        type: "attraction"
-                    },
-                    {
                         id: "day6-6",
-                        time: "21:00",
+                        time: "19:30",
                         title: "Sanur Resort Watujimbar",
-                        desc: "抵達 Sanur，辦理入住並在市區享用晚餐。",
+                        desc: "抵達 Sanur 辦理入住，並在飯店享用 Satay and Beyond 晚餐。",
                         image: "images/Sunar1.jpg",
                         lat: -8.6905,
                         lng: 115.2655,
@@ -447,8 +433,8 @@
             },
             {
                 id: "day7",
-                title: "Day 7 - 9/03 (四)：珀尼達島一日遊",
-                subtitle: "Sanur Resort Watujimbar ➜ Sanur Harbor ➜ Nusa Penida ➜ Sanur 市中心晚餐",
+                title: "Day 7 - 9/03 (四)：跳島一日遊＋ICON BALI 晚餐",
+                subtitle: "Sanur Resort Watujimbar ➜ Sanur Harbor ➜ 跳島／浮潛 ➜ ICON BALI",
                 stops: [
                     {
                         id: "day7-1",
@@ -464,7 +450,7 @@
                         id: "day7-2",
                         time: "08:30",
                         title: "Sanur Harbor",
-                        desc: "搭乘快艇前往珀尼達島。",
+                        desc: "搭船出發，依最終預訂方案安排跳島路線。",
                         image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
                         lat: -8.6850,
                         lng: 115.2627,
@@ -473,8 +459,8 @@
                     {
                         id: "day7-3",
                         time: "10:00",
-                        title: "Kelingking Beach",
-                        desc: "恐龍背脊海岸線，珀尼達島代表景點。",
+                        title: "離島景點探索／浮潛",
+                        desc: "以跳島、海景拍照或浮潛體驗為主，午餐依方案安排。",
                         image: "images/Penida.jpg",
                         lat: -8.7467,
                         lng: 115.4836,
@@ -503,8 +489,8 @@
                     {
                         id: "day7-6",
                         time: "19:30",
-                        title: "Sanur 市中心",
-                        desc: "前往 Sanur 市中心，挑選喜歡的餐廳享用晚餐。",
+                        title: "ICON BALI",
+                        desc: "逛街並自行挑選喜歡的餐廳享用晚餐。",
                         image: "images/KUTA.jpg",
                         lat: -8.6915,
                         lng: 115.2632,

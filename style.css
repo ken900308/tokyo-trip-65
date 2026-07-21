@@ -54,6 +54,73 @@ nav ul li a:hover {
     color: #0284c7;
 }
 
+/* 導覽列下拉選單 */
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-dropdown > a i {
+    font-size: 0.72rem;
+    transition: transform 0.2s ease;
+}
+
+nav ul.nav-submenu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    min-width: 160px;
+    padding: 8px;
+    gap: 2px;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+}
+
+nav ul.nav-submenu::before {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 0;
+    width: 100%;
+    height: 13px;
+}
+
+.nav-submenu li {
+    width: 100%;
+}
+
+.nav-submenu li a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.nav-submenu li a:hover {
+    background: #f0f9ff;
+}
+
+.nav-dropdown:hover > .nav-submenu,
+.nav-dropdown:focus-within > .nav-submenu {
+    display: flex;
+}
+
+.nav-dropdown:hover > a i,
+.nav-dropdown:focus-within > a i {
+    transform: rotate(180deg);
+}
+
 /* 主視覺橫幅 (Hero Section) */
 .hero {
     height: 60vh;
@@ -493,6 +560,33 @@ footer {
         display: block;
         padding: 20px;
         width: 100%;
+    }
+    .nav-dropdown > a {
+        display: flex;
+        justify-content: space-between;
+    }
+    nav ul.nav-submenu {
+        display: flex;
+        position: static;
+        transform: none;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        padding: 0 0 8px 18px;
+        background: #f8fafc;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    nav ul.nav-submenu::before {
+        display: none;
+    }
+    nav ul.nav-submenu li {
+        border-bottom: 0;
+    }
+    nav ul.nav-submenu li a {
+        padding: 12px 20px;
+        font-size: 0.92rem;
     }
     /* 當 checkbox 被勾選時，將 ul 滑出 */
     #menu-toggle:checked ~ ul {
