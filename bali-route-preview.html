@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="2026 峇里島八日完整行程地圖">
+  <title>峇里島・完整旅程地圖｜獨立預覽</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #17322d;
+      --muted: #6d7d78;
+      --paper: #f5f1e8;
+      --card: #fffdf9;
+      --green: #256452;
+      --line: rgba(23, 50, 45, .12);
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+    }
+    button { font: inherit; }
+
+    .topbar {
+      height: 64px;
+      padding: 0 clamp(18px, 4vw, 56px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245, 241, 232, .94);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .06em; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: white;
+      background: var(--green);
+    }
+    .preview-tag {
+      padding: 6px 11px;
+      border: 1px solid rgba(37, 100, 82, .23);
+      border-radius: 99px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .heading {
+      padding: 26px clamp(18px, 4vw, 56px) 22px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .eyebrow {
+      margin: 0 0 7px;
+      color: #db654b;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .17em;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.15; letter-spacing: -.025em; }
+    .heading > p {
+      max-width: 430px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .map-shell {
+      height: calc(100vh - 190px);
+      min-height: 630px;
+      margin: 0 clamp(12px, 2vw, 28px) 28px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #cfe5e1;
+      box-shadow: 0 22px 65px rgba(30, 67, 58, .14);
+    }
+    #map { width: 100%; height: 100%; }
+
+    .journey-card {
+      width: 350px;
+      max-height: calc(100% - 40px);
+      padding: 18px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 700;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 18px;
+      background: rgba(255, 253, 249, .94);
+      box-shadow: 0 15px 45px rgba(25, 60, 51, .17);
+      backdrop-filter: blur(12px);
+    }
+    .journey-card h2 { margin: 0; font-size: 18px; }
+    .journey-card > p { margin: 6px 0 16px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .day-list { display: grid; gap: 6px; }
+    .day-row {
+      width: 100%;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      align-items: center;
+      gap: 11px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      color: var(--ink);
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .day-row:hover, .day-row.active {
+      border-color: rgba(23, 50, 45, .1);
+      background: white;
+      transform: translateX(2px);
+    }
+    .day-dot {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      color: white;
+      font-size: 19px;
+      box-shadow: 0 5px 12px rgba(23,50,45,.13);
+    }
+    .day-copy { min-width: 0; }
+    .day-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .day-heading strong { display: block; font-size: 11px; line-height: 1.4; }
+    .day-heading small {
+      flex: 0 0 auto;
+      padding: 2px 6px;
+      border-radius: 99px;
+      color: white;
+      font-size: 8px;
+      font-weight: 800;
+    }
+    .day-summary {
+      display: block;
+      margin-top: 3px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .all-btn {
+      width: 100%;
+      margin-top: 13px;
+      padding: 10px;
+      border: 0;
+      border-radius: 10px;
+      color: white;
+      background: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .map-note {
+      padding: 10px 13px;
+      position: absolute;
+      right: 18px;
+      bottom: 25px;
+      z-index: 700;
+      border-radius: 11px;
+      color: var(--ink);
+      background: rgba(255,253,249,.92);
+      box-shadow: 0 8px 28px rgba(25,60,51,.13);
+      font-size: 10px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+
+    .day-marker {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      border: 3px solid white;
+      border-radius: 50% 50% 50% 7px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.28);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      transform: rotate(-45deg);
+    }
+    .day-marker span { transform: rotate(45deg); }
+    .leaflet-tooltip.route-label {
+      padding: 4px 7px;
+      border: 0;
+      border-radius: 7px;
+      color: var(--ink);
+      background: rgba(255,255,255,.91);
+      box-shadow: 0 2px 9px rgba(0,0,0,.13);
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .leaflet-tooltip.route-label::before { display: none; }
+    .popup-day {
+      display: inline-block;
+      margin-bottom: 5px;
+      padding: 3px 7px;
+      border-radius: 99px;
+      color: white;
+      font-size: 9px;
+      font-weight: 800;
+    }
+    .leaflet-popup-content { margin: 13px 15px; line-height: 1.5; }
+    .leaflet-popup-content strong { font-size: 13px; }
+    .leaflet-popup-content p { margin: 3px 0 0; color: #61716d; font-size: 10px; }
+    .leaflet-control-attribution { font-size: 9px; }
+
+    @media (max-width: 760px) {
+      .heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .heading > p { display: none; }
+      .map-shell { height: calc(100vh - 160px); min-height: 650px; margin: 0 8px 8px; border-radius: 16px; }
+      .journey-card {
+        width: calc(100% - 24px);
+        max-height: 168px;
+        top: auto;
+        bottom: 12px;
+        left: 12px;
+        padding: 12px;
+      }
+      .journey-card h2, .journey-card > p, .all-btn { display: none; }
+      .day-list { display: flex; overflow-x: auto; }
+      .day-row { min-width: 135px; }
+      .map-note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">峇</span><span>BALI 2026</span></div>
+    <span class="preview-tag">獨立頁面預覽</span>
+  </header>
+
+  <section class="heading">
+    <div>
+      <p class="eyebrow">28 AUG — 04 SEP 2026 · 8 DAYS</p>
+      <h1>八天旅程，一張地圖看完</h1>
+    </div>
+    <p>所有日期、景點與移動方向都同時顯示。不同顏色代表不同天，點擊左側日期可暫時強調該日路線，再按「顯示完整旅程」回到全覽。</p>
+  </section>
+
+  <main class="map-shell">
+    <div id="map" aria-label="峇里島八日完整行程地圖"></div>
+    <aside class="journey-card">
+      <h2>完整旅程路線</h2>
+      <p>Kuta → Ubud → Jimbaran → Uluwatu → Sanur → Nusa Penida</p>
+      <div class="day-list" id="day-list"></div>
+      <button class="all-btn" id="show-all">顯示完整旅程</button>
+    </aside>
+    <div class="map-note">實線為陸路移動　·　虛線為離島船程<br>點擊地圖標記查看景點內容</div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const days = [
+      {
+        day: 1, date: "8/28", title: "抵達峇里島・Kuta", color: "#d95d49",
+        icon: "✈️", summary: "DPS 機場 → Kuta 飯店 → 海灘商圈",
+        stops: [
+          ["伍拉・賴國際機場 DPS", "17:40 抵達、辦理入境", -8.7482, 115.1675],
+          ["YELLO Hotel Kuta", "入住、放行李", -8.7167, 115.1686],
+          ["Kuta 海灘商圈", "散步與晚餐", -8.7185, 115.1686]
+        ]
+      },
+      {
+        day: 2, date: "8/29", title: "海神廟・進入 Ubud", color: "#e99a3f",
+        icon: "🌾", summary: "海神廟 → 藝術村 → 梯田 → 聖泉寺",
+        stops: [
+          ["Kuta", "08:30 從飯店出發", -8.7167, 115.1686],
+          ["海神廟 Tanah Lot", "海岸寺廟與拍照", -8.6212, 115.0868],
+          ["Ubud 藝術村", "傳統工藝與藝術", -8.5067, 115.2620],
+          ["德格拉朗梯田", "稻田景觀", -8.4312, 115.2793],
+          ["聖泉寺 Tirta Empul", "天然聖泉與寺廟", -8.4154, 115.3152],
+          ["Ubud Villa", "Villa BBQ 與住宿", -8.5067, 115.2620]
+        ]
+      },
+      {
+        day: 3, date: "8/30", title: "Ubud 泛舟／ATV", color: "#64a85c",
+        icon: "🏍️", summary: "Ubud Villa → 泛舟或 ATV → Villa 晚餐",
+        stops: [
+          ["Ubud Villa", "早餐後活動接送", -8.5067, 115.2620],
+          ["Ubud 冒險活動區", "泛舟或 ATV 二選一", -8.4822, 115.3120],
+          ["Ubud Villa", "休息與晚餐", -8.5067, 115.2620]
+        ]
+      },
+      {
+        day: 4, date: "8/31", title: "火山・瀑布・AYANA", color: "#27a68a",
+        icon: "🌋", summary: "巴杜爾日出 → 瀑布 → 南下 AYANA",
+        stops: [
+          ["Ubud Villa", "A 組出發／B 組休息", -8.5067, 115.2620],
+          ["巴杜爾火山", "日出吉普車與黑色熔岩", -8.2420, 115.3750],
+          ["Tegenungan 瀑布", "景點與午餐", -8.5754, 115.2891],
+          ["RIMBA by AYANA", "南下金巴蘭入住", -8.7903, 115.1390]
+        ]
+      },
+      {
+        day: 5, date: "9/01", title: "AYANA 度假日", color: "#328cc1",
+        icon: "🍹", summary: "泳池 → 私人沙灘 → Rock Bar 夕陽",
+        stops: [
+          ["RIMBA by AYANA", "泳池與園區設施", -8.7903, 115.1390],
+          ["Kubu Beach", "私人沙灘", -8.7927, 115.1342],
+          ["Rock Bar", "懸崖夕陽", -8.7908, 115.1359]
+        ]
+      },
+      {
+        day: 6, date: "9/02", title: "南部海岸・Sanur", color: "#5369c9",
+        icon: "🏖️", summary: "Melasti → Uluwatu → Sanur 飯店",
+        stops: [
+          ["AYANA", "11:00 退房出發", -8.7903, 115.1390],
+          ["Melasti 懸崖公路", "峭壁公路拍照", -8.8455, 115.1640],
+          ["Melasti Beach", "海灘散步與午餐", -8.8485, 115.1612],
+          ["Uluwatu Temple", "斷崖寺廟與海景", -8.8291, 115.0849],
+          ["Sanur Resort Watujimbar", "入住與晚餐", -8.6910, 115.2630]
+        ]
+      },
+      {
+        day: 7, date: "9/03", title: "Nusa Penida 跳島", color: "#9161bd", boat: true,
+        icon: "🤿", summary: "Sanur 出海 → Nusa Penida → ICON BALI",
+        stops: [
+          ["Sanur 碼頭", "搭船出海", -8.6728, 115.2612],
+          ["Nusa Penida", "離島景點與浮潛", -8.7278, 115.5444],
+          ["Sanur", "返回本島、ICON BALI 晚餐", -8.6910, 115.2630]
+        ]
+      },
+      {
+        day: 8, date: "9/04", title: "Sanur・返程", color: "#c25386",
+        icon: "🛫", summary: "Sanur 採買 → DPS 機場 → 返回台北",
+        stops: [
+          ["Sanur Resort Watujimbar", "早餐、退房與採買", -8.6910, 115.2630],
+          ["伍拉・賴國際機場 DPS", "13:30 前往機場", -8.7482, 115.1675]
+        ]
+      }
+    ];
+
+    const map = L.map("map", {
+      zoomControl: false,
+      minZoom: 9,
+      maxZoom: 18
+    });
+    L.control.zoom({ position: "topright" }).addTo(map);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const allBounds = L.latLngBounds();
+    const layers = [];
+    const dayList = document.querySelector("#day-list");
+
+    function markerIcon(day) {
+      return L.divIcon({
+        className: "",
+        html: `<div class="day-marker" style="background:${day.color}"><span>D${day.day}</span></div>`,
+        iconSize: [27, 27],
+        iconAnchor: [13, 26],
+        popupAnchor: [0, -27]
+      });
+    }
+
+    days.forEach(day => {
+      const group = L.layerGroup().addTo(map);
+      const coordinates = day.stops.map(stop => [stop[2], stop[3]]);
+      coordinates.forEach(point => allBounds.extend(point));
+
+      const shadow = L.polyline(coordinates, {
+        color: "#fff", weight: 8, opacity: .86,
+        dashArray: day.boat ? "7 10" : null,
+        lineCap: "round", lineJoin: "round"
+      }).addTo(group);
+      const route = L.polyline(coordinates, {
+        color: day.color, weight: 4, opacity: .9,
+        dashArray: day.boat ? "7 10" : null,
+        lineCap: "round", lineJoin: "round"
+      }).addTo(group);
+
+      const markers = day.stops.map((stop, index) => {
+        const marker = L.marker([stop[2], stop[3]], { icon: markerIcon(day), zIndexOffset: day.day * 20 }).addTo(group);
+        marker.bindPopup(`
+          <span class="popup-day" style="background:${day.color}">DAY ${day.day} · ${day.date}</span><br>
+          <strong>${index + 1}. ${stop[0]}</strong>
+          <p>${stop[1]}</p>
+        `);
+        if (index > 0 && index < day.stops.length - 1) {
+          marker.bindTooltip(stop[0], { direction: "top", offset: [0, -25], className: "route-label" });
+        }
+        return marker;
+      });
+
+      layers.push({ group, shadow, route, markers, day });
+      dayList.insertAdjacentHTML("beforeend", `
+        <button class="day-row" data-day="${day.day}">
+          <span class="day-dot" style="background:${day.color}">${day.icon}</span>
+          <span class="day-copy">
+            <span class="day-heading"><strong>${day.title}</strong><small style="background:${day.color}">D${day.day} · ${day.date}</small></span>
+            <span class="day-summary">${day.summary}</span>
+          </span>
+        </button>
+      `);
+    });
+
+    function showAll() {
+      layers.forEach(item => {
+        if (!map.hasLayer(item.group)) item.group.addTo(map);
+        item.route.setStyle({ opacity: .9, weight: 4 });
+        item.shadow.setStyle({ opacity: .86, weight: 8 });
+        item.markers.forEach(marker => marker.setOpacity(1));
+      });
+      document.querySelectorAll(".day-row").forEach(row => row.classList.remove("active"));
+      map.fitBounds(allBounds, { paddingTopLeft: [375, 40], paddingBottomRight: [45, 45] });
+    }
+
+    function highlightDay(dayNumber) {
+      layers.forEach(item => {
+        const active = item.day.day === dayNumber;
+        item.route.setStyle({ opacity: active ? 1 : .16, weight: active ? 6 : 3 });
+        item.shadow.setStyle({ opacity: active ? .95 : .08, weight: active ? 10 : 5 });
+        item.markers.forEach(marker => marker.setOpacity(active ? 1 : .25));
+        if (active) {
+          const bounds = L.featureGroup([item.route, ...item.markers]).getBounds();
+          map.fitBounds(bounds, { paddingTopLeft: [375, 50], paddingBottomRight: [50, 50], maxZoom: 12 });
+        }
+      });
+      document.querySelectorAll(".day-row").forEach(row => {
+        row.classList.toggle("active", Number(row.dataset.day) === dayNumber);
+      });
+    }
+
+    dayList.addEventListener("click", event => {
+      const row = event.target.closest(".day-row");
+      if (row) highlightDay(Number(row.dataset.day));
+    });
+    document.querySelector("#show-all").addEventListener("click", showAll);
+
+    showAll();
+  </script>
+</body>
+</html>
