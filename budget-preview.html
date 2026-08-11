@@ -164,7 +164,7 @@
     const donutSegments = [
       { cat:'住', pct:34 }, { cat:'行', pct:18 }, { cat:'食', pct:20 }, { cat:'玩', pct:10 }, { cat:'證件', pct:4 }, { cat:'保險', pct:4 }, { cat:'購物', pct:5 }, { cat:'其他', pct:5 }
     ];
-    const dailyAmounts = [ {day:1, amt:7000}, {day:2, amt:5200}, {day:3, amt:1699}, {day:4, amt:3800}, {day:5, amt:6200}, {day:6, amt:4100}, {day:7, amt:3900}, {day:8, amt:3200} ];
+    const dailyAmounts = [ {day:1, amt:7000}, {day:2, amt:5200}, {day:3, amt:1550}, {day:4, amt:1100}, {day:5, amt:6200}, {day:6, amt:4100}, {day:7, amt:3900}, {day:8, amt:3200} ];
 
     const defaultItems = [
       { id: crypto.randomUUID(), name:'機票', category:'行', amount:14619, status:'known', note:'來回' },
@@ -172,7 +172,8 @@
       { id: crypto.randomUUID(), name:'烏布 Villa', category:'住', amount:2128.25, status:'known', note:'NT$25,539' },
       { id: crypto.randomUUID(), name:'RIMBA by AYANA', category:'住', amount:7771.59, status:'known', note:'US$2,984.29' },
       { id: crypto.randomUUID(), name:'Hard Rock Hotel Bali', category:'住', amount:2924.84, status:'known', note:'NT$5,849.68' },
-      { id: crypto.randomUUID(), name:'ATV 行程', category:'玩', amount:1699, status:'known', note:'每人' },
+      { id: crypto.randomUUID(), name:'泛舟＋ATV 行程', category:'玩', amount:1550, status:'known', note:'每人' },
+      { id: crypto.randomUUID(), name:'巴杜爾火山日出', category:'玩', amount:1100, status:'known', note:'每人' },
       { id: crypto.randomUUID(), name:'簽證', category:'證件', amount:0, status:'pending', note:'' },
       { id: crypto.randomUUID(), name:'交通', category:'行', amount:2000, status:'guide', note:'' },
       { id: crypto.randomUUID(), name:'餐飲', category:'食', amount:10000, status:'guide', note:'' },
@@ -183,7 +184,7 @@
     ];
 
     const quickSeeds = {
-      flight:{name:'機票',category:'行',amount:14619,status:'known',note:'來回'}, hotel:{name:'住宿',category:'住',amount:13292,status:'guide',note:'合計'}, tour:{name:'ATV 行程',category:'玩',amount:1699,status:'known',note:'每人'}, visa:{name:'簽證',category:'證件',amount:0,status:'pending',note:''}, transport:{name:'交通',category:'行',amount:2000,status:'guide',note:''}, food:{name:'餐飲',category:'食',amount:10000,status:'guide',note:''}, insurance:{name:'保險',category:'保險',amount:800,status:'guide',note:''}, sim:{name:'SIM / 網路',category:'其他',amount:300,status:'guide',note:''}
+      flight:{name:'機票',category:'行',amount:14619,status:'known',note:'來回'}, hotel:{name:'住宿',category:'住',amount:13292,status:'guide',note:'合計'}, tour:{name:'泛舟＋ATV 行程',category:'玩',amount:1550,status:'known',note:'每人'}, visa:{name:'簽證',category:'證件',amount:0,status:'pending',note:''}, transport:{name:'交通',category:'行',amount:2000,status:'guide',note:''}, food:{name:'餐飲',category:'食',amount:10000,status:'guide',note:''}, insurance:{name:'保險',category:'保險',amount:800,status:'guide',note:''}, sim:{name:'SIM / 網路',category:'其他',amount:300,status:'guide',note:''}
     };
 
     let state = loadState() || structuredClone(defaultItems);
