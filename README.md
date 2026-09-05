@@ -9,6 +9,8 @@
 
 - `index.html`：行程首頁
 - `sumida-aquarium.html`：墨田水族館分頁（四人 QR Code、館內資訊與參觀動線）
+- `day1-guide.html`：抵達日街頭操作指南
+- `day2-guide.html`：晴空塔、淺草與上野街頭操作指南
 - `itinerary-map.html`：Leaflet 互動地圖與停靠點資料
 - `style.css`：共用版面與響應式樣式
 - `fx-widget.js`：JPY／TWD／USD 匯率換算
