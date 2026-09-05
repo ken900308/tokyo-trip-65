@@ -27,6 +27,10 @@
 
 地圖：`http://127.0.0.1:<port>/itinerary-map.html`
 
+## GitHub Pages 自動發布
+
+`.github/workflows/deploy-pages.yml` 會在 `main` 分支收到新推送時，自動整理正式網站檔案並部署到 GitHub Pages。第一次使用前，請在 GitHub repository 的 **Settings → Pages → Build and deployment → Source** 選擇 **GitHub Actions**；之後每次 `git push` 都會自動更新公開頁面。
+
 ## 加入後續日期
 
 1. 在 `index.html` 增加新的每日行程區塊。
