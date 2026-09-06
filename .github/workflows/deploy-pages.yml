@@ -30,7 +30,7 @@ jobs:
           mkdir -p _site/images
           cp index.html style.css fx-widget.js itinerary-map.html _site/
           cp sumida-aquarium.html aquarium.css _site/
-          cp day1-guide.html day2-guide.html guide.css _site/
+          cp day1-guide.html day2-guide.html day3-guide.html guide.css _site/
           if [ -d images ]; then cp -R images/. _site/images/; fi
           touch _site/.nojekyll
 

@@ -17,3 +17,16 @@
 .schedule-title-link{color:inherit!important;font:inherit;text-decoration:none}.schedule-title-link i{margin-left:6px;color:var(--red);font-size:.7em;transition:transform .2s}.schedule-title-link:hover i{transform:translateX(4px)}
 .day2-grid{grid-template-columns:1fr}.guide-entry{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 15px;border:1px solid var(--red);border-radius:999px;color:var(--red);font-size:.76rem;font-weight:800;text-decoration:none}.guide-entry.light{border-color:#ef9c89;color:#ffd8ce}.guide-entry i:last-child{margin-left:3px;transition:transform .2s}.guide-entry:hover i:last-child{transform:translateX(4px)}
 @media(max-width:600px){.station-pair{align-items:flex-start;flex-direction:column}.station-pair i{transform:rotate(90deg)}}
+.overview{grid-template-columns:repeat(3,1fr)}
+.overview-card.three{background:#3c6071}
+.day3{width:100%;max-width:none;padding-inline:max(20px,calc((100% - 1180px)/2));background:#e7ece9}
+.day3 .day-head{margin-bottom:32px}
+.day3-route{border-color:#b9c8c1;background:#f8faf8;color:var(--ink)}
+.day3-route i{color:var(--sage)}
+.day3 .schedule{max-width:980px;margin:auto}
+.transit-note{display:block;margin-top:13px;padding:10px 13px;border-left:3px solid var(--sage);background:#edf3ef;color:#40584b;font-size:.76rem}
+.transit-note i{margin-right:7px}
+.day3 .schedule a{margin-right:8px}
+.google-routes{grid-template-columns:1fr}
+@media(max-width:1050px){.overview{grid-template-columns:1fr}.overview-card{min-height:180px}}
+@media(max-width:600px){.day3{padding-inline:18px}.day3-route{align-items:flex-start;flex-direction:column}.day3-route i{transform:rotate(90deg)}}
