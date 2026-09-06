@@ -210,7 +210,7 @@ a {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   min-height: calc(66px + var(--safe-bottom));
-  padding: 7px max(8px, var(--safe-right)) var(--safe-bottom) max(8px, var(--safe-left));
+  padding: 7px calc(8px + var(--safe-right)) calc(7px + var(--safe-bottom)) calc(8px + var(--safe-left));
   border-top: 1px solid rgba(207, 213, 209, 0.9);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 -8px 24px rgba(24, 42, 33, 0.07);
@@ -273,8 +273,8 @@ a {
     right: max(20px, calc((100% - var(--content-width)) / 2));
     bottom: 18px;
     left: max(20px, calc((100% - var(--content-width)) / 2));
-    min-height: 66px;
-    padding: 7px;
+    min-height: calc(66px + var(--safe-bottom));
+    padding: 7px calc(7px + var(--safe-right)) calc(7px + var(--safe-bottom)) calc(7px + var(--safe-left));
     border: 1px solid var(--line);
     border-radius: 18px;
   }
