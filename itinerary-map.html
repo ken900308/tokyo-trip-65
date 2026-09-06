@@ -1,34 +1,188 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>東京 Day 1–3 路線地圖</title>
-<link rel="preconnect" href="https://unpkg.com"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<style>*{box-sizing:border-box}body{margin:0;background:#f6f2ea;color:#17232d;font-family:system-ui,"Noto Sans TC",sans-serif}.top{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,calc((100% - 1180px)/2));border-bottom:1px solid #d9d2c7;background:#fffdfa}.top a{text-decoration:none;font-weight:800}.top b{display:inline-grid;width:34px;height:34px;place-items:center;margin-right:8px;border-radius:50%;background:#bd3b3f;color:white}.layout{display:grid;grid-template-columns:360px 1fr;height:calc(100vh - 70px)}aside{padding:28px;overflow:auto;background:#fffdfa;border-right:1px solid #d9d2c7}aside h1{margin:0 0 6px;font-family:serif;font-size:1.8rem}aside>p{margin:0 0 22px;color:#60707a;font-size:.85rem}.tabs{display:flex;gap:8px;margin-bottom:20px}.tabs button{flex:1;padding:9px;border:1px solid #d9d2c7;border-radius:99px;background:white;font-weight:700;cursor:pointer}.tabs button.active{border-color:#bd3b3f;background:#bd3b3f;color:white}.stop{display:grid;grid-template-columns:54px 1fr;gap:12px;padding:14px 0;border-top:1px solid #e4ded5;cursor:pointer}.stop time{color:#bd3b3f;font-weight:800}.stop strong{display:block;font-size:.9rem}.stop small{color:#64737e}.map{height:100%}.leaflet-popup-content{margin:15px}.popup b{display:block;margin-bottom:4px}.popup span{color:#60707a;font-size:.8rem}.legend{position:absolute;right:14px;bottom:14px;z-index:500;padding:9px 12px;border-radius:6px;background:#fffdfae8;box-shadow:0 5px 20px #0002;font-size:.75rem}.legend i{display:inline-block;width:9px;height:9px;margin:0 5px 0 10px;border-radius:50%}.legend i:first-child{margin-left:0}.embed .top,.embed aside{display:none}.embed .layout{display:block;height:100vh}.embed .map{height:100vh}@media(max-width:720px){.layout{grid-template-columns:1fr;height:auto}aside{border-right:0}.map{height:65vh;min-height:480px}.top{height:62px}.embed .map{min-height:100vh}}</style></head>
-<style>.google{display:grid;grid-template-columns:1fr;gap:7px;margin:-10px 0 20px}.google a{padding:8px;border:1px solid #d9d2c7;border-radius:6px;color:#bd3b3f;text-align:center;text-decoration:none;font-size:.72rem;font-weight:700}</style>
-<body><header class="top"><a href="index.html"><b>日</b>東京六日散策</a><a href="index.html">← 返回行程</a></header><main class="layout"><aside><h1>三日路線</h1><p>點選日期或停靠點，查看移動順序。</p><div class="tabs"><button data-day="day1" class="active">Day 1</button><button data-day="day2">Day 2</button><button data-day="day3">Day 3</button><button data-day="all">全部</button></div><div class="google"><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Narita+Airport+Terminal+1&amp;destination=Oshiage+Station&amp;travelmode=transit" target="_blank" rel="noopener">Google · Day 1 ↗</a><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Sumida+Aquarium&amp;destination=Ameyoko+Shopping+District&amp;waypoints=Senso-ji&amp;travelmode=transit" target="_blank" rel="noopener">Google · Day 2 ↗</a><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Oshiage+Station&amp;destination=Shinjuku+Station&amp;waypoints=Hie+Shrine%7CMeiji+Jingu%7CHARAKADO&amp;travelmode=transit" target="_blank" rel="noopener">Google · Day 3 ↗</a></div><div id="stops"></div></aside><div id="map" class="map"></div></main><div class="legend"><i style="background:#bd3b3f"></i>Day 1<i style="background:#607b69"></i>Day 2<i style="background:#3c6071"></i>Day 3</div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script>
-if(new URLSearchParams(location.search).get("embed")==="1")document.body.classList.add("embed");
-const days={day1:{color:"#bd3b3f",stops:[
-{time:"20:00",title:"成田國際機場 T1",desc:"入境、領行李、購買 Welcome Suica",lat:35.7647,lng:140.3864},
-{time:"21:30",title:"成田機場站",desc:"搭 Access Express 直達押上",lat:35.7658,lng:140.3855},
-{time:"22:20",title:"押上站",desc:"抵達 Oshiage / Skytree",lat:35.7101,lng:139.8131},
-{time:"22:30",title:"nestay suite 東京天空樹",desc:"步行前往住宿、自助入住",lat:35.7058,lng:139.8178}]},
-day2:{color:"#607b69",stops:[
-{time:"10:30",title:"nestay suite 東京天空樹",desc:"從住宿步行出發",lat:35.7058,lng:139.8178},
-{time:"10:50",title:"墨田水族館",desc:"Tokyo Solamachi 5F～6F",lat:35.7101,lng:139.8107},
-{time:"14:10",title:"雷門",desc:"從雷門開始淺草散步",lat:35.7107,lng:139.7966},
-{time:"15:30",title:"淺草寺",desc:"仲見世通、寶藏門、五重塔與本堂",lat:35.7148,lng:139.7967},
-{time:"17:00",title:"上野・阿美橫町",desc:"從上野端一路逛往御徒町",lat:35.7099,lng:139.7745},
-{time:"20:00",title:"押上站",desc:"銀座線轉都營淺草線返回",lat:35.7101,lng:139.8131}]},
-day3:{color:"#3c6071",stops:[
-{time:"10:30",title:"押上站",desc:"半藏門線至青山一丁目，轉銀座線",lat:35.7101,lng:139.8131},
-{time:"11:20",title:"日枝神社",desc:"溜池山王 Exit 7，搭山王橋電扶梯",lat:35.6747,lng:139.7397},
-{time:"13:30",title:"明治神宮",desc:"從原宿口走南參道至御社殿",lat:35.6764,lng:139.6993},
-{time:"15:00",title:"HARAKADO",desc:"6F Food Hall 休息與 Persona 30 活動",lat:35.6686,lng:139.7059},
-{time:"16:40",title:"新宿・歌舞伎町",desc:"東口、一番街、Godzilla Head 與晚餐",lat:35.6948,lng:139.7028},
-{time:"20:30",title:"JR 新宿站",desc:"中央・總武線各站停車往錦糸町",lat:35.6909,lng:139.7003},
-{time:"21:10",title:"押上站",desc:"錦糸町轉半藏門線 1 站返回",lat:35.7101,lng:139.8131}]}};
-const map=L.map("map",{zoomControl:true}).setView([35.71,139.81],13);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(map);let layers=[];
-function clear(){layers.forEach(x=>map.removeLayer(x));layers=[]}function popup(s){return `<div class="popup"><b>${s.time} · ${s.title}</b><span>${s.desc}</span></div>`}
-function render(which){clear();const keys=which==="all"?["day1","day2","day3"]:[which],bounds=[];document.querySelectorAll("[data-day]").forEach(b=>b.classList.toggle("active",b.dataset.day===which));const list=[];
-keys.forEach(k=>{const d=days[k],points=d.stops.map(s=>[s.lat,s.lng]);const line=L.polyline(points,{color:d.color,weight:4,opacity:.85,dashArray:"8 8"}).addTo(map);layers.push(line);points.forEach(p=>bounds.push(p));d.stops.forEach((s,i)=>{const marker=L.circleMarker([s.lat,s.lng],{radius:8,color:"#fff",weight:3,fillColor:d.color,fillOpacity:1}).addTo(map).bindPopup(popup(s));layers.push(marker);list.push({...s,key:k,index:i,marker})})});if(bounds.length)map.fitBounds(bounds,{padding:[35,35]});
-document.querySelector("#stops").innerHTML=list.map((s,i)=>`<div class="stop" data-i="${i}"><time>${s.time}</time><div><strong>${s.title}</strong><small>${s.desc}</small></div></div>`).join("");document.querySelectorAll(".stop").forEach(el=>el.onclick=()=>{const s=list[el.dataset.i];map.setView([s.lat,s.lng],15);s.marker.openPopup()})}
-document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>render(b.dataset.day));render("day1");setTimeout(()=>map.invalidateSize(),100);
-</script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f5">
+  <title>東京單日路線地圖</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    :root{--page:#f7f7f5;--surface:#fff;--ink:#17201c;--muted:#66706a;--line:#dfe3df;--accent:#176b4d;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--page);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}.map-header{display:flex;height:64px;align-items:center;justify-content:space-between;padding:var(--safe-top) max(18px,var(--safe-right)) 0 max(18px,var(--safe-left));border-bottom:1px solid var(--line);background:var(--surface)}.map-header a{display:flex;min-height:44px;align-items:center;color:var(--accent);font-weight:800;text-decoration:none}.map-header h1{margin:0;font-size:1rem}.layout{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr);height:calc(100% - 64px)}.map-sidebar{padding:20px;overflow:auto;border-right:1px solid var(--line);background:var(--surface)}.map-sidebar>p{margin:0 0 14px;color:var(--muted);font-size:.84rem}.day-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}.day-selector button{min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}.day-selector button.is-active{border-color:var(--accent);background:var(--accent);color:#fff}.stop-list{margin:0;padding:0;list-style:none}.stop{display:grid;grid-template-columns:54px 1fr;gap:10px;width:100%;min-height:64px;padding:12px 0;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}.stop time{color:var(--accent);font-size:.82rem;font-weight:850}.stop strong,.stop small{display:block}.stop strong{font-size:.88rem}.stop small{margin-top:3px;color:var(--muted);font-size:.72rem}.map-wrap{position:relative;min-width:0}.map{height:100%;min-height:420px}.empty-map{position:absolute;inset:50% auto auto 50%;z-index:600;display:none;width:min(82%,330px);padding:22px;transform:translate(-50%,-50%);border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.94);box-shadow:0 12px 32px #182a2117;text-align:center}.empty-map.is-visible{display:block}.empty-map strong,.empty-map span{display:block}.empty-map span{margin-top:4px;color:var(--muted);font-size:.82rem}.leaflet-popup-content{margin:14px}.popup strong,.popup span{display:block}.popup span{margin-top:4px;color:var(--muted);font-size:.78rem}.embed .map-header,.embed .map-sidebar{display:none}.embed .layout,.embed .map-wrap{height:100%}.embed .layout{display:block}.embed .map{height:100%;min-height:100%}@media(max-width:720px){.map-header{height:58px}.layout{grid-template-columns:1fr;grid-template-rows:auto minmax(56vh,1fr);height:calc(100% - 58px)}.map-sidebar{max-height:42vh;padding:14px 18px;border-right:0;border-bottom:1px solid var(--line)}.day-selector{grid-template-columns:repeat(6,minmax(58px,1fr));overflow-x:auto}.map{min-height:56vh}.embed .layout{height:100%}}
+  </style>
+</head>
+<body>
+  <header class="map-header">
+    <a id="back-link" href="itinerary.html">← 返回行程</a>
+    <h1 id="map-title">單日路線地圖</h1>
+    <a href="index.html">首頁</a>
+  </header>
+  <main class="layout">
+    <aside class="map-sidebar">
+      <p>選擇一天，只顯示當日停靠點。</p>
+      <nav class="day-selector" aria-label="選擇地圖日期">
+        <button type="button" data-day="1" aria-pressed="false">Day 1</button>
+        <button type="button" data-day="2" aria-pressed="false">Day 2</button>
+        <button type="button" data-day="3" aria-pressed="false">Day 3</button>
+        <button type="button" data-day="4" aria-pressed="false">Day 4</button>
+        <button type="button" data-day="5" aria-pressed="false">Day 5</button>
+        <button type="button" data-day="6" aria-pressed="false">Day 6</button>
+      </nav>
+      <ol id="stops" class="stop-list" aria-label="當日停靠點"></ol>
+    </aside>
+    <div class="map-wrap">
+      <div id="map" class="map" aria-label="路線地圖"></div>
+      <div id="empty-map" class="empty-map" role="status" aria-live="polite">
+        <strong>此日期沒有路線</strong>
+        <span>尚未安排停靠點。</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/core.js"></script>
+  <script src="data/itinerary.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      "use strict";
+
+      var params = new URLSearchParams(window.location.search);
+      var embedded = params.get("embed") === "1";
+      var requested = params.get("day");
+      var colors = {1: "#176b4d", 2: "#9b6323", 3: "#3c6071"};
+      var map;
+      var layers = [];
+      var stopRecords = [];
+      var stops = document.querySelector("#stops");
+      var empty = document.querySelector("#empty-map");
+      var title = document.querySelector("#map-title");
+      var backLink = document.querySelector("#back-link");
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+      }
+
+      function strictDay(value) {
+        var day = Number(value);
+        return day === Math.floor(day) && day >= 1 && day <= 6 ? day : null;
+      }
+
+      function findExactDay(dayNumber) {
+        var index;
+        if (dayNumber === null) { return null; }
+        for (index = 0; index < window.TOKYO_ITINERARY.days.length; index += 1) {
+          if (window.TOKYO_ITINERARY.days[index].day === dayNumber) {
+            return window.TOKYO_ITINERARY.days[index];
+          }
+        }
+        return null;
+      }
+
+      function setButtons(dayNumber) {
+        document.querySelectorAll("button[data-day]").forEach(function (button) {
+          var active = Number(button.getAttribute("data-day")) === dayNumber;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      }
+
+      function clearLayers() {
+        layers.forEach(function (layer) { map.removeLayer(layer); });
+        layers = [];
+        stopRecords = [];
+      }
+
+      function showEmpty(dayNumber) {
+        stops.innerHTML = "";
+        empty.classList.add("is-visible");
+        title.textContent = dayNumber ? "Day " + dayNumber + " 路線地圖" : "找不到這一天";
+        backLink.href = dayNumber ? "itinerary.html?day=" + dayNumber : "itinerary.html";
+        map.setView([35.6812, 139.7671], 11);
+      }
+
+      function renderStops(day) {
+        var color = colors[day.day] || "#176b4d";
+        var bounds = [];
+        var points = day.mapStops.map(function (stop) { return [stop.lat, stop.lng]; });
+        var line = window.L.polyline(points, {color: color, weight: 4, opacity: 0.86, dashArray: "8 8"}).addTo(map);
+
+        layers.push(line);
+        day.mapStops.forEach(function (stop, index) {
+          var marker = window.L.circleMarker([stop.lat, stop.lng], {
+            radius: 8, color: "#fff", weight: 3, fillColor: color, fillOpacity: 1
+          }).addTo(map).bindPopup("<div class=\"popup\"><strong>" + escapeHtml(stop.time) + " · " +
+            escapeHtml(stop.title) + "</strong><span>" + escapeHtml(stop.description) + "</span></div>");
+          layers.push(marker);
+          bounds.push([stop.lat, stop.lng]);
+          stopRecords.push({stop: stop, marker: marker});
+        });
+        stops.innerHTML = day.mapStops.map(function (stop, index) {
+          return "<li><button class=\"stop\" type=\"button\" data-stop=\"" + index + "\"><time>" +
+            escapeHtml(stop.time) + "</time><span><strong>" + escapeHtml(stop.title) + "</strong><small>" +
+            escapeHtml(stop.description) + "</small></span></button></li>";
+        }).join("");
+        map.fitBounds(bounds, {padding: [34, 34]});
+      }
+
+      function render(dayNumber, updateUrl) {
+        var day = findExactDay(dayNumber);
+        clearLayers();
+        setButtons(dayNumber);
+        empty.classList.remove("is-visible");
+
+        if (updateUrl) {
+          params.set("day", dayNumber);
+          window.history.replaceState({}, "", window.location.pathname + "?" + params.toString());
+        }
+
+        if (!day || !day.planned || !day.mapStops || !day.mapStops.length) {
+          showEmpty(dayNumber);
+          return;
+        }
+
+        title.textContent = "Day " + day.day + " · " + day.title;
+        document.title = "Day " + day.day + " 路線地圖｜東京行程";
+        backLink.href = "itinerary.html?day=" + day.day;
+        renderStops(day);
+      }
+
+      if (embedded) {
+        document.body.classList.add("embed");
+      }
+
+      if (!window.L) {
+        empty.classList.add("is-visible");
+        empty.querySelector("strong").textContent = "地圖暫時無法載入";
+        empty.querySelector("span").textContent = "請確認網路連線後再試一次。";
+        return;
+      }
+
+      map = window.L.map("map", {zoomControl: true}).setView([35.6812, 139.7671], 11);
+      window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+
+      document.querySelector(".day-selector").addEventListener("click", function (event) {
+        var button = event.target.closest("button[data-day]");
+        if (button) {
+          render(strictDay(button.getAttribute("data-day")), true);
+        }
+      });
+
+      stops.addEventListener("click", function (event) {
+        var button = event.target.closest("button[data-stop]");
+        var record;
+        if (!button) { return; }
+        record = stopRecords[Number(button.getAttribute("data-stop"))];
+        map.setView([record.stop.lat, record.stop.lng], 15);
+        record.marker.openPopup();
+      });
+
+      render(strictDay(requested), false);
+      window.setTimeout(function () { map.invalidateSize(); }, 100);
+    }());
+  </script>
+</body>
+</html>

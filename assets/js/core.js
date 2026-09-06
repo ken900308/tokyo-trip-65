@@ -26,6 +26,12 @@ var TripCore = (function () {
     return list.length ? list[0] : null;
   }
 
+  function visibleDayEvents(days, value) {
+    var selected = getDay(days, value);
+
+    return selected && selected.events ? selected.events.slice() : [];
+  }
+
   function checklistProgress(items, state) {
     var list = items || [];
     var saved = state || {};
@@ -67,6 +73,7 @@ var TripCore = (function () {
   return {
     normalizeDay: normalizeDay,
     getDay: getDay,
+    visibleDayEvents: visibleDayEvents,
     checklistProgress: checklistProgress,
     updateChecklistState: updateChecklistState,
     mapUrl: mapUrl
