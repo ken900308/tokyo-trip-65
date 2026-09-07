@@ -70,13 +70,18 @@ var TripCore = (function () {
     return "itinerary-map.html?day=" + normalizeDay(day, 6) + "&embed=1";
   }
 
+  function ticketHash(day, ticketId) {
+    return "tickets.html?day=" + normalizeDay(day, 6) + "#" + encodeURIComponent(String(ticketId));
+  }
+
   return {
     normalizeDay: normalizeDay,
     getDay: getDay,
     visibleDayEvents: visibleDayEvents,
     checklistProgress: checklistProgress,
     updateChecklistState: updateChecklistState,
-    mapUrl: mapUrl
+    mapUrl: mapUrl,
+    ticketHash: ticketHash
   };
 }());
 
