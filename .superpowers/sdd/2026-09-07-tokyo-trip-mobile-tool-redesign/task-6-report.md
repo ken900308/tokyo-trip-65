@@ -127,3 +127,22 @@ FAIL: link/deployment check found 1 problem(s).
 ```
 
 The fixture was restored before final verification; `data/tickets.js` has no diff. Source and `dist/client` link checks then both exited `0`. No production or `dist/client` file changed in this round.
+
+## Controller browser QA
+
+The local static server was exercised in Chrome against `http://127.0.0.1:4173/`. The primary browser-control session completed responsive layout, itinerary, deep-link, placeholder, and persistence checks before its isolated JavaScript worker became unavailable at the operating-system sandbox boundary (`CreateProcessWithLogonW failed: 2`). A fresh worker failed on the independent expression `1 + 1`, confirming an environment failure rather than an application failure.
+
+The remaining checks were completed in a separate temporary Chrome profile through the browser's local DevTools protocol. The harness and a non-ticket image used solely to exercise the successful QR path were removed immediately afterward; no fixture, profile, or private image remains in the worktree.
+
+Browser result: **54 / 54 assertions passed**.
+
+- 360 px, 390 px, 430 px, and 1280 px: no horizontal overflow on the home and four primary tools.
+- Every primary tool exposed the four-link fixed bottom navigation with 104 px content clearance over a 67–68 px navigation bar.
+- Home exposed exactly four tool entries.
+- Day 4 showed only `尚未安排`, kept a single day panel, updated the URL, and moved focus to a visible 3 px outline.
+- The Day 2 ticket deep link opened the correct accordion and target; the return URL was `itinerary.html?day=2`.
+- Four ticket holders rendered. Missing images produced placeholders without visible broken-image elements. A temporary valid image opened in a 390 px full-viewport dialog and closed with Escape.
+- A checked Checklist item survived a page recreation/reload and changed progress to `1 / 13`; declining the reset confirmation preserved it.
+- Six phrase categories rendered; Japanese text measured 25.35 px. Copy failure correctly announced the manual-copy fallback.
+- Day 1 and Day 2 maps rendered only their own stop layers; Day 4 rendered zero markers and the empty state. All three document titles matched the selected day.
+- No application `error` or `unhandledrejection` event was observed during the harness interactions.
