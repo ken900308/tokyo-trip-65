@@ -64,7 +64,7 @@ git diff --check
 - `sumida-ticket-mom.png`
 - `sumida-ticket-jin.png`
 
-圖片缺少時頁面會顯示明確 placeholder，不會顯示 broken-image UI。新增其他票券時，建議使用小寫英數與連字號命名，例如 `day4-event-person.png`，同步更新 `data/tickets.js`，且不要提交含私人資訊的真實票券到公開 repository，除非已確認可公開。
+圖片缺少時頁面會顯示明確 placeholder，不會顯示 broken-image UI。GitHub Pages 與 `dist/client` 的東京正式 artifact 只允許上列四個圖片路徑；根目錄 `images/` 內既有的 Bali 素材不會發布。新增其他票券時，建議使用小寫英數與連字號命名，例如 `day4-event-person.png`，同步更新 `data/tickets.js`、workflow 與 `tests/link-check.ps1` 的明確 allowlist，且不要提交含私人資訊的真實票券到公開 repository，除非已確認可公開。
 
 ## 修改 Checklist 與常用文字
 
@@ -73,9 +73,9 @@ git diff --check
 
 ## 部署與 `dist/client`
 
-`.github/workflows/deploy-pages.yml` 在 `main` push 或手動執行時，將正式頁面、根目錄相依檔案、`assets/`、`data/` 與 `images/` 組裝到 `_site`，再上傳 GitHub Pages artifact。Repository 的 Pages Source 必須設為 **GitHub Actions**。
+`.github/workflows/deploy-pages.yml` 在 `main` push 或手動執行時，將正式頁面、根目錄相依檔案、`assets/`、`data/` 與實際存在的四張 allowlisted QR 圖片組裝到 `_site`，再上傳 GitHub Pages artifact。它不會遞迴發布整個 legacy `images/`。Repository 的 Pages Source 必須設為 **GitHub Actions**。
 
-`dist/client/` 是同一份靜態站點供既有 Sites host 使用。修改 production HTML、CSS、JS、data 或 images 後，必須同步相同相對路徑至 `dist/client/`，再對該目錄執行：
+`dist/client/` 是同一份靜態站點供既有 Sites host 使用。修改 production HTML、CSS、JS 或 data 後，必須同步相同相對路徑至 `dist/client/`；圖片只同步四個 allowlisted QR 路徑中實際存在的檔案，不要複製整個 legacy `images/`。完成後對該目錄執行：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tests\link-check.ps1 -SiteRoot dist\client

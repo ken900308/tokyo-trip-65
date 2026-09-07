@@ -32,7 +32,7 @@ $primaryTools = @(
     "phrases.html"
 )
 
-$requiredDirectories = @("assets", "data", "images")
+$requiredDirectories = @("assets", "data")
 $requiredRootFiles = $productionPages + @("style.css", "guide.css", "aquarium.css", "fx-widget.js")
 $optionalImageReferences = @(
     "images/sumida-ticket-me.png",
@@ -73,6 +73,48 @@ function Get-LocalReferences {
     return $references
 }
 
+function Test-IsExternalReference {
+    param([string]$Reference)
+
+    return [string]::IsNullOrWhiteSpace($Reference) -or
+        $Reference.StartsWith("#") -or
+        $Reference -match '^(?i)(?:https?:)?//' -or
+        $Reference -match '^(?i)(?:mailto|tel|data|javascript):'
+}
+
+function Test-LocalReference {
+    param(
+        [string]$Owner,
+        [string]$OwnerPath,
+        [string]$Reference,
+        [bool]$AllowKnownOptionalImage = $false
+    )
+
+    if (Test-IsExternalReference $Reference) {
+        return
+    }
+
+    $localPath = ($Reference -split '[?#]', 2)[0]
+    if ([string]::IsNullOrWhiteSpace($localPath)) {
+        return
+    }
+    if ($localPath.StartsWith("/")) {
+        Add-Failure "$Owner uses a GitHub Pages-unsafe root-relative URL: $localPath"
+        return
+    }
+
+    $decodedReference = [System.Uri]::UnescapeDataString($localPath)
+    $targetPath = [System.IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $OwnerPath) $decodedReference))
+    if (-not $targetPath.StartsWith($siteRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        Add-Failure "$Owner references a path outside the deployment root: $localPath"
+        return
+    }
+    if (-not (Test-Path -LiteralPath $targetPath) -and
+        -not ($AllowKnownOptionalImage -and $optionalImageReferences -contains $localPath)) {
+        Add-Failure "$Owner references missing path: $localPath"
+    }
+}
+
 $serveScript = Join-Path $PSScriptRoot "serve.ps1"
 if (-not (Test-Path -LiteralPath $serveScript -PathType Leaf)) {
     Add-Failure "Missing loopback static server: tests/serve.ps1"
@@ -110,21 +152,34 @@ foreach ($relativePage in $productionPages) {
 
     $html = Get-Content -Raw -Encoding UTF8 -LiteralPath $pagePath
     foreach ($reference in Get-LocalReferences $html) {
-        if ($reference.StartsWith("/")) {
-            Add-Failure "$relativePage uses a GitHub Pages-unsafe root-relative URL: $reference"
-            continue
-        }
+        $allowOptional = Test-IsOptionalImageReference -Html $html -Reference $reference
+        Test-LocalReference -Owner $relativePage -OwnerPath $pagePath -Reference $reference -AllowKnownOptionalImage $allowOptional
+    }
 
-        $decodedReference = [System.Uri]::UnescapeDataString($reference)
-        $targetPath = [System.IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $pagePath) $decodedReference))
-        if (-not $targetPath.StartsWith($siteRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-            Add-Failure "$relativePage references a path outside the deployment root: $reference"
-            continue
-        }
-        if (-not (Test-Path -LiteralPath $targetPath) -and
-            -not (Test-IsOptionalImageReference -Html $html -Reference $reference)) {
-            Add-Failure "$relativePage references missing path: $reference"
-        }
+    $scriptSources = @([regex]::Matches($html, '(?is)<script\b[^>]*\bsrc\s*=\s*(["''])(.*?)\1[^>]*>') | ForEach-Object { $_.Groups[2].Value })
+    foreach ($duplicate in $scriptSources | Group-Object | Where-Object { $_.Count -gt 1 }) {
+        Add-Failure "$relativePage includes script more than once: $($duplicate.Name)"
+    }
+}
+
+$dataContracts = @(
+    @{ Path = "data/tickets.js"; Fields = @("image", "detailUrl") },
+    @{ Path = "data/itinerary.js"; Fields = @("detailGuideUrl", "ticketUrl", "detailUrl") }
+)
+
+foreach ($contract in $dataContracts) {
+    $dataPath = Join-Path $resolvedSiteRoot $contract.Path
+    if (-not (Test-Path -LiteralPath $dataPath -PathType Leaf)) {
+        Add-Failure "Missing production data file: $($contract.Path)"
+        continue
+    }
+
+    $fieldPattern = ($contract.Fields | ForEach-Object { [regex]::Escape($_) }) -join '|'
+    $dataSource = Get-Content -Raw -Encoding UTF8 -LiteralPath $dataPath
+    foreach ($match in [regex]::Matches($dataSource, "(?m)\b(?:$fieldPattern)\s*:\s*([`"'])(.*?)\1")) {
+        $reference = $match.Groups[2].Value.Trim()
+        $documentBase = Join-Path $resolvedSiteRoot "index.html"
+        Test-LocalReference -Owner $contract.Path -OwnerPath $documentBase -Reference $reference -AllowKnownOptionalImage $true
     }
 }
 
@@ -143,9 +198,25 @@ foreach ($guide in @("day1-guide.html", "day2-guide.html", "day3-guide.html")) {
     }
 
     $guideReferences = @(Get-LocalReferences (Get-Content -Raw -Encoding UTF8 -LiteralPath $guidePath))
+    $guideHtml = Get-Content -Raw -Encoding UTF8 -LiteralPath $guidePath
     foreach ($tool in $primaryTools) {
         if ($guideReferences -notcontains $tool) {
             Add-Failure "$guide does not link to primary tool: $tool"
+        }
+    }
+    if ($guideHtml -match '(?is)<a\b(?=[^>]*\baria-current\s*=)(?=[^>]*\bhref\s*=\s*(["''])itinerary\.html(?:[?#][^"'']*)?\1)[^>]*>') {
+        Add-Failure "$guide incorrectly marks the itinerary tool link as the current page"
+    }
+}
+
+if ($resolvedSiteRoot -ne (Resolve-Path -LiteralPath $projectRoot).Path) {
+    $deployedImageRoot = Join-Path $resolvedSiteRoot "images"
+    if (Test-Path -LiteralPath $deployedImageRoot -PathType Container) {
+        foreach ($image in Get-ChildItem -LiteralPath $deployedImageRoot -Recurse -File) {
+            $relativeImage = $image.FullName.Substring($resolvedSiteRoot.Length + 1).Replace('\', '/')
+            if ($optionalImageReferences -notcontains $relativeImage) {
+                Add-Failure "Deployment contains non-Tokyo image outside the allowlist: $relativeImage"
+            }
         }
     }
 }
@@ -174,6 +245,18 @@ if (-not (Test-Path -LiteralPath $workflowPath -PathType Leaf)) {
             Add-Failure "GitHub Pages workflow does not package directory: $directory/"
         }
     }
+
+    if ($workflow -match '(?m)^\s*cp\s+-R\s+images(?:/\.)?\s+_site/images/?\s*$') {
+        Add-Failure "GitHub Pages workflow recursively packages the entire images/ tree"
+    }
+    if ($workflow -notmatch '(?m)^\s*mkdir\s+-p\s+_site(?:\s+_site/images|/images)\s*$') {
+        Add-Failure "GitHub Pages workflow does not create the optional Tokyo images directory"
+    }
+    foreach ($image in $optionalImageReferences) {
+        if ($workflow -notmatch [regex]::Escape($image)) {
+            Add-Failure "GitHub Pages workflow image allowlist is missing: $image"
+        }
+    }
 }
 
 if ($failures.Count -gt 0) {
@@ -186,5 +269,6 @@ if ($failures.Count -gt 0) {
 
 Write-Output ("PASS: checked {0} production pages under {1}." -f $productionPages.Count, $resolvedSiteRoot)
 Write-Output "PASS: all internal href/src targets exist and use relative paths."
+Write-Output "PASS: data-driven itinerary and ticket references resolve or use the exact QR allowlist."
 Write-Output "PASS: preserved guides link to all four primary tools."
-Write-Output "PASS: GitHub Pages workflow packages every required page and asset directory."
+Write-Output "PASS: GitHub Pages workflow packages every required page and only allowlisted Tokyo images."
