@@ -163,7 +163,7 @@ foreach ($relativePage in $productionPages) {
 }
 
 $dataContracts = @(
-    @{ Path = "data/tickets.js"; Fields = @("image", "detailUrl") },
+    @{ Path = "data/tickets.js"; Fields = @("image", "itineraryUrl", "detailUrl") },
     @{ Path = "data/itinerary.js"; Fields = @("detailGuideUrl", "ticketUrl", "detailUrl") }
 )
 

@@ -108,3 +108,22 @@ Both mutations were restored before final verification; `data/tickets.js` has no
 - Protected host files retained blobs `fd5fa23942081875ae38f4d3e76151082653db26` (`dist/server/index.js`) and `842a0d58f8ed837ff2684086f34da66273398d24` (`.openai/hosting.json`).
 
 Browser QA remains assigned to the controller; this fix round makes no new browser claim.
+
+## Review fix round 2
+
+Review base: `2ce01d0` (`fix: tighten Tokyo deployment artifact`).
+
+The remaining review finding identified `itineraryUrl` as a ticket-renderer dependency that was absent from the data-driven link contract. `assets/js/tickets.js` consumes exactly three path-bearing ticket fields: holder `image`, group `itineraryUrl`, and group `detailUrl`. `tests/link-check.ps1` now validates all three.
+
+### Focused RED → GREEN
+
+With only `data/tickets.js` temporarily mutated from `itinerary.html?day=2` to `missing-itinerary.html?day=2`, the pre-fix checker incorrectly exited `0`. This established the missing regression coverage.
+
+After adding `itineraryUrl` to the ticket data contract, the same still-mutated fixture exited `1` with the intended single failure:
+
+```text
+FAIL: data/tickets.js references missing path: missing-itinerary.html
+FAIL: link/deployment check found 1 problem(s).
+```
+
+The fixture was restored before final verification; `data/tickets.js` has no diff. Source and `dist/client` link checks then both exited `0`. No production or `dist/client` file changed in this round.
