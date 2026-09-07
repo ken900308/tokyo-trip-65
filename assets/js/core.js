@@ -91,6 +91,24 @@ var TripCore = (function () {
     return "tickets.html?day=" + normalizeDay(day, 6) + "#" + encodeURIComponent(String(ticketId));
   }
 
+  function findPhrase(categories, id) {
+    var list = categories || [];
+    var categoryIndex;
+    var phraseIndex;
+    var phrases;
+
+    for (categoryIndex = 0; categoryIndex < list.length; categoryIndex += 1) {
+      phrases = list[categoryIndex].phrases || [];
+      for (phraseIndex = 0; phraseIndex < phrases.length; phraseIndex += 1) {
+        if (phrases[phraseIndex].id === id) {
+          return phrases[phraseIndex];
+        }
+      }
+    }
+
+    return null;
+  }
+
   return {
     normalizeDay: normalizeDay,
     getDay: getDay,
@@ -99,7 +117,8 @@ var TripCore = (function () {
     updateChecklistState: updateChecklistState,
     sanitizeChecklistState: sanitizeChecklistState,
     mapUrl: mapUrl,
-    ticketHash: ticketHash
+    ticketHash: ticketHash,
+    findPhrase: findPhrase
   };
 }());
 

@@ -3,6 +3,7 @@ var projectRoot = fso.GetParentFolderName(fso.GetParentFolderName(WScript.Script
 var corePath = fso.BuildPath(projectRoot, "assets\\js\\core.js");
 var itineraryPath = fso.BuildPath(projectRoot, "data\\itinerary.js");
 var ticketsPath = fso.BuildPath(projectRoot, "data\\tickets.js");
+var phrasesPath = fso.BuildPath(projectRoot, "data\\phrases.js");
 var failures = 0;
 
 function readUtf8(path) {
@@ -64,6 +65,13 @@ if (!fso.FileExists(ticketsPath)) {
 
 eval(readUtf8(ticketsPath));
 
+if (!fso.FileExists(phrasesPath)) {
+  fail("loads phrase data", "data/phrases.js is missing");
+  WScript.Quit(1);
+}
+
+eval(readUtf8(phrasesPath));
+
 assertEqual(TripCore.normalizeDay("2", 6), 2, "accepts valid day");
 assertEqual(TripCore.normalizeDay("9", 6), 1, "defaults invalid day");
 assertEqual(TripCore.mapUrl(3), "itinerary-map.html?day=3&embed=1", "builds map deep link");
@@ -113,5 +121,37 @@ assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[0].image, "images/sumida-tic
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[1].image, "images/sumida-ticket-dad.png", "keeps dad's ticket image path");
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[2].image, "images/sumida-ticket-mom.png", "keeps mom's ticket image path");
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[3].image, "images/sumida-ticket-jin.png", "keeps Jin's ticket image path");
+assertEqual(typeof TripCore.findPhrase, "function", "exposes phrase lookup");
+if (typeof TripCore.findPhrase === "function") {
+  var transportPhrase = TripCore.findPhrase(TOKYO_PHRASES.categories, "train-to-oshiage");
+
+  assertEqual(transportPhrase && transportPhrase.ja, "\u3053\u306e\u96fb\u8eca\u306f\u62bc\u4e0a\u99c5\u306b\u884c\u304d\u307e\u3059\u304b\uff1f", "finds exact Oshiage transport phrase");
+  assertEqual(TripCore.findPhrase(TOKYO_PHRASES.categories, "missing-phrase"), null, "returns null for an unknown phrase");
+}
+assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
+
+(function assertPhraseData() {
+  var seenIds = {};
+  var categoryIds = [];
+  var categoryIndex;
+  var phraseIndex;
+  var category;
+  var phrase;
+
+  for (categoryIndex = 0; categoryIndex < TOKYO_PHRASES.categories.length; categoryIndex += 1) {
+    category = TOKYO_PHRASES.categories[categoryIndex];
+    categoryIds.push(category.id);
+    for (phraseIndex = 0; phraseIndex < category.phrases.length; phraseIndex += 1) {
+      phrase = category.phrases[phraseIndex];
+      assertEqual(typeof phrase.id === "string" && phrase.id.length > 0, true, "keeps stable ID for " + phrase.zh);
+      assertEqual(typeof phrase.zh === "string" && phrase.zh.length > 0, true, "keeps Chinese text for " + phrase.id);
+      assertEqual(typeof phrase.ja === "string" && phrase.ja.length > 0, true, "keeps Japanese text for " + phrase.id);
+      assertEqual(Object.prototype.hasOwnProperty.call(seenIds, phrase.id), false, "keeps phrase ID unique: " + phrase.id);
+      seenIds[phrase.id] = true;
+    }
+  }
+
+  assertEqual(categoryIds.join(","), "airport,transport,restaurant,hotel,shopping,emergency", "keeps stable phrase category IDs");
+}());
 
 WScript.Quit(failures === 0 ? 0 : 1);
