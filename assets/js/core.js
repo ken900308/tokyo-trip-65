@@ -66,6 +66,23 @@ var TripCore = (function () {
     return updated;
   }
 
+  function sanitizeChecklistState(state, validIds) {
+    var current = state && typeof state === "object" ? state : {};
+    var ids = validIds || [];
+    var sanitized = {};
+    var index;
+    var id;
+
+    for (index = 0; index < ids.length; index += 1) {
+      id = ids[index];
+      if (Object.prototype.hasOwnProperty.call(current, id) && current[id] === true) {
+        sanitized[id] = true;
+      }
+    }
+
+    return sanitized;
+  }
+
   function mapUrl(day) {
     return "itinerary-map.html?day=" + normalizeDay(day, 6) + "&embed=1";
   }
@@ -80,6 +97,7 @@ var TripCore = (function () {
     visibleDayEvents: visibleDayEvents,
     checklistProgress: checklistProgress,
     updateChecklistState: updateChecklistState,
+    sanitizeChecklistState: sanitizeChecklistState,
     mapUrl: mapUrl,
     ticketHash: ticketHash
   };

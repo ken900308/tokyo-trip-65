@@ -30,6 +30,19 @@ function assertEqual(actual, expected, name) {
   }
 }
 
+function ownPropertyCount(object) {
+  var count = 0;
+  var key;
+
+  for (key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
 if (!fso.FileExists(corePath)) {
   fail("loads TripCore", "assets/js/core.js is missing");
   WScript.Quit(1);
@@ -56,6 +69,27 @@ assertEqual(TripCore.normalizeDay("9", 6), 1, "defaults invalid day");
 assertEqual(TripCore.mapUrl(3), "itinerary-map.html?day=3&embed=1", "builds map deep link");
 assertEqual(TripCore.checklistProgress([{id:"a"},{id:"b"}], {a:true}).done, 1, "counts checked items");
 assertEqual(TripCore.updateChecklistState({a:true}, "b", true).b, true, "stores toggled item");
+assertEqual(typeof TripCore.sanitizeChecklistState, "function", "exposes checklist state sanitizer");
+if (typeof TripCore.sanitizeChecklistState === "function") {
+  var checklistItems = [{id:"passport"},{id:"suica"},{id:"tickets"}];
+  var originalChecklistState = {};
+  var checkedChecklistState = TripCore.updateChecklistState(originalChecklistState, "passport", true);
+  var uncheckedChecklistState = TripCore.updateChecklistState(checkedChecklistState, "passport", false);
+  var sanitizedChecklistState = TripCore.sanitizeChecklistState(
+    {passport:true, stale:true},
+    ["passport", "suica"]
+  );
+
+  assertEqual(sanitizedChecklistState.passport, true, "keeps valid checked checklist state");
+  assertEqual(Object.prototype.hasOwnProperty.call(sanitizedChecklistState, "stale"), false, "removes stale checklist state");
+  assertEqual(ownPropertyCount(sanitizedChecklistState), 1, "returns only valid checked checklist state");
+  assertEqual(TripCore.checklistProgress(checklistItems, {}).done + "/" + TripCore.checklistProgress(checklistItems, {}).total, "0/3", "starts checklist progress at zero");
+  assertEqual(TripCore.checklistProgress(checklistItems, checkedChecklistState).done + "/" + TripCore.checklistProgress(checklistItems, checkedChecklistState).total, "1/3", "counts checked checklist progress");
+  assertEqual(TripCore.checklistProgress(checklistItems, uncheckedChecklistState).done + "/" + TripCore.checklistProgress(checklistItems, uncheckedChecklistState).total, "0/3", "counts unchecked checklist progress");
+  assertEqual(Object.prototype.hasOwnProperty.call(originalChecklistState, "passport"), false, "does not mutate original checklist state");
+  assertEqual(TripCore.checklistProgress(checklistItems, {stale:true}).done, 0, "ignores stale checklist IDs in progress");
+  assertEqual(TripCore.checklistProgress(checklistItems, {stale:true}).total, 3, "keeps checklist total independent of stale state");
+}
 assertEqual(typeof TripCore.visibleDayEvents, "function", "exposes visible day events lookup");
 if (typeof TripCore.visibleDayEvents === "function") {
   assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 3).length, 9, "returns Day 3 events");
