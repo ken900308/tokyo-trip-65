@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta name="description" content="可離線保留進度的東京旅行行前 Checklist。">
+  <title>東京 Checklist｜旅行工具</title>
+  <link rel="stylesheet" href="assets/css/app.css">
+  <style>
+    .tool-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}.tool-header h1{margin:4px 0 0;font-size:clamp(1.8rem,8vw,2.7rem);letter-spacing:-.04em}.home-link{display:inline-flex;align-items:center;color:var(--accent);font-weight:750;text-decoration:none}.checklist-progress{margin-bottom:18px;padding:18px}.checklist-progress__heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px}.checklist-progress h2{margin:0;font-size:1rem}.checklist-progress output{color:var(--accent);font-size:1.2rem;font-weight:850}.checklist-progress progress{display:block;width:100%;height:12px;margin-top:14px;border:0;border-radius:999px;overflow:hidden;background:var(--surface-muted);accent-color:var(--accent)}.checklist-progress progress::-webkit-progress-bar{border-radius:999px;background:var(--surface-muted)}.checklist-progress progress::-webkit-progress-value{border-radius:999px;background:var(--accent)}.checklist-progress progress::-moz-progress-bar{border-radius:999px;background:var(--accent)}.storage-status{min-height:1.5em;margin:8px 0 0;color:var(--danger);font-size:.78rem;font-weight:700}.checklist-groups{display:grid;gap:14px}.checklist-group{padding:18px}.checklist-group h2{margin:0 0 10px;font-size:1.05rem}.checklist-list{margin:0;padding:0;list-style:none}.checklist-row{border-top:1px solid var(--line)}.checklist-row label{display:grid;grid-template-columns:28px minmax(0,1fr);min-height:52px;align-items:center;gap:10px;padding:7px 2px;cursor:pointer}.checklist-row input{width:22px;height:22px;margin:0;accent-color:var(--accent);cursor:pointer}.checklist-row__label{font-weight:680;transition:color 160ms ease,opacity 160ms ease}.checklist-row.is-complete .checklist-row__label{color:var(--muted);text-decoration:line-through;opacity:.68}.checklist-actions{display:flex;justify-content:flex-end;margin-top:18px}.reset-button{padding:9px 15px;border:1px solid #d9baba;border-radius:12px;background:var(--surface);color:var(--danger);font-weight:800;cursor:pointer}.bottom-nav-spacer{height:12px}@media(min-width:700px){.checklist-group{padding:20px 22px}.checklist-groups{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.checklist-group:last-child:nth-child(odd){grid-column:1/-1}}
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="tool-header">
+      <div><p class="eyebrow">TOKYO · 09.25–09.30</p><h1>Checklist</h1></div>
+      <a class="home-link" href="index.html">首頁</a>
+    </header>
+
+    <section class="checklist-progress surface-card" aria-labelledby="checklist-progress-title">
+      <div class="checklist-progress__heading">
+        <h2 id="checklist-progress-title">完成進度</h2>
+        <output data-progress-text>0 / 0</output>
+      </div>
+      <progress data-progress-bar value="0" max="1" aria-label="Checklist 完成進度">0%</progress>
+      <p class="storage-status" data-storage-status role="status" aria-live="polite"></p>
+    </section>
+
+    <div class="checklist-groups" data-checklist-groups>
+      <p class="surface-card">正在載入 Checklist…</p>
+    </div>
+
+    <div class="checklist-actions">
+      <button class="reset-button" type="button" data-checklist-reset>重設 Checklist</button>
+    </div>
+    <div class="bottom-nav-spacer" aria-hidden="true"></div>
+  </main>
+
+  <nav class="bottom-nav" aria-label="主要工具">
+    <a href="itinerary.html"><span class="bottom-nav__icon" aria-hidden="true">🗓️</span>行程</a>
+    <a href="checklist.html" aria-current="page"><span class="bottom-nav__icon" aria-hidden="true">✅</span>Checklist</a>
+    <a href="tickets.html"><span class="bottom-nav__icon" aria-hidden="true">🎫</span>票券</a>
+    <a href="phrases.html"><span class="bottom-nav__icon" aria-hidden="true">💬</span>常用文字</a>
+  </nav>
+
+  <script src="assets/js/core.js"></script>
+  <script src="data/checklist.js"></script>
+  <script src="assets/js/checklist.js"></script>
+</body>
+</html>

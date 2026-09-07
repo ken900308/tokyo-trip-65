@@ -27,11 +27,13 @@ jobs:
       - name: Prepare static site
         shell: bash
         run: |
-          mkdir -p _site/images
-          cp index.html style.css fx-widget.js itinerary-map.html _site/
-          cp sumida-aquarium.html aquarium.css _site/
-          cp day1-guide.html day2-guide.html day3-guide.html guide.css _site/
-          if [ -d images ]; then cp -R images/. _site/images/; fi
+          mkdir -p _site
+          cp index.html itinerary.html checklist.html tickets.html phrases.html itinerary-map.html _site/
+          cp day1-guide.html day2-guide.html day3-guide.html sumida-aquarium.html _site/
+          cp style.css guide.css aquarium.css fx-widget.js _site/
+          cp -R assets _site/assets
+          cp -R data _site/data
+          cp -R images _site/images
           touch _site/.nojekyll
 
       - name: Upload GitHub Pages artifact

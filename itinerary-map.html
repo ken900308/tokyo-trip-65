@@ -40,6 +40,7 @@
   </main>
 
   <script src="assets/js/core.js"></script>
+  <script src="assets/js/core.js"></script>
   <script src="data/itinerary.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
@@ -130,6 +131,7 @@
         clearLayers();
         setButtons(dayNumber);
         empty.classList.remove("is-visible");
+        document.title = window.TripCore.mapDocumentTitle(dayNumber);
 
         if (updateUrl) {
           params.set("day", dayNumber);
@@ -142,7 +144,6 @@
         }
 
         title.textContent = "Day " + day.day + " · " + day.title;
-        document.title = "Day " + day.day + " 路線地圖｜東京行程";
         backLink.href = "itinerary.html?day=" + day.day;
         renderStops(day);
       }

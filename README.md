@@ -1,44 +1,84 @@
-# Tokyo Trip Site
+# Tokyo Trip Mobile Tool
 
-2026 東京六日旅遊網站。目前完成 Day 1–3，內容來源為：
+2026 東京六日旅程的手機優先工具站。首頁只提供四個主要入口：行程、Checklist、票券與常用文字；Day 1–3 的長篇街頭指南及墨田水族館完整資訊頁仍保留為細節頁。Day 4–6 尚未規劃，不應自行補入景點或票券。
 
-- `japan_day1.md`：台灣出發、成田入境、Welcome Suica、押上入住
-- `japan_day2.md`：墨田水族館、淺草寺、上野阿美橫町
-- `japan_day3.md`：日枝神社、明治神宮、HARAKADO、新宿與歌舞伎町
+## 網站結構
 
-## 主要檔案
+| 路徑 | 用途 | 主要編輯位置 |
+| --- | --- | --- |
+| `index.html` | 四工具首頁 | 頁面本身 |
+| `itinerary.html` | 單日行程與地圖入口 | `data/itinerary.js` |
+| `itinerary-map.html` | Leaflet 單日路線地圖 | `data/itinerary.js` 的 `mapStops` |
+| `tickets.html` | 依日期展開的票券夾 | `data/tickets.js` |
+| `checklist.html` | 會儲存在瀏覽器的旅行清單 | `data/checklist.js` |
+| `phrases.html` | 可複製、可朗讀的日文常用文字 | `data/phrases.js` |
+| `day1-guide.html`–`day3-guide.html` | 保留的街頭操作長篇指南 | 各 HTML 檔案 |
+| `sumida-aquarium.html` | 保留的水族館票券與參觀細節 | 頁面本身、`images/` |
+| `assets/css/app.css` | 四個主要工具的共用樣式 | 此 CSS 檔案 |
+| `assets/js/*.js` | 四工具的互動行為 | 對應功能的 JS 檔案 |
 
-- `index.html`：行程首頁
-- `sumida-aquarium.html`：墨田水族館分頁（四人 QR Code、館內資訊與參觀動線）
-- `day1-guide.html`：抵達日街頭操作指南
-- `day2-guide.html`：晴空塔、淺草與上野街頭操作指南
-- `day3-guide.html`：赤坂、原宿、新宿與回程街頭操作指南
-- `itinerary-map.html`：Leaflet 互動地圖與停靠點資料
-- `style.css`：共用版面與響應式樣式
-- `fx-widget.js`：JPY／TWD／USD 匯率換算
+根目錄的 `style.css`、`guide.css`、`aquarium.css` 與 `fx-widget.js` 供保留頁面使用。`japan_day1.md`–`japan_day3.md` 是原始行程筆記。舊 Bali 預覽檔與素材仍保留在 repository，但不屬於東京工具站的正式頁面。
 
-## 墨田水族館 QR Code
+## 本機預覽與檢查
 
-將四張票券圖片放入 `images` 資料夾並命名為 `sumida-ticket-me.png`、`sumida-ticket-dad.png`、`sumida-ticket-mom.png`、`sumida-ticket-jin.png`，分頁會自動顯示。
+請從 repository 根目錄執行 traversal-safe、只綁定 loopback 的靜態伺服器：
 
-## 本機預覽
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\serve.ps1
+```
 
-請透過本機 HTTP server 開啟，不建議直接使用 `file://`，否則外部地圖與匯率服務可能受到瀏覽器限制。
+預設網址是 `http://127.0.0.1:4173/`。若要改 port：
 
-首頁：`http://127.0.0.1:<port>/`
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\serve.ps1 -Port 8080
+```
 
-地圖：`http://127.0.0.1:<port>/itinerary-map.html`
+提交前執行：
 
-## GitHub Pages 自動發布
+```powershell
+cscript //nologo tests\core-tests.js
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\link-check.ps1
+git diff --check
+```
 
-`.github/workflows/deploy-pages.yml` 會在 `main` 分支收到新推送時，自動整理正式網站檔案並部署到 GitHub Pages。第一次使用前，請在 GitHub repository 的 **Settings → Pages → Build and deployment → Source** 選擇 **GitHub Actions**；之後每次 `git push` 都會自動更新公開頁面。
+`link-check.ps1` 會檢查正式頁面的相對 `href`／`src`、保留指南的四工具入口、伺服器 traversal 防護，以及 GitHub Pages artifact 清單。若要檢查另一個已組裝的站點目錄，可傳入 `-SiteRoot <path>`。
 
-公開網址：`https://ken900308.github.io/tokyo-trip-65/`
+## 新增 Day 4–6 行程
 
-## 加入後續日期
+所有日期已在 `data/itinerary.js` 建立。未規劃日期必須維持 `planned: false` 與 `status: "尚未安排"`，不要只為填滿畫面而發明內容。確認行程後：
 
-1. 在 `index.html` 增加新的每日行程區塊。
-2. 在 `itinerary-map.html` 的 `days` 資料加入當日停靠點。
-3. 每個地點需提供時間、名稱、說明、緯度及經度。
+1. 在對應 day record 改為 `planned: true`，填入 `title`、`routeSummary`、`mapStops` 與 `events`。
+2. `mapStops` 依實際行程順序排列；每點提供 `time`、`title`、`description`、`lat`、`lng`。
+3. 每個 `events` 提供現場可操作的 `time`、`label`、`title`、`summary`；只有確定存在時才加入交通、備案、官方、導航、指南或票券連結。
+4. 若新增長篇指南，建立相對 URL、加入四工具導覽，並把頁面加入 `.github/workflows/deploy-pages.yml` 與 `tests/link-check.ps1` 的 production manifest。
+5. 執行完整檢查，並在 360、390、430px 與桌面寬度確認單日顯示、地圖點位與無水平捲動。
 
-舊有 Bali HTML 與素材暫時保留，但不會出現在新版首頁導覽。
+## 新增票券與 QR 圖片
+
+在 `data/tickets.js` 的對應 day `groups` 新增票券群組；穩定 `id` 會成為 deep-link hash。行程事件需要票券時，在 `data/itinerary.js` 加入相對 `ticketUrl`，例如 `tickets.html?day=2#sumida-aquarium`。
+
+墨田水族館四張圖片放在 `images/`，檔名必須精確為：
+
+- `sumida-ticket-me.png`
+- `sumida-ticket-dad.png`
+- `sumida-ticket-mom.png`
+- `sumida-ticket-jin.png`
+
+圖片缺少時頁面會顯示明確 placeholder，不會顯示 broken-image UI。新增其他票券時，建議使用小寫英數與連字號命名，例如 `day4-event-person.png`，同步更新 `data/tickets.js`，且不要提交含私人資訊的真實票券到公開 repository，除非已確認可公開。
+
+## 修改 Checklist 與常用文字
+
+- Checklist：編輯 `data/checklist.js`。每個 item 的 `id` 必須永久穩定，否則使用者既有的 `localStorage` 勾選狀態無法對應。儲存 key 是 `tokyo-trip-checklist-v1`。
+- 常用文字：編輯 `data/phrases.js`。保留六個 category `id`；每句至少需要唯一 `id`、中文 `zh` 與日文 `ja`，讀音 `reading` 可省略。
+
+## 部署與 `dist/client`
+
+`.github/workflows/deploy-pages.yml` 在 `main` push 或手動執行時，將正式頁面、根目錄相依檔案、`assets/`、`data/` 與 `images/` 組裝到 `_site`，再上傳 GitHub Pages artifact。Repository 的 Pages Source 必須設為 **GitHub Actions**。
+
+`dist/client/` 是同一份靜態站點供既有 Sites host 使用。修改 production HTML、CSS、JS、data 或 images 後，必須同步相同相對路徑至 `dist/client/`，再對該目錄執行：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\link-check.ps1 -SiteRoot dist\client
+```
+
+不要修改 `dist/server/index.js` 或 `.openai/hosting.json`。GitHub Pages 公開網址：`https://ken900308.github.io/tokyo-trip-65/`。

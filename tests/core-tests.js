@@ -106,6 +106,11 @@ if (typeof TripCore.visibleDayEvents === "function") {
 }
 assertEqual(TOKYO_ITINERARY.days[3].planned, false, "marks Day 4 unplanned");
 assertEqual(TOKYO_ITINERARY.days[3].status, "\u5c1a\u672a\u5b89\u6392", "labels Day 4 as unplanned");
+assertEqual(typeof TripCore.mapDocumentTitle, "function", "exposes map document titles");
+if (typeof TripCore.mapDocumentTitle === "function") {
+  assertEqual(TripCore.mapDocumentTitle(4), "Day 4 \u8def\u7dda\u5730\u5716\uff5c\u6771\u4eac\u884c\u7a0b", "titles an unplanned day map");
+  assertEqual(TripCore.mapDocumentTitle(null), "\u627e\u4e0d\u5230\u9019\u4e00\u5929\uff5c\u6771\u4eac\u884c\u7a0b", "titles an invalid day map");
+}
 assertEqual(typeof TripCore.ticketHash, "function", "exposes stable ticket deep links");
 if (typeof TripCore.ticketHash === "function") {
   assertEqual(TripCore.ticketHash(2, "sumida-aquarium"), "tickets.html?day=2#sumida-aquarium", "builds ticket deep link");
@@ -152,6 +157,12 @@ assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
   }
 
   assertEqual(categoryIds.join(","), "airport,transport,restaurant,hotel,shopping,emergency", "keeps stable phrase category IDs");
+  assertEqual(TOKYO_PHRASES.categories[0].title, "\u6a5f\u5834", "keeps airport category title");
+  assertEqual(TOKYO_PHRASES.categories[1].title, "\u8eca\u7ad9\uff0f\u4ea4\u901a", "keeps transport category title");
+  assertEqual(TOKYO_PHRASES.categories[2].title, "\u9910\u5ef3", "keeps restaurant category title");
+  assertEqual(TOKYO_PHRASES.categories[3].title, "\u98ef\u5e97", "keeps hotel category title");
+  assertEqual(TOKYO_PHRASES.categories[4].title, "\u8cfc\u7269", "keeps shopping category title");
+  assertEqual(TOKYO_PHRASES.categories[5].title, "\u7dca\u6025\uff0f\u6c42\u52a9", "keeps emergency category title");
 }());
 
 WScript.Quit(failures === 0 ? 0 : 1);
