@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f5">
+  <title>匯率換算｜東京旅行工具</title>
+  <link rel="stylesheet" href="assets/css/app.css">
+  <style>
+    .currency-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.currency-header h1{margin:4px 0;font-size:2rem;letter-spacing:-.04em}.currency-header a{display:inline-flex;align-items:center;color:var(--accent);font-weight:750;text-decoration:none}.currency-intro{color:var(--muted)}.currency-toggle,.fx-panel button{min-width:44px;padding:10px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--accent);font-weight:750;cursor:pointer}.currency-toggle{margin-bottom:14px}.fx-panel{display:none;padding:20px}.fx-panel.show{display:block}.fx-panel header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.fx-panel h2{margin:0;font-size:1.15rem}.currency-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.currency-fields label{display:grid;gap:6px;min-width:0;font-size:.85rem;font-weight:700}.currency-fields select,.currency-fields input{width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:1rem}.fx-panel .swap{display:block;margin:14px auto}.rate-note{margin:18px 0 0;color:var(--muted);font-size:.85rem}.currency-note{color:var(--muted);font-size:.85rem}
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="currency-header"><div><p class="eyebrow">TOKYO · TRAVEL TOOL</p><h1>匯率換算</h1></div><a href="itinerary.html">返回行程</a></header>
+    <p class="currency-intro">日圓、台幣與美金互相換算；兩邊金額都可以直接修改。</p>
+    <button class="currency-toggle" id="fxToggle" type="button" aria-controls="fxPanel" aria-expanded="true">顯示／收合換算</button>
+    <section class="fx-panel show surface-card" id="fxPanel" aria-labelledby="currency-title">
+      <header><h2 id="currency-title">旅日匯率換算</h2><button id="fxClose" type="button" aria-label="收合匯率換算">收合</button></header>
+      <div class="currency-fields">
+        <label for="fxFrom">原始幣別<select id="fxFrom"><option value="JPY">日圓 JPY</option><option value="TWD">台幣 TWD</option><option value="USD">美金 USD</option></select></label>
+        <label for="fxAmount">原始金額<input id="fxAmount" type="number" inputmode="decimal" step="any" value="1000"></label>
+      </div>
+      <button id="fxSwap" class="swap" type="button" aria-label="交換幣別與金額">⇄ 交換</button>
+      <div class="currency-fields">
+        <label for="fxTo">換算幣別<select id="fxTo"><option value="TWD">台幣 TWD</option><option value="JPY">日圓 JPY</option><option value="USD">美金 USD</option></select></label>
+        <label for="fxToAmount">換算金額<input id="fxToAmount" type="number" inputmode="decimal" step="any"></label>
+      </div>
+      <p class="rate-note" id="fxRateNote" role="status">正在取得參考匯率…</p>
+    </section>
+    <p class="currency-note">匯率僅供估算，實際付款依銀行或店家為準。無法連線時會使用快取或離線參考匯率。</p>
+  </main>
+  <nav class="bottom-nav" aria-label="主要工具">
+    <a href="itinerary.html"><span class="bottom-nav__icon" aria-hidden="true">🗓️</span>行程</a>
+    <a href="checklist.html"><span class="bottom-nav__icon" aria-hidden="true">✅</span>Checklist</a>
+    <a href="tickets.html"><span class="bottom-nav__icon" aria-hidden="true">🎫</span>票券</a>
+    <a href="phrases.html"><span class="bottom-nav__icon" aria-hidden="true">💬</span>常用文字</a>
+  </nav>
+  <script src="fx-widget.js"></script>
+</body>
+</html>

@@ -38,7 +38,7 @@ var TOKYO_ITINERARY = {
           time: "20:00",
           label: "ARRIVAL",
           title: "成田入境與領行李",
-          summary: "依序完成入國審查、領行李、海關，再到 1F 入境大廳；Visit Japan Web QR Code 先存到手機。",
+          summary: "依序完成入國審查、領行李、海關，再到 1F 入境大廳；Visit Japan Web QR Code 先存到手機。預估 20:40–21:15 出關。",
           instruction: "完成海關後跟著「鉄道 / Train」前往 B1F。",
           officialUrl: "https://www.digital.go.jp/policies/visit_japan_web",
           navigationUrl: "https://www.narita-airport.jp/en/discover/official_guide/"

@@ -165,4 +165,51 @@ assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
   assertEqual(TOKYO_PHRASES.categories[5].title, "\u7dca\u6025\uff0f\u6c42\u52a9", "keeps emergency category title");
 }());
 
+(function assertTicketRenderer() {
+  // Run the actual renderer with a Day 4 fixture, not a duplicated label builder.
+  // WSH lacks browser collections and ES5 array helpers; only those boundaries are supplied.
+  if (!Array.prototype.map) Array.prototype.map = function (callback) {
+    var result = [], i;
+    for (i = 0; i < this.length; i += 1) result.push(callback(this[i], i));
+    return result;
+  };
+  if (!Array.prototype.forEach) Array.prototype.forEach = function (callback) {
+    var i;
+    for (i = 0; i < this.length; i += 1) callback(this[i], i);
+  };
+  function noOp() {}
+  function imageFixture(width) {
+    var placeholder = {hidden:false};
+    var trigger = {hidden:true, nextElementSibling:placeholder};
+    var handlers = {};
+    return {naturalWidth:width, complete:true, trigger:trigger, placeholder:placeholder,
+      handlers:handlers, closest:function () { return trigger; },
+      addEventListener:function (name, callback) { handlers[name] = callback; }};
+  }
+  var loaded = imageFixture(240), missing = imageFixture(0);
+  var container = {innerHTML:"", querySelectorAll:function () { return [loaded, missing]; }, addEventListener:noOp};
+  var control = {addEventListener:noOp};
+  var dialog = {querySelector:function () { return control; }, addEventListener:noOp};
+  var document = {querySelector:function (selector) { return selector === "[data-ticket-days]" ? container : dialog; }};
+  var window = {TOKYO_TICKETS:{days:[{day:4,date:"09/28",groups:[{
+    id:"day-four-fixture",title:"Fixture",time:"12:00",itineraryUrl:"itinerary.html?day=4",detailUrl:"day1-guide.html",holders:[]
+  }]}]}, TripCore:TripCore, location:{search:"?day=4",hash:""}, setTimeout:noOp};
+  function URLSearchParams() { this.get = function () { return "4"; }; }
+  eval(readUtf8(fso.BuildPath(projectRoot, "assets\\js\\tickets.js")));
+  assertEqual(container.innerHTML.indexOf("\u67e5\u770b Day 4 \u884c\u7a0b") >= 0, true, "ticket return label uses its owning Day 4");
+  assertEqual(container.innerHTML.indexOf('href="itinerary.html?day=4"') >= 0, true, "ticket return target retains its owning Day 4");
+  assertEqual(loaded.trigger.hidden, false, "loaded QR trigger is available");
+  assertEqual(loaded.placeholder.hidden, true, "loaded QR hides missing placeholder");
+  assertEqual(missing.trigger.hidden, true, "missing QR trigger is hidden");
+  assertEqual(missing.placeholder.hidden, false, "missing QR exposes placeholder");
+  loaded.naturalWidth = 0;
+  loaded.handlers.error();
+  assertEqual(loaded.trigger.hidden, true, "failed replacement image hides old trigger");
+  assertEqual(loaded.placeholder.hidden, false, "failed replacement image restores placeholder");
+  missing.naturalWidth = 240;
+  missing.handlers.load();
+  assertEqual(missing.trigger.hidden, false, "late QR load exposes trigger");
+  assertEqual(missing.placeholder.hidden, true, "late QR load removes placeholder");
+}());
+
 WScript.Quit(failures === 0 ? 0 : 1);

@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | `index.html` | 四工具首頁 | 頁面本身 |
 | `itinerary.html` | 單日行程與地圖入口 | `data/itinerary.js` |
+| `currency.html` | 行程頁標頭的次要匯率換算工具 | 頁面本身、`fx-widget.js` |
 | `itinerary-map.html` | Leaflet 單日路線地圖 | `data/itinerary.js` 的 `mapStops` |
 | `tickets.html` | 依日期展開的票券夾 | `data/tickets.js` |
 | `checklist.html` | 會儲存在瀏覽器的旅行清單 | `data/checklist.js` |
@@ -17,7 +18,7 @@
 | `assets/css/app.css` | 四個主要工具的共用樣式 | 此 CSS 檔案 |
 | `assets/js/*.js` | 四工具的互動行為 | 對應功能的 JS 檔案 |
 
-根目錄的 `style.css`、`guide.css`、`aquarium.css` 與 `fx-widget.js` 供保留頁面使用。`japan_day1.md`–`japan_day3.md` 是原始行程筆記。舊 Bali 預覽檔與素材仍保留在 repository，但不屬於東京工具站的正式頁面。
+根目錄的 `style.css`、`guide.css` 與 `aquarium.css` 供保留頁面使用。`currency.html` 沿用 `fx-widget.js`，支援 JPY／TWD／USD 雙向輸入、交換幣別、快取與離線參考匯率；從行程頁標頭的「匯率換算」進入，不增加首頁入口。`japan_day1.md`–`japan_day3.md` 是原始行程筆記。舊 Bali 預覽檔與素材仍保留在 repository，但不屬於東京工具站的正式頁面。
 
 ## 本機預覽與檢查
 
@@ -37,11 +38,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\serve.ps1 -Port 8080
 
 ```powershell
 cscript //nologo tests\core-tests.js
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\audit-check.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File tests\link-check.ps1
 git diff --check
 ```
 
-`link-check.ps1` 會檢查正式頁面的相對 `href`／`src`、保留指南的四工具入口、伺服器 traversal 防護，以及 GitHub Pages artifact 清單。若要檢查另一個已組裝的站點目錄，可傳入 `-SiteRoot <path>`。
+`link-check.ps1` 會檢查正式頁面的相對 `href`／`src`、資料內的行程／票券連結、匯率工具次要入口、保留指南的四工具入口、伺服器 traversal 防護，以及 GitHub Pages artifact 清單。`audit-check.ps1` 檢查 QR hidden 樣式與狀態、保留資訊及匯率工具的 HTML／CSS／JS 整合契約；它不取代瀏覽器 computed-style 與互動測試。兩支 PowerShell 檢查都可傳入 `-SiteRoot <path>` 檢查已組裝站點。
 
 ## 新增 Day 4–6 行程
 
@@ -55,7 +57,7 @@ git diff --check
 
 ## 新增票券與 QR 圖片
 
-在 `data/tickets.js` 的對應 day `groups` 新增票券群組；穩定 `id` 會成為 deep-link hash。行程事件需要票券時，在 `data/itinerary.js` 加入相對 `ticketUrl`，例如 `tickets.html?day=2#sumida-aquarium`。
+在 `data/tickets.js` 的對應 day `groups` 新增票券群組；穩定 `id` 會成為 deep-link hash。票券返回行程的文字由所屬 day 自動產生，`itineraryUrl` 也應指向同一天，例如 Day 4 使用 `itinerary.html?day=4`。行程事件需要票券時，在 `data/itinerary.js` 加入相對 `ticketUrl`，例如 `tickets.html?day=2#sumida-aquarium`。
 
 墨田水族館四張圖片放在 `images/`，檔名必須精確為：
 
@@ -79,6 +81,7 @@ git diff --check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tests\link-check.ps1 -SiteRoot dist\client
+powershell -NoProfile -ExecutionPolicy Bypass -File tests\audit-check.ps1 -SiteRoot dist\client
 ```
 
 不要修改 `dist/server/index.js` 或 `.openai/hosting.json`。GitHub Pages 公開網址：`https://ken900308.github.io/tokyo-trip-65/`。

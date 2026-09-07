@@ -8,6 +8,6 @@ return{rates:fallback,label:"離線參考匯率"}}
 const convert=(n,from,to,r)=>{const twd=from==="TWD"?n:n/r[from];return to==="TWD"?twd:twd*r[to]};
 let token=0;async function calc(reverse=false){const mine=++token,info=await rates();if(mine!==token)return;const input=reverse?e.result:e.amount,output=reverse?e.amount:e.result,from=reverse?e.to.value:e.from.value,to=reverse?e.from.value:e.to.value;output.value=convert(Number(input.value||0),from,to,info.rates).toFixed(2);e.note.textContent=`${info.label} · 1 TWD ≈ ${info.rates.JPY.toFixed(3)} JPY`}
 e.toggle.addEventListener("click",()=>{e.panel.classList.toggle("show");e.toggle.setAttribute("aria-expanded",String(e.panel.classList.contains("show")))});
-e.close.addEventListener("click",()=>e.panel.classList.remove("show"));e.from.addEventListener("change",()=>calc());e.to.addEventListener("change",()=>calc());e.amount.addEventListener("input",()=>calc());e.result.addEventListener("input",()=>calc(true));
+e.close.addEventListener("click",()=>{e.panel.classList.remove("show");e.toggle.setAttribute("aria-expanded","false");e.toggle.focus()});e.from.addEventListener("change",()=>calc());e.to.addEventListener("change",()=>calc());e.amount.addEventListener("input",()=>calc());e.result.addEventListener("input",()=>calc(true));
 e.swap.addEventListener("click",()=>{[e.from.value,e.to.value]=[e.to.value,e.from.value];[e.amount.value,e.result.value]=[e.result.value,e.amount.value];calc()});calc();
 })();

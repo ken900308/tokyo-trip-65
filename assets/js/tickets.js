@@ -29,7 +29,7 @@
       "<strong>QR Code 尚未放入</strong><small>" + escapeHtml(holder.image) + "</small></div></article>";
   }
 
-  function renderGroup(group) {
+  function renderGroup(group, dayNumber) {
     var holders = group.holders.map(function (holder) {
       return renderHolder(holder, group.title);
     }).join("");
@@ -38,13 +38,15 @@
       "<header class=\"ticket-group__header\"><div><p class=\"eyebrow\">MOBILE TICKET</p><h2>" +
       escapeHtml(group.title) + "</h2><p class=\"ticket-time\">" + escapeHtml(group.time) + "</p>" +
       "<nav class=\"ticket-links\" aria-label=\"" + escapeHtml(group.title) + "相關連結\">" +
-      "<a href=\"" + escapeHtml(group.itineraryUrl) + "\">查看 Day 2 行程</a>" +
+      "<a href=\"" + escapeHtml(group.itineraryUrl) + "\">查看 Day " + dayNumber + " 行程</a>" +
       "<a href=\"" + escapeHtml(group.detailUrl) + "\">完整館內資訊</a></nav></div></header>" +
       "<div class=\"holder-grid\">" + holders + "</div></article>";
   }
 
   function renderDay(day, selectedDay) {
-    var content = day.groups.length ? day.groups.map(renderGroup).join("") :
+    var content = day.groups.length ? day.groups.map(function (group) {
+      return renderGroup(group, day.day);
+    }).join("") :
       "<p class=\"empty-tickets\">尚無票券</p>";
 
     return "<details class=\"day-accordion surface-card\" data-day=\"" + day.day + "\"" +

@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p _site _site/images
-          cp index.html itinerary.html checklist.html tickets.html phrases.html itinerary-map.html _site/
+          cp index.html itinerary.html currency.html checklist.html tickets.html phrases.html itinerary-map.html _site/
           cp day1-guide.html day2-guide.html day3-guide.html sumida-aquarium.html _site/
           cp style.css guide.css aquarium.css fx-widget.js _site/
           cp -R assets _site/assets

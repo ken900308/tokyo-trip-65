@@ -15,6 +15,7 @@ if ([string]::IsNullOrWhiteSpace($SiteRoot)) {
 $productionPages = @(
     "index.html",
     "itinerary.html",
+    "currency.html",
     "checklist.html",
     "tickets.html",
     "phrases.html",
@@ -189,6 +190,17 @@ if (Test-Path -LiteralPath $itineraryPath -PathType Leaf) {
     if ($itineraryHtml -notmatch '(?is)\.day-panel:focus(?:-visible)?\s*\{[^}]*outline\s*:\s*(?!none\b)[^;}]+') {
         Add-Failure "itinerary day selection does not leave a visible focus indicator on the updated panel"
     }
+    if (@(Get-LocalReferences $itineraryHtml) -notcontains "currency.html") {
+        Add-Failure "itinerary has no literal secondary currency converter link"
+    }
+    if ($itineraryHtml -notmatch '(?is)\.action-link\s*\{[^}]*min-height\s*:\s*(?:4[4-9]|[5-9]\d|\d{3,})px') {
+        Add-Failure "itinerary action links are smaller than 44px"
+    }
+}
+
+$aquariumHtml = Get-Content -Raw -Encoding UTF8 (Join-Path $resolvedSiteRoot "sumida-aquarium.html")
+if ($aquariumHtml -match '(?is)<a\b(?=[^>]*\baria-current\s*=)(?=[^>]*\bhref\s*=\s*(["''])tickets\.html(?:[?#][^"'']*)?\1)[^>]*>') {
+    Add-Failure "aquarium incorrectly marks another page as current"
 }
 
 foreach ($guide in @("day1-guide.html", "day2-guide.html", "day3-guide.html")) {
