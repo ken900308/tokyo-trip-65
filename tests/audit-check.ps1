@@ -31,6 +31,9 @@ Assert-Contract ($aquarium -match '09:00[\u2013\uff5e\u2014-]21:00' -and $aquari
 $itinerary = Read-Site "data/itinerary.js"
 Assert-Contract ($itinerary -match '\u9810\u4f30 20:40[\u2013\uff5e\u2014-]21:15 \u51fa\u95dc') "arrival keeps the original estimated immigration exit window"
 
+$guideCss = Read-Site "guide.css"
+Assert-Contract ($guideCss -match '[^}]*\.now-card\s*>\s*div\s*\{[^}]*min-width\s*:\s*0') "guide timeline content can shrink around scrollable station flows"
+
 $currency = Read-Site "currency.html"
 Assert-Contract ((Read-Site "fx-widget.js") -match 'e.close.addEventListener\("click",\(\)=>\{e.panel.classList.remove\("show"\);e.toggle.setAttribute\("aria-expanded","false"\)') "closing converter synchronizes the toggle expanded state"
 Assert-Contract ($currency -match '<script src="fx-widget.js"></script>') "currency page loads the existing converter"
