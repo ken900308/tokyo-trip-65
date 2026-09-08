@@ -146,3 +146,16 @@ Browser result: **54 / 54 assertions passed**.
 - Six phrase categories rendered; Japanese text measured 25.35 px. Copy failure correctly announced the manual-copy fallback.
 - Day 1 and Day 2 maps rendered only their own stop layers; Day 4 rendered zero markers and the empty state. All three document titles matched the selected day.
 - No application `error` or `unhandledrejection` event was observed during the harness interactions.
+
+## Final post-audit browser QA
+
+After the final audit fixes, the controller repeated the browser suite with the source served from a local static server. One reproducible issue remained: Day 3's long `station-flow` forced the content column of a `.now-card` to its min-content width on 360–430 px viewports. A permanent CSS contract test was added first, then `.now-card > div { min-width: 0 }` was applied to source and deployment output.
+
+Final browser result: **88 / 88 assertions passed**.
+
+- 360 px, 390 px, 430 px, and 1280 px: all production pages fit their viewport, including all three preserved day guides and the aquarium detail page.
+- Bottom navigation clearance passed on all four primary tools at every target width.
+- Day 4–6 empty states, focus transfer, ticket deep links, four-holder QR loaded/missing states, full-screen QR close paths, Checklist reload/reset persistence, phrase copy status, optional-speech fallback, offline currency conversion, and Day 1–6 map state all passed.
+- The restored Day 1 immigration estimate and Saturday aquarium hours were confirmed in browser-rendered content.
+- No application `error` or `unhandledrejection` event occurred. Expected 404 requests were limited to the deliberately absent optional QR image paths used to render placeholders.
+- The disposable browser harness, QR fixture, Chrome profile, and local server were removed after verification.
