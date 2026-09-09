@@ -31,6 +31,7 @@ var TOKYO_ITINERARY = {
           label: "FLIGHT",
           title: "桃園機場出發",
           summary: "酷航 TR874，預計 20:00 抵達成田國際機場 T1。",
+          ticketUrl: "tickets.html?day=1#flight-tr874",
           transport: {mode: "flight", from: "桃園機場 T1", to: "成田機場 T1", service: "酷航 TR874"}
         },
         {

@@ -106,6 +106,7 @@ if (typeof TripCore.visibleDayEvents === "function") {
 }
 assertEqual(TOKYO_ITINERARY.days[3].planned, false, "marks Day 4 unplanned");
 assertEqual(TOKYO_ITINERARY.days[3].status, "\u5c1a\u672a\u5b89\u6392", "labels Day 4 as unplanned");
+assertEqual(TOKYO_ITINERARY.days[0].events[0].ticketUrl, "tickets.html?day=1#flight-tr874", "links the Day 1 flight event to its booking card");
 assertEqual(typeof TripCore.mapDocumentTitle, "function", "exposes map document titles");
 if (typeof TripCore.mapDocumentTitle === "function") {
   assertEqual(TripCore.mapDocumentTitle(4), "Day 4 \u8def\u7dda\u5730\u5716\uff5c\u6771\u4eac\u884c\u7a0b", "titles an unplanned day map");
@@ -126,6 +127,28 @@ assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[0].image, "images/sumida-tic
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[1].image, "images/sumida-ticket-dad.png", "keeps dad's ticket image path");
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[2].image, "images/sumida-ticket-mom.png", "keeps mom's ticket image path");
 assertEqual(TOKYO_TICKETS.days[1].groups[0].holders[3].image, "images/sumida-ticket-jin.png", "keeps Jin's ticket image path");
+
+(function assertPublicTravelBookings() {
+  var outbound = TOKYO_TICKETS.days[0].groups[0];
+  var hotel = TOKYO_TICKETS.days[4].groups[0];
+  var inbound = TOKYO_TICKETS.days[5].groups[0];
+
+  assertEqual(outbound && outbound.id, "flight-tr874", "adds the Day 1 outbound flight");
+  assertEqual(outbound && outbound.title, "\u9177\u822a TR874", "keeps the outbound flight number");
+  assertEqual(outbound && outbound.summary, "\u53f0\u5317 \u2192 \u6771\u4eac", "keeps the outbound route");
+  assertEqual(hotel && hotel.id, "hotel-mystays-haneda", "adds the Day 5 airport hotel");
+  assertEqual(hotel && hotel.address, "5 Chome-1-13 Haneda, Ota City, Tokyo 144-0043, Japan", "keeps the hotel address");
+  assertEqual(hotel && hotel.details[0].value, "09/29 15:00 \u5f8c", "keeps the hotel check-in time");
+  assertEqual(hotel && hotel.details[1].value, "09/30 11:00 \u524d", "keeps the hotel check-out time");
+  assertEqual(inbound && inbound.id, "flight-br191", "adds the Day 6 return flight");
+  assertEqual(inbound && inbound.title, "\u9577\u69ae\u822a\u7a7a BR191", "keeps the return flight number");
+  assertEqual(inbound && inbound.summary, "\u6771\u4eac \u2192 \u53f0\u5317", "keeps the return route");
+  assertEqual(outbound && outbound.passengers, "\u56db\u4f4d\u6210\u4eba", "summarizes outbound passengers without publishing booking references");
+  assertEqual(inbound && inbound.passengers, "\u56db\u4f4d\u6210\u4eba", "summarizes return passengers without publishing booking references");
+  assertEqual(Boolean(outbound && (outbound.pnr || outbound.ticketNumber)), false, "omits outbound booking secrets");
+  assertEqual(Boolean(inbound && (inbound.pnr || inbound.ticketNumber)), false, "omits return booking secrets");
+  assertEqual(Boolean(hotel && (hotel.orderNumber || hotel.pin)), false, "omits hotel booking secrets");
+}());
 assertEqual(typeof TripCore.findPhrase, "function", "exposes phrase lookup");
 if (typeof TripCore.findPhrase === "function") {
   var transportPhrase = TripCore.findPhrase(TOKYO_PHRASES.categories, "train-to-oshiage");
@@ -186,18 +209,50 @@ assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
       handlers:handlers, closest:function () { return trigger; },
       addEventListener:function (name, callback) { handlers[name] = callback; }};
   }
+  function interactiveTarget() {
+    var handlers = {};
+    var attributes = {};
+    var classes = {};
+    return {
+      handlers:handlers,
+      classList:{
+        contains:function (name) { return Boolean(classes[name]); },
+        toggle:function (name, force) { classes[name] = force === undefined ? !classes[name] : Boolean(force); return classes[name]; },
+        remove:function (name) { classes[name] = false; }
+      },
+      addEventListener:function (name, callback) { handlers[name] = callback; },
+      setAttribute:function (name, value) { attributes[name] = String(value); },
+      getAttribute:function (name) { return attributes[name] || null; },
+      removeAttribute:function (name) { delete attributes[name]; },
+      focus:noOp
+    };
+  }
   var loaded = imageFixture(240), missing = imageFixture(0);
   var container = {innerHTML:"", querySelectorAll:function () { return [loaded, missing]; }, addEventListener:noOp};
-  var control = {addEventListener:noOp};
-  var dialog = {querySelector:function () { return control; }, addEventListener:noOp};
+  var dialogImage = interactiveTarget();
+  var dialogTitle = interactiveTarget();
+  var closeButton = interactiveTarget();
+  var dialog = interactiveTarget();
+  dialog.querySelector = function (selector) {
+    if (selector === "[data-dialog-image]") return dialogImage;
+    if (selector === "[data-dialog-title]") return dialogTitle;
+    return closeButton;
+  };
+  dialog.open = false;
+  dialog.showModal = function () { dialog.open = true; };
+  dialog.close = function () { dialog.open = false; };
   var document = {querySelector:function (selector) { return selector === "[data-ticket-days]" ? container : dialog; }};
   var window = {TOKYO_TICKETS:{days:[{day:4,date:"09/28",groups:[{
-    id:"day-four-fixture",title:"Fixture",time:"12:00",itineraryUrl:"itinerary.html?day=4",detailUrl:"day1-guide.html",holders:[]
+    id:"day-four-fixture",kind:"flight",label:"RETURN FLIGHT",title:"Fixture",time:"12:00",summary:"Tokyo to Taipei",
+    itineraryUrl:"itinerary.html?day=4",detailUrl:"day1-guide.html",externalUrl:"https://example.com",passengers:"Four adults",
+    details:[{label:"Status",value:"Issued"}],holders:[]
   }]}]}, TripCore:TripCore, location:{search:"?day=4",hash:""}, setTimeout:noOp};
   function URLSearchParams() { this.get = function () { return "4"; }; }
   eval(readUtf8(fso.BuildPath(projectRoot, "assets\\js\\tickets.js")));
   assertEqual(container.innerHTML.indexOf("\u67e5\u770b Day 4 \u884c\u7a0b") >= 0, true, "ticket return label uses its owning Day 4");
   assertEqual(container.innerHTML.indexOf('href="itinerary.html?day=4"') >= 0, true, "ticket return target retains its owning Day 4");
+  assertEqual(container.innerHTML.indexOf("Tokyo to Taipei") >= 0, true, "travel booking renderer includes the route summary");
+  assertEqual(container.innerHTML.indexOf("Four adults") >= 0, true, "travel booking renderer includes the passenger summary");
   assertEqual(loaded.trigger.hidden, false, "loaded QR trigger is available");
   assertEqual(loaded.placeholder.hidden, true, "loaded QR hides missing placeholder");
   assertEqual(missing.trigger.hidden, true, "missing QR trigger is hidden");
@@ -210,6 +265,15 @@ assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
   missing.handlers.load();
   assertEqual(missing.trigger.hidden, false, "late QR load exposes trigger");
   assertEqual(missing.placeholder.hidden, true, "late QR load removes placeholder");
+  assertEqual(typeof dialogImage.handlers.click, "function", "large QR image can be clicked again");
+  if (typeof dialogImage.handlers.click === "function") {
+    dialogImage.handlers.click();
+    assertEqual(dialogImage.classList.contains("is-zoomed"), true, "second QR click enables extra zoom");
+    assertEqual(dialogImage.getAttribute("aria-pressed"), "true", "zoomed QR announces its pressed state");
+    dialogImage.handlers.click();
+    assertEqual(dialogImage.classList.contains("is-zoomed"), false, "next QR click restores fit-to-screen size");
+    assertEqual(dialogImage.getAttribute("aria-pressed"), "false", "restored QR announces its unpressed state");
+  }
 }());
 
 WScript.Quit(failures === 0 ? 0 : 1);

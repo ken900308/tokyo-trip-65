@@ -29,7 +29,37 @@
       "<strong>QR Code 尚未放入</strong><small>" + escapeHtml(holder.image) + "</small></div></article>";
   }
 
+  function renderDetails(details) {
+    return (details || []).map(function (detail) {
+      return "<div><dt>" + escapeHtml(detail.label) + "</dt><dd>" +
+        escapeHtml(detail.value) + "</dd></div>";
+    }).join("");
+  }
+
+  function renderTravelGroup(group, dayNumber) {
+    var links = "<a href=\"" + escapeHtml(group.itineraryUrl) + "\">查看 Day " + dayNumber + " 行程</a>";
+
+    if (group.externalUrl) {
+      links += "<a href=\"" + escapeHtml(group.externalUrl) + "\" target=\"_blank\" rel=\"noopener noreferrer\">Google Maps</a>";
+    }
+
+    return "<article class=\"ticket-group booking-card surface-card booking-card--" + escapeHtml(group.kind) +
+      "\" id=\"" + escapeHtml(group.id) + "\" tabindex=\"-1\">" +
+      "<header class=\"ticket-group__header\"><div><p class=\"eyebrow\">" + escapeHtml(group.label) +
+      "</p><h2>" + escapeHtml(group.title) + "</h2><p class=\"ticket-time\">" + escapeHtml(group.time) +
+      "</p></div><span class=\"booking-icon\" aria-hidden=\"true\">" + (group.kind === "hotel" ? "🏨" : "✈️") +
+      "</span></header><p class=\"booking-summary\">" + escapeHtml(group.summary) + "</p>" +
+      (group.passengers ? "<p class=\"booking-passengers\"><span aria-hidden=\"true\">👥</span>" + escapeHtml(group.passengers) + "</p>" : "") +
+      "<dl class=\"booking-facts\">" + renderDetails(group.details) + "</dl>" +
+      (group.address ? "<p class=\"booking-address\"><strong>地址</strong><span>" + escapeHtml(group.address) + "</span></p>" : "") +
+      "<nav class=\"ticket-links\" aria-label=\"" + escapeHtml(group.title) + "相關連結\">" + links + "</nav></article>";
+  }
+
   function renderGroup(group, dayNumber) {
+    if (group.kind === "flight" || group.kind === "hotel") {
+      return renderTravelGroup(group, dayNumber);
+    }
+
     var holders = group.holders.map(function (holder) {
       return renderHolder(holder, group.title);
     }).join("");
@@ -94,6 +124,7 @@
     lastTrigger = trigger;
     dialogImage.src = image.src;
     dialogImage.alt = image.alt;
+    setDialogZoom(false);
     dialogTitle.textContent = holder + "的票券";
     dialog.showModal();
     closeButton.focus();
@@ -103,6 +134,17 @@
     if (dialog.open) {
       dialog.close();
     }
+  }
+
+  function setDialogZoom(zoomed) {
+    dialogImage.classList.toggle("is-zoomed", zoomed);
+    dialog.classList.toggle("is-zoomed", zoomed);
+    dialogImage.setAttribute("aria-pressed", zoomed ? "true" : "false");
+    dialogImage.setAttribute("aria-label", zoomed ? "縮小 QR Code" : "再次點擊放大 QR Code");
+  }
+
+  function toggleDialogZoom() {
+    setDialogZoom(!dialogImage.classList.contains("is-zoomed"));
   }
 
   function focusHashTarget() {
@@ -147,6 +189,13 @@
   });
 
   closeButton.addEventListener("click", closeDialog);
+  dialogImage.addEventListener("click", toggleDialogZoom);
+  dialogImage.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleDialogZoom();
+    }
+  });
   dialog.addEventListener("click", function (event) {
     if (event.target === dialog || event.target.classList.contains("qr-dialog__inner")) {
       closeDialog();
@@ -159,6 +208,7 @@
     }
   });
   dialog.addEventListener("close", function () {
+    setDialogZoom(false);
     dialogImage.removeAttribute("src");
     if (lastTrigger) {
       lastTrigger.focus();

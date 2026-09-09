@@ -30,6 +30,8 @@ Assert-Contract (@([regex]::Matches($aquarium, '<img\b[^>]*class="ticket-qr"[^>]
 Assert-Contract ($aquarium -match '09:00[\u2013\uff5e\u2014-]21:00' -and $aquarium -match '\u9031\u516d\u4e00\u822c') "aquarium preserves original Saturday general hours"
 $itinerary = Read-Site "data/itinerary.js"
 Assert-Contract ($itinerary -match '\u9810\u4f30 20:40[\u2013\uff5e\u2014-]21:15 \u51fa\u95dc') "arrival keeps the original estimated immigration exit window"
+$itineraryJs = Read-Site "assets/js/itinerary.js"
+Assert-Contract ($itineraryJs -match 'ticketNav\.href\s*=\s*"tickets\.html\?day="\s*\+\s*dayNumber') "itinerary ticket navigation follows the selected day"
 
 $guideCss = Read-Site "guide.css"
 Assert-Contract ($guideCss -match '[^}]*\.now-card\s*>\s*div\s*\{[^}]*min-width\s*:\s*0') "guide timeline content can shrink around scrollable station flows"

@@ -59,6 +59,8 @@ git diff --check
 
 在 `data/tickets.js` 的對應 day `groups` 新增票券群組；穩定 `id` 會成為 deep-link hash。票券返回行程的文字由所屬 day 自動產生，`itineraryUrl` 也應指向同一天，例如 Day 4 使用 `itinerary.html?day=4`。行程事件需要票券時，在 `data/itinerary.js` 加入相對 `ticketUrl`，例如 `tickets.html?day=2#sumida-aquarium`。
 
+航班與住宿資訊也放在同一個檔案：使用 `kind: "flight"` 或 `kind: "hotel"`，再提供 `title`、`time`、`summary`、`details` 與所屬日的 `itineraryUrl`；住宿可另加 `address` 與 Google Maps `externalUrl`。公開網站不要填入 PNR、電子機票號碼、訂單編號、PIN 或原始訂位截圖。
+
 墨田水族館四張圖片放在 `images/`，檔名必須精確為：
 
 - `sumida-ticket-me.png`
@@ -67,6 +69,8 @@ git diff --check
 - `sumida-ticket-jin.png`
 
 圖片缺少時頁面會顯示明確 placeholder，不會顯示 broken-image UI。GitHub Pages 與 `dist/client` 的東京正式 artifact 只允許上列四個圖片路徑；根目錄 `images/` 內既有的 Bali 素材不會發布。新增其他票券時，建議使用小寫英數與連字號命名，例如 `day4-event-person.png`，同步更新 `data/tickets.js`、workflow 與 `tests/link-check.ps1` 的明確 allowlist，且不要提交含私人資訊的真實票券到公開 repository，除非已確認可公開。
+
+QR 圖片第一次點擊會全螢幕開啟；在全螢幕內再點圖片可切換二次放大，放大後可滑動查看，再點一次恢復符合螢幕大小。
 
 ## 修改 Checklist 與常用文字
 

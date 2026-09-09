@@ -4,6 +4,7 @@
   var days = window.TOKYO_ITINERARY.days;
   var selector = document.querySelector("[data-day-selector]");
   var panel = document.querySelector("#day-panel");
+  var ticketNav = document.querySelector("[data-ticket-nav]");
 
   function escapeHtml(value) {
     return String(value == null ? "" : value)
@@ -127,6 +128,7 @@
 
     setSelectedButton(dayNumber);
     replaceDayInUrl(dayNumber);
+    ticketNav.href = "tickets.html?day=" + dayNumber;
     renderDay(day);
   }
 
