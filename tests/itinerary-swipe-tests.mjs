@@ -4,6 +4,8 @@ import vm from 'node:vm';
 
 // Lightweight DOM boundary; exercise the actual itinerary event handlers and renderer.
 const handlers = {};
+const navigationCalls = [];
+let reducedMotion = false;
 const buttons = Array.from({length: 6}, (_, i) => ({
   day: i + 1, offsetLeft: i * 70, offsetWidth: 60,
   classList: {toggle() {}}, attributes: {},
@@ -11,7 +13,10 @@ const buttons = Array.from({length: 6}, (_, i) => ({
   setAttribute(name, value) { this.attributes[name] = value; }
 }));
 const panel = {
-  innerHTML: '', setAttribute() {}, focus() {}, setPointerCapture() {},
+  innerHTML: '', setAttribute() {},
+  focus(options) { navigationCalls.push(['focus', options?.preventScroll]); },
+  scrollIntoView(options) { navigationCalls.push(['scroll', options.behavior, options.block]); },
+  setPointerCapture() {},
   getBoundingClientRect() { return {top: 200}; },
   addEventListener(name, handler) { handlers[name] = handler; }
 };
@@ -30,7 +35,7 @@ const document = {
 const window = {
   innerWidth: 390, location: {href: 'https://example.test/itinerary.html?day=2', search: '?day=2'},
   history: {replaceState(_, __, path) { this.path = path; }},
-  getSelection() { return ''; }, matchMedia() { return {matches: true}; }
+  getSelection() { return ''; }, matchMedia() { return {matches: reducedMotion}; }
 };
 const context = vm.createContext({window, document, URL, URLSearchParams, Date});
 for (const path of ['assets/js/core.js', 'data/itinerary.js', 'assets/js/itinerary.js']) {
@@ -69,6 +74,13 @@ handlers.pointerup(event(100, 200));
 day(2); // Pinch / multiple pointers cannot change days.
 selector.click({target: {closest() { return buttons[5]; }}});
 day(6);
+assert.deepEqual(navigationCalls, [['focus', true], ['scroll', 'smooth', 'start']],
+  'clicking Day must prevent the focus jump before smoothly scrolling to the itinerary');
+navigationCalls.length = 0;
+reducedMotion = true;
+selector.click({target: {closest() { return buttons[5]; }}});
+assert.deepEqual(navigationCalls, [['focus', true], ['scroll', 'instant', 'start']],
+  'reduced-motion preference must avoid animated scrolling');
 swipe(event(300, 200), event(100, 200));
 day(6);
 assert.match(panel.innerHTML, /尚未安排/);

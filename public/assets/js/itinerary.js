@@ -158,8 +158,13 @@
       return;
     }
 
-    selectDay(button.getAttribute("data-day"), true);
-    panel.focus();
+    selectDay(button.getAttribute("data-day"), false);
+    // Focus must not jump first; let the explicit scroll provide the transition.
+    panel.focus({preventScroll: true});
+    panel.scrollIntoView({
+      block: "start",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
+    });
   });
 
   // Keep vertical scrolling, pinch zoom, links, maps and horizontal route lists native.
