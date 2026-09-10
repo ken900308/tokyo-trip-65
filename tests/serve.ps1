@@ -8,7 +8,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 if ([string]::IsNullOrWhiteSpace($Root)) {
-    $Root = Split-Path -Parent $PSScriptRoot
+    $Root = Join-Path (Split-Path -Parent $PSScriptRoot) 'public'
 }
 $resolvedRoot = (Resolve-Path -LiteralPath $Root).Path.TrimEnd([System.IO.Path]::DirectorySeparatorChar)
 $rootPrefix = $resolvedRoot + [System.IO.Path]::DirectorySeparatorChar

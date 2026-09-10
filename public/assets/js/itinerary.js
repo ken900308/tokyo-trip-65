@@ -5,6 +5,10 @@
   var selector = document.querySelector("[data-day-selector]");
   var panel = document.querySelector("#day-panel");
   var ticketNav = document.querySelector("[data-ticket-nav]");
+  var selectedDay = 1;
+  var gesture = null;
+  var suppressClickUntil = 0;
+  var dayAnimation = null;
 
   function escapeHtml(value) {
     return String(value == null ? "" : value)
@@ -122,14 +126,29 @@
     window.history.replaceState({}, "", url.pathname + url.search + url.hash);
   }
 
-  function selectDay(value) {
+  function selectDay(value, animate) {
     var dayNumber = window.TripCore.normalizeDay(value, days.length);
     var day = window.TripCore.getDay(days, dayNumber);
+    var previousDay = selectedDay;
+    selectedDay = dayNumber;
 
     setSelectedButton(dayNumber);
     replaceDayInUrl(dayNumber);
     ticketNav.href = "tickets.html?day=" + dayNumber;
     renderDay(day);
+    var activeButton = selector.querySelector('button[data-day="' + dayNumber + '"]');
+    if (activeButton) {
+      selector.scrollTo({left: activeButton.offsetLeft - selector.offsetLeft -
+        (selector.clientWidth - activeButton.offsetWidth) / 2, behavior: "auto"});
+    }
+    if (dayAnimation) { dayAnimation.cancel(); }
+    if (animate && dayNumber !== previousDay && panel.animate &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      dayAnimation = panel.animate([
+        {transform: "translateX(" + (dayNumber > previousDay ? "24px" : "-24px") + ")", opacity: 0.5},
+        {transform: "translateX(0)", opacity: 1}
+      ], {duration: 180, easing: "ease-out"});
+    }
   }
 
   selector.addEventListener("click", function (event) {
@@ -139,9 +158,48 @@
       return;
     }
 
-    selectDay(button.getAttribute("data-day"));
+    selectDay(button.getAttribute("data-day"), true);
     panel.focus();
   });
+
+  // Keep vertical scrolling, pinch zoom, links, maps and horizontal route lists native.
+  panel.addEventListener("pointerdown", function (event) {
+    if (!event.isPrimary) { gesture = null; return; }
+    if (event.pointerType === "mouse" || event.button !== 0 ||
+        event.clientX < 24 || event.clientX > window.innerWidth - 24 ||
+        event.target.closest("a, button, input, textarea, select, summary, .map-preview, .route-summary") ||
+        String(window.getSelection())) { return; }
+    gesture = {id: event.pointerId, x: event.clientX, y: event.clientY};
+    panel.setPointerCapture(event.pointerId);
+  });
+
+  panel.addEventListener("pointermove", function (event) {
+    if (!gesture || gesture.id !== event.pointerId) { return; }
+    var dx = event.clientX - gesture.x;
+    var dy = event.clientY - gesture.y;
+    if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { gesture = null; }
+  });
+
+  panel.addEventListener("pointerup", function (event) {
+    if (!gesture || gesture.id !== event.pointerId) { return; }
+    var start = gesture;
+    gesture = null;
+    var nextDay = window.TripCore.swipeDay(selectedDay, days.length,
+      event.clientX - start.x, event.clientY - start.y);
+    if (nextDay === selectedDay || String(window.getSelection())) { return; }
+    suppressClickUntil = Date.now() + 400;
+    selectDay(nextDay, true);
+    // A shorter next day must not leave the reader near its bottom.
+    if (panel.getBoundingClientRect().top < 0) {
+      selector.scrollIntoView({block: "start", behavior: "instant"});
+    }
+  });
+
+  panel.addEventListener("pointercancel", function () { gesture = null; });
+  panel.addEventListener("lostpointercapture", function () { gesture = null; });
+  panel.addEventListener("click", function (event) {
+    if (Date.now() < suppressClickUntil) { event.preventDefault(); event.stopPropagation(); }
+  }, true);
 
   selectDay(new URLSearchParams(window.location.search).get("day"));
 }());

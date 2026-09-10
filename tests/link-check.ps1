@@ -7,7 +7,7 @@ $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
 
 if ([string]::IsNullOrWhiteSpace($SiteRoot)) {
-    $resolvedSiteRoot = (Resolve-Path -LiteralPath $projectRoot).Path
+    $resolvedSiteRoot = (Resolve-Path -LiteralPath (Join-Path $projectRoot 'public')).Path
 } else {
     $resolvedSiteRoot = (Resolve-Path -LiteralPath $SiteRoot).Path
 }

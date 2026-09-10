@@ -1,4 +1,4 @@
-param([string]$SiteRoot = (Split-Path -Parent $PSScriptRoot))
+param([string]$SiteRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) 'public'))
 $ErrorActionPreference = "Stop"
 $failures = 0
 function Assert-Contract([bool]$Pass, [string]$Name) {

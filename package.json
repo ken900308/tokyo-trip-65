@@ -1,0 +1,7 @@
+{
+  "name": "tokyo-trip-65",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-site.mjs"
+  }
+}

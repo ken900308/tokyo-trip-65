@@ -1,5 +1,5 @@
 var fso = new ActiveXObject("Scripting.FileSystemObject");
-var projectRoot = fso.GetParentFolderName(fso.GetParentFolderName(WScript.ScriptFullName));
+var projectRoot = fso.BuildPath(fso.GetParentFolderName(fso.GetParentFolderName(WScript.ScriptFullName)), "public");
 var corePath = fso.BuildPath(projectRoot, "assets\\js\\core.js");
 var itineraryPath = fso.BuildPath(projectRoot, "data\\itinerary.js");
 var ticketsPath = fso.BuildPath(projectRoot, "data\\tickets.js");
@@ -275,5 +275,16 @@ assertEqual(TOKYO_PHRASES.categories.length, 6, "has six phrase categories");
     assertEqual(dialogImage.getAttribute("aria-pressed"), "false", "restored QR announces its unpressed state");
   }
 }());
+
+assertEqual(typeof TripCore.swipeDay, "function", "exposes swipe day navigation");
+if (typeof TripCore.swipeDay === "function") {
+  assertEqual(TripCore.swipeDay(2, 6, -100, 10), 3, "left swipe selects next day");
+  assertEqual(TripCore.swipeDay(2, 6, 100, 10), 1, "right swipe selects previous day");
+  assertEqual(TripCore.swipeDay(1, 6, 100, 0), 1, "first day does not wrap");
+  assertEqual(TripCore.swipeDay(6, 6, -100, 0), 6, "last day does not wrap");
+  assertEqual(TripCore.swipeDay(3, 6, -20, 0), 3, "short gestures do not change day");
+  assertEqual(TripCore.swipeDay(3, 6, -80, 160), 3, "vertical scroll does not change day");
+  assertEqual(TripCore.swipeDay(3, 6, -80, 75), 3, "diagonal scroll does not change day");
+}
 
 WScript.Quit(failures === 0 ? 0 : 1);

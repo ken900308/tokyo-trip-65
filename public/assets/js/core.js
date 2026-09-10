@@ -12,6 +12,14 @@ var TripCore = (function () {
     return day;
   }
 
+  function swipeDay(current, maximum, deltaX, deltaY) {
+    var day = normalizeDay(current, maximum);
+    if (Math.abs(deltaX) < 60 || Math.abs(deltaX) < Math.abs(deltaY) * 1.4) {
+      return day;
+    }
+    return Math.max(1, Math.min(maximum, day + (deltaX < 0 ? 1 : -1)));
+  }
+
   function getDay(days, value) {
     var list = days || [];
     var selected = normalizeDay(value, list.length);
@@ -121,6 +129,7 @@ var TripCore = (function () {
 
   return {
     normalizeDay: normalizeDay,
+    swipeDay: swipeDay,
     getDay: getDay,
     visibleDayEvents: visibleDayEvents,
     checklistProgress: checklistProgress,

@@ -1,3 +1,6 @@
 .tmp/
 .worktrees/
 .superpowers/
+dist/client/
+public/_site/
+.sites-runtime/
