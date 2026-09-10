@@ -34,7 +34,7 @@ $primaryTools = @(
 )
 
 $requiredDirectories = @("assets", "data")
-$requiredRootFiles = $productionPages + @("style.css", "guide.css", "aquarium.css", "fx-widget.js")
+$requiredRootFiles = $productionPages
 $optionalImageReferences = @(
     "images/sumida-ticket-me.png",
     "images/sumida-ticket-dad.png",

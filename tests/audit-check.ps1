@@ -17,7 +17,7 @@ $sharedCss = Read-Site "assets/css/app.css"
 foreach ($page in @("tickets.html", "sumida-aquarium.html")) {
     $html = Read-Site $page
     $css = $sharedCss + $html
-    if ($page -eq "sumida-aquarium.html") { $css += Read-Site "aquarium.css" }
+    if ($page -eq "sumida-aquarium.html") { $css += Read-Site "assets/css/aquarium.css" }
     Assert-Contract ($html -match 'href="assets/css/app.css"' -and $sharedCss -match '(?is)\[hidden\]\s*\{\s*display\s*:\s*none\s*!important\s*;?\s*\}') "$page hides the missing QR / loaded placeholder despite author display rules"
     $visibleClass = if ($page -eq "tickets.html") { "qr-placeholder" } else { "qr-empty" }
     Assert-Contract ($css -match "(?is)\.$visibleClass\s*\{[^}]*display\s*:\s*grid") "$page shows the placeholder when hidden is absent"
@@ -33,12 +33,12 @@ Assert-Contract ($itinerary -match '\u9810\u4f30 20:40[\u2013\uff5e\u2014-]21:15
 $itineraryJs = Read-Site "assets/js/itinerary.js"
 Assert-Contract ($itineraryJs -match 'ticketNav\.href\s*=\s*"tickets\.html\?day="\s*\+\s*dayNumber') "itinerary ticket navigation follows the selected day"
 
-$guideCss = Read-Site "guide.css"
+$guideCss = Read-Site "assets/css/guide.css"
 Assert-Contract ($guideCss -match '[^}]*\.now-card\s*>\s*div\s*\{[^}]*min-width\s*:\s*0') "guide timeline content can shrink around scrollable station flows"
 
 $currency = Read-Site "currency.html"
-Assert-Contract ((Read-Site "fx-widget.js") -match 'e.close.addEventListener\("click",\(\)=>\{e.panel.classList.remove\("show"\);e.toggle.setAttribute\("aria-expanded","false"\)') "closing converter synchronizes the toggle expanded state"
-Assert-Contract ($currency -match '<script src="fx-widget.js"></script>') "currency page loads the existing converter"
+Assert-Contract ((Read-Site "assets/js/fx-widget.js") -match 'e.close.addEventListener\("click",\(\)=>\{e.panel.classList.remove\("show"\);e.toggle.setAttribute\("aria-expanded","false"\)') "closing converter synchronizes the toggle expanded state"
+Assert-Contract ($currency -match '<script src="assets/js/fx-widget.js"></script>') "currency page loads the existing converter"
 foreach ($id in @("fxToggle", "fxPanel", "fxClose", "fxFrom", "fxTo", "fxAmount", "fxToAmount", "fxSwap", "fxRateNote")) {
     Assert-Contract (@([regex]::Matches($currency, "\bid=`"$id`"")).Count -eq 1) "currency provides one $id element for the existing script"
 }
