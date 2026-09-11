@@ -35,6 +35,9 @@ var TOKYO_PHRASES = {
       icon: "🏨",
       phrases: [
         {id: "hotel-check-in", zh: "我們要辦理入住。", ja: "チェックインをお願いします。", reading: "Chekkuin o onegai shimasu."},
+        {id: "hotel-store-before-checkin", zh: "請問可以在入住前寄放行李嗎？", ja: "チェックイン前に荷物を預かっていただけますか？", reading: "Check-in mae ni nimotsu o azukatte itadakemasu ka?"},
+        {id: "hotel-breakfast-four", zh: "我想預訂明天四個人的早餐。", ja: "明日の朝食を4名分予約したいです。", reading: "Ashita no chōshoku o yonmei-bun yoyaku shitai desu."},
+        {id: "hotel-taxi-haneda-t3", zh: "麻煩幫我們叫計程車到羽田機場第三航廈。", ja: "羽田空港第3ターミナルまでタクシーをお願いします。", reading: "Haneda Kūkō dai-san tāminaru made takushī o onegaishimasu."},
         {id: "hotel-help-door", zh: "房門打不開，請幫忙。", ja: "部屋のドアが開きません。助けてください。", reading: "Heya no doa ga akimasen. Tasukete kudasai."}
       ]
     },

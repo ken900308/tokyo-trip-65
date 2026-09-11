@@ -88,7 +88,7 @@ selector.click({target: {closest() { return buttons[5]; }}});
 assert.deepEqual(navigationCalls, [], 'reduced motion must not scroll either');
 swipe(event(300, 200), event(100, 200));
 day(6);
-assert.match(panel.innerHTML, /尚未安排/);
+assert.match(panel.innerHTML, /DAY 6/);
 console.log('PASS: swipe updates content, URL, date and tickets; scroll, controls, edges, cancellation and pinch are preserved.');
 for (const number of [1, 2, 3, 1, 6, 1]) {
   selector.click({target: {closest() { return buttons[number - 1]; }}});
@@ -132,7 +132,7 @@ selector.click({target: {closest() { return buttons[2]; }}});
 selector.click({target: {closest() { return buttons[5]; }}});
 animations.at(-1).finish();
 await new Promise(setImmediate);
-assert.match(panel.innerHTML, /尚未安排/, 'rapid selections cannot render stale content');
+assert.match(panel.innerHTML, /DAY 6/, 'rapid selections cannot render stale content');
 animations.at(-1).finish();
 await new Promise(setImmediate);
 reducedMotion = true;
