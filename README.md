@@ -47,7 +47,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests/serve.ps1
 
 確認行程後才設 `planned: true`，填入 `title`、`routeSummary`、`events` 與 `mapStops`。交通提示放在實際出發的事件內，包含上下車站與轉乘方式。未安排日期保留 `planned: false`，不要自行補景點。
 
-行程可左滑看下一天、右滑看前一天，仍可點日期按鈕；不循環，也不攔截地圖、路線列和連結的操作。
+行程可左滑看下一天、右滑看前一天，仍可點日期按鈕；不循環，也不攔截地圖、路線列和連結的操作。日期切換使用 220ms 淡出／淡入，不自動捲動或移動焦點；支援瀏覽器上一頁／下一頁。減少動態效果模式直接更新，不播放動畫。
 
 票券連結例：`tickets.html?day=2#sumida-aquarium`。新增頁面時，同步更新 workflow、`scripts/build-site.mjs` 與 `tests/link-check.ps1` 的正式頁面清單。
 

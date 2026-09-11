@@ -5,10 +5,11 @@
   var selector = document.querySelector("[data-day-selector]");
   var panel = document.querySelector("#day-panel");
   var ticketNav = document.querySelector("[data-ticket-nav]");
-  var selectedDay = 1;
+  var selectedDay = null;
   var gesture = null;
   var suppressClickUntil = 0;
   var dayAnimation = null;
+  var transitionId = 0;
 
   function escapeHtml(value) {
     return String(value == null ? "" : value)
@@ -120,35 +121,54 @@
     });
   }
 
-  function replaceDayInUrl(dayNumber) {
+  function updateDayInUrl(dayNumber, mode) {
     var url = new URL(window.location.href);
     url.searchParams.set("day", dayNumber);
-    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    window.history[mode === "push" ? "pushState" : "replaceState"]({}, "", url.pathname + url.search + url.hash);
   }
 
-  function selectDay(value, animate) {
+  function selectDay(value, animate, historyMode) {
     var dayNumber = window.TripCore.normalizeDay(value, days.length);
     var day = window.TripCore.getDay(days, dayNumber);
-    var previousDay = selectedDay;
+    if (selectedDay === dayNumber) { return; }
     selectedDay = dayNumber;
+    var requestId = ++transitionId;
+    if (dayAnimation) { dayAnimation.cancel(); dayAnimation = null; }
 
     setSelectedButton(dayNumber);
-    replaceDayInUrl(dayNumber);
+    if (historyMode !== "none") { updateDayInUrl(dayNumber, historyMode || "push"); }
     ticketNav.href = "tickets.html?day=" + dayNumber;
-    renderDay(day);
-    var activeButton = selector.querySelector('button[data-day="' + dayNumber + '"]');
-    if (activeButton) {
-      selector.scrollTo({left: activeButton.offsetLeft - selector.offsetLeft -
-        (selector.clientWidth - activeButton.offsetWidth) / 2, behavior: "auto"});
+    // Keep the visible page tall enough when switching to a short/unplanned day.
+    // This prevents native scroll clamping; no scroll-position restoration is needed.
+    var bounds = panel.getBoundingClientRect();
+    var viewportFloor = Math.max(0, window.innerHeight - bounds.top);
+    var shouldAnimate = animate && panel.animate &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!shouldAnimate) {
+      panel.style.minHeight = viewportFloor + "px";
+      renderDay(day);
+      return;
     }
-    if (dayAnimation) { dayAnimation.cancel(); }
-    if (animate && dayNumber !== previousDay && panel.animate &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    panel.style.minHeight = Math.max(bounds.height, viewportFloor) + "px";
+    dayAnimation = panel.animate([
+      {opacity: 1, transform: "translateY(0)"},
+      {opacity: 0, transform: "translateY(4px)"}
+    ], {duration: 90, easing: "ease-in", fill: "forwards"});
+    dayAnimation.finished.then(function () {
+      if (requestId !== transitionId) { return; }
+      dayAnimation.cancel();
+      renderDay(day);
       dayAnimation = panel.animate([
-        {transform: "translateX(" + (dayNumber > previousDay ? "24px" : "-24px") + ")", opacity: 0.5},
-        {transform: "translateX(0)", opacity: 1}
-      ], {duration: 180, easing: "ease-out"});
-    }
+        {opacity: 0, transform: "translateY(4px)"},
+        {opacity: 1, transform: "translateY(0)"}
+      ], {duration: 130, easing: "ease-out", fill: "forwards"});
+      return dayAnimation.finished.then(function () {
+        if (requestId !== transitionId) { return; }
+        dayAnimation.cancel();
+        dayAnimation = null;
+        panel.style.minHeight = viewportFloor + "px";
+      });
+    }).catch(function () { /* A newer selection cancelled this transition. */ });
   }
 
   selector.addEventListener("click", function (event) {
@@ -158,13 +178,7 @@
       return;
     }
 
-    selectDay(button.getAttribute("data-day"), false);
-    // Focus must not jump first; let the explicit scroll provide the transition.
-    panel.focus({preventScroll: true});
-    panel.scrollIntoView({
-      block: "start",
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
-    });
+    selectDay(button.getAttribute("data-day"), true);
   });
 
   // Keep vertical scrolling, pinch zoom, links, maps and horizontal route lists native.
@@ -194,10 +208,6 @@
     if (nextDay === selectedDay || String(window.getSelection())) { return; }
     suppressClickUntil = Date.now() + 400;
     selectDay(nextDay, true);
-    // A shorter next day must not leave the reader near its bottom.
-    if (panel.getBoundingClientRect().top < 0) {
-      selector.scrollIntoView({block: "start", behavior: "instant"});
-    }
   });
 
   panel.addEventListener("pointercancel", function () { gesture = null; });
@@ -206,5 +216,9 @@
     if (Date.now() < suppressClickUntil) { event.preventDefault(); event.stopPropagation(); }
   }, true);
 
-  selectDay(new URLSearchParams(window.location.search).get("day"));
+  window.history.scrollRestoration = "manual";
+  window.addEventListener("popstate", function () {
+    selectDay(new URLSearchParams(window.location.search).get("day"), true, "none");
+  });
+  selectDay(new URLSearchParams(window.location.search).get("day"), false, "replace");
 }());
