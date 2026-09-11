@@ -372,7 +372,12 @@ var TOKYO_ITINERARY = {
           summary: "取回寄存行李、Check-in、拿房卡。確認明天四人早餐已訂妥，並核對 09:30 機場 Shuttle、集合位置及是否先到先搭。",
           instruction: "早餐還沒訂就現在訂：明日の朝食を4名分予約したいです。",
           ticketUrl: "tickets.html?day=5#hotel-mystays-haneda"},
-        {id: "day-5-evening", time: "晚上", label: "不排固定景點", title: "晚餐・整理回台行李",
+        {id: "day-5-dinner", time: "約 18:30–19:30", label: "晚餐候選", title: "Nishio no unagi・西尾の鰻",
+          summary: "入住、放好行李後，步行前往吃鰻魚飯。地址：東京都大田区羽田4-20-7 須山ビル1F，位於穴守稻荷站附近。四位成人同行，先確認是否有四人座位。",
+          instruction: "店家刊載晚間營業 17:00–20:30，最後點餐 20:00；可能臨時休業，出發前請再確認。若客滿、休息或爸媽累了，就改在飯店附近簡單吃，不必硬等。用餐後回 MYSTAYS 羽田整理行李。",
+          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=HOTEL+MYSTAYS+Haneda&destination=Nishio+no+unagi+Haneda+4-20-7&travelmode=walking",
+          officialUrl: "https://r.gnavi.co.jp/5abmz6ju0000/"},
+        {id: "day-5-evening", time: "晚餐後", label: "不排固定景點", title: "回飯店・整理回台行李",
           summary: "吃飯、洗澡、整理戰利品與托運行李；護照放固定位置，確認 BR191、準備隔日衣物，手機／行動電源充電。",
           instruction: "超過隨身限制的液體放托運，行動電源留隨身並核對航空公司規定。有精神才去穴守稻荷神社附近散步、便利商店或宵夜；爸媽累了就留飯店休息。"}
       ]
