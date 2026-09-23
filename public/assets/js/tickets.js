@@ -40,7 +40,7 @@
     var links = "<a href=\"" + escapeHtml(group.itineraryUrl) + "\">查看 Day " + dayNumber + " 行程</a>";
 
     if (group.externalUrl) {
-      links += "<a href=\"" + escapeHtml(group.externalUrl) + "\" target=\"_blank\" rel=\"noopener noreferrer\">Google Maps</a>";
+      links += "<a href=\"" + escapeHtml(group.externalUrl) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + escapeHtml(group.externalLabel || "Google Maps") + "</a>";
     }
 
     return "<article class=\"ticket-group booking-card surface-card booking-card--" + escapeHtml(group.kind) +
@@ -52,6 +52,9 @@
       (group.passengers ? "<p class=\"booking-passengers\"><span aria-hidden=\"true\">👥</span>" + escapeHtml(group.passengers) + "</p>" : "") +
       "<dl class=\"booking-facts\">" + renderDetails(group.details) + "</dl>" +
       (group.address ? "<p class=\"booking-address\"><strong>地址</strong><span>" + escapeHtml(group.address) + "</span></p>" : "") +
+      (group.checkinCode ? "<div class=\"checkin-code\"><label for=\"checkin-" + escapeHtml(group.id) + "\">入住碼</label>" +
+        "<input id=\"checkin-" + escapeHtml(group.id) + "\" value=\"" + escapeHtml(group.checkinCode) + "\" readonly inputmode=\"numeric\">" +
+        "<button type=\"button\" data-copy-checkin>複製入住碼</button><p data-copy-status role=\"status\" aria-live=\"polite\"></p></div>" : "") +
       "<nav class=\"ticket-links\" aria-label=\"" + escapeHtml(group.title) + "相關連結\">" + links + "</nav></article>";
   }
 
@@ -181,6 +184,25 @@
   prepareImages();
 
   container.addEventListener("click", function (event) {
+    var copyButton = event.target.closest("[data-copy-checkin]");
+    if (copyButton) {
+      var field = copyButton.parentElement.querySelector("input");
+      var status = copyButton.parentElement.querySelector("[data-copy-status]");
+      var failed = function () {
+        field.focus();
+        field.select();
+        field.setSelectionRange(0, field.value.length);
+        status.textContent = "請長按已選取的入住碼，選擇複製。";
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(field.value).then(function () {
+          status.textContent = "入住碼已複製，可開啟「查看入住方式」並貼上。";
+        }, failed);
+      } else {
+        failed();
+      }
+      return;
+    }
     var trigger = event.target.closest("[data-qr-trigger]");
 
     if (trigger) {

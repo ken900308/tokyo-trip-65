@@ -83,7 +83,16 @@
       (event.instruction ? "<p class=\"instruction\"><strong>到現場：</strong>" + escapeHtml(event.instruction) + "</p>" : "") +
       renderTransport(event.transport) +
       (event.planB ? "<details class=\"plan-b\"><summary>Plan B</summary><p>" + escapeHtml(event.planB) + "</p></details>" : "") +
-      renderActions(event) + "</div></li>";
+      renderActions(event) + (window.VisitorMaps ? window.VisitorMaps.render(event.id) : "") + "</div></li>";
+  }
+
+  function renderArrival(day) {
+    if (!day.arrivalSteps) { return ""; }
+    return '<section class="arrival-guide surface-card" aria-label="機場到住宿操作步驟">' +
+      '<h3>下飛機後，照著走</h3><p class="arrival-notice"><strong>' + escapeHtml(day.arrivalNotice) +
+      '</strong></p><ol class="arrival-steps">' + day.arrivalSteps.map(function (step) {
+        return '<li><strong>' + escapeHtml(step.title) + '</strong><span>' + escapeHtml(step.detail) + '</span></li>';
+      }).join('') + '</ol></section>';
   }
 
   function renderPlannedDay(day) {
@@ -103,7 +112,7 @@
       "<details class=\"map-preview surface-card\"><summary><span>路線地圖</span><small>點一下展開</small></summary>" +
       "<div class=\"map-preview__frame\"><iframe loading=\"lazy\" title=\"Day " + day.day + " 路線地圖\" src=\"" +
       escapeHtml(mapUrl) + "\"></iframe></div><a href=\"itinerary-map.html?day=" + day.day + "\">開啟全螢幕地圖</a></details>" +
-      "<ol class=\"timeline\" aria-label=\"Day " + day.day + " 行程\">" + cards + "</ol>";
+      renderArrival(day) + "<ol class=\"timeline\" aria-label=\"Day " + day.day + " 行程\">" + cards + "</ol>";
   }
 
   function renderDay(day) {

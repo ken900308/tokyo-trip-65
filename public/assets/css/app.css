@@ -292,3 +292,10 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Lodging code supplied and approved for public publication by the trip owner. */
+.checkin-code { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.checkin-code label, .checkin-code p { flex-basis: 100%; margin: 0; }
+.checkin-code label { font-weight: 700; }
+.checkin-code input { width: 100%; max-width: 240px; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 1.25rem; letter-spacing: .1em; }
+.checkin-code button { padding: 10px 16px; background: var(--accent); color: white; border: 0; border-radius: 10px; cursor: pointer; }

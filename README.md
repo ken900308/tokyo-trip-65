@@ -1,6 +1,6 @@
 # Tokyo Trip｜東京家族旅行工具
 
-2026/09/25–09/30，四位成人的東京旅行網站。Day 1–3、Day 5–6 已安排；Day 4 尚未安排。Day 5 搬飯店與池上散步，Day 6 羽田回松山。
+2026/09/25–09/30，四位成人的東京旅行網站。Day 1–3、Day 5–6 已安排；Day 4 休息、各自自由活動。Day 5 搬飯店與池上散步，Day 6 羽田回松山。
 
 公開網站：[Tokyo Trip](https://ken900308.github.io/tokyo-trip-65/)
 
@@ -33,6 +33,7 @@
 ```powershell
 cscript //nologo tests/core-tests.js
 node tests/itinerary-swipe-tests.mjs
+node tests/visitor-maps-tests.mjs
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/audit-check.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/link-check.ps1
 git diff --check
@@ -57,7 +58,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests/serve.ps1
 
 四張 QR 圖片的檔名見 `docs/tickets.md`，缺圖時顯示提示。QR 點擊全螢幕，再點可放大。新增圖片路徑須更新部署、建置工具與連結檢查的允許清單。
 
-公開網站與 repository 不應放入 PNR、電子機票號碼、訂單編號、PIN 或原始訂位截圖。折疊不等於隱私保護；真實 QR 票券也可能被公開讀取，請確認可公開後再提交。
+本次依旅程擁有者明確授權，公開四張水族館 QR 與住宿入住碼（`checkinCode`）。公開網址、repository 與 Git 歷史中的資料都可能被搜尋、複製或轉傳，折疊不等於存取保護。未授權的 PNR、電子機票號碼、其他訂單 PIN 與訂位截圖仍不要放入。若日後撤回公開，需一併處理已發布檔案與 Git 歷史；撤下也不能收回他人副本。
+
+Day 1 優先 Access 特急往押上，至少保留每人 ¥1,200 Suica 餘額。`public/assets/css/arrival.css` 管理七步驟排版。整合匯出網站時保留原有 Day 5、6、Checklist 與無捲動日期切換，不以匯出檔整包覆蓋。
+
+導覽圖資料在 `public/data/visitor-maps.js`，圖片在 `public/assets/maps/`；各圖以行程事件 `id` 關聯，由 `visitor-maps.js` 提供放大、縮放與返回。只匯入有使用的圖片；來源、圖片語言與整理日期均顯示在卡片內，最新現場指標優先。
 
 ## 其他內容
 

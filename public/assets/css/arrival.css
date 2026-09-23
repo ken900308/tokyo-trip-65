@@ -1,0 +1,8 @@
+.arrival-guide { margin: 20px 0; padding: 22px; }
+.arrival-guide h3 { margin-top: 0; }
+.arrival-notice { border-left: 4px solid #a43838; background: #fff3e8; color: #71321c; padding: 16px; line-height: 1.7; }
+.arrival-steps { list-style: none; padding: 0; margin: 20px 0 0; counter-reset: arrival; display: grid; gap: 12px; }
+.arrival-steps li { counter-increment: arrival; display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 2px 12px; align-items: start; }
+.arrival-steps li::before { content: counter(arrival); grid-row: span 2; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #176b4d; color: white; font-weight: 700; }
+.arrival-steps span { grid-column: 2; font-size: .95rem; line-height: 1.7; }
+@media (min-width: 640px) { .arrival-steps { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; } }

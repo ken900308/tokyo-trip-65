@@ -1,80 +1,230 @@
 var TOKYO_ITINERARY = {
   days: [
     {
-      day: 1,
-      date: "09/25",
-      weekday: "FRI",
-      planned: true,
-      title: "台灣 → 東京",
-      routeSummary: ["桃園 T1", "成田 T1", "押上", "住宿"],
-      detailGuideUrl: "day1-guide.html",
-      ticketDeepLinks: [],
-      officialUrls: [
-        {label: "Visit Japan Web", url: "https://www.digital.go.jp/policies/visit_japan_web"},
-        {label: "成田 T1 官方地圖", url: "https://www.narita-airport.jp/en/discover/official_guide/"},
-        {label: "Welcome Suica", url: "https://www.jreast.co.jp/en/multi/welcomesuica/"}
+      "day": 1,
+      "date": "09/25",
+      "weekday": "FRI",
+      "planned": true,
+      "title": "台灣 → 東京",
+      "routeSummary": [
+        "桃園 T1",
+        "成田 T1",
+        "押上",
+        "住宿"
       ],
-      navigationUrls: [
-        {label: "成田 T1 → 押上", url: "https://www.google.com/maps/dir/?api=1&origin=Narita+Airport+Terminal+1&destination=Oshiage+Station&travelmode=transit"},
-        {label: "前往住宿", url: "https://www.google.com/maps/dir/?api=1&origin=Narita+Airport+Terminal+1&destination=5-chome-1-8+Narihira,+Sumida+City,+Tokyo&travelmode=transit"}
-      ],
-      mapStops: [
-        {time: "20:00", title: "成田國際機場 T1", description: "入境、領行李、購買 Welcome Suica", lat: 35.7647, lng: 140.3864},
-        {time: "21:30", title: "成田機場站", description: "搭 Access Express 直達押上", lat: 35.7658, lng: 140.3855},
-        {time: "22:20", title: "押上站", description: "抵達 Oshiage / Skytree", lat: 35.7101, lng: 139.8131},
-        {time: "22:30", title: "nestay suite 東京天空樹", description: "步行前往住宿、自助入住", lat: 35.7058, lng: 139.8178}
-      ],
-      events: [
+      "detailGuideUrl": "day1-guide.html",
+      "ticketDeepLinks": [
         {
-          id: "day-1-flight",
-          time: "15:30",
-          label: "FLIGHT",
-          title: "桃園機場出發",
-          summary: "酷航 TR874，預計 20:00 抵達成田國際機場 T1。",
-          ticketUrl: "tickets.html?day=1#flight-tr874",
-          transport: {mode: "flight", from: "桃園機場 T1", to: "成田機場 T1", service: "酷航 TR874"}
-        },
-        {
-          id: "day-1-arrival",
-          time: "20:00",
-          label: "ARRIVAL",
-          title: "成田入境與領行李",
-          summary: "依序完成入國審查、領行李、海關，再到 1F 入境大廳；Visit Japan Web QR Code 先存到手機。預估 20:40–21:15 出關。",
-          instruction: "完成海關後跟著「鉄道 / Train」前往 B1F。",
-          officialUrl: "https://www.digital.go.jp/policies/visit_japan_web",
-          navigationUrl: "https://www.narita-airport.jp/en/discover/official_guide/"
-        },
-        {
-          id: "day-1-suica",
-          time: "21:15",
-          label: "SUICA",
-          title: "B1F 購買 Welcome Suica",
-          summary: "每人一張，第一次建議儲值 ¥3,000～¥5,000；不需 ¥500 押金、效期 28 天，餘額不能退款。",
-          instruction: "找 Welcome Suica 售票機，或向 JR EAST Travel Service Center 詢問。",
-          officialUrl: "https://www.jreast.co.jp/en/multi/welcomesuica/"
-        },
-        {
-          id: "day-1-access-express",
-          time: "21:30",
-          label: "DIRECT TRAIN",
-          title: "Access Express 直達押上",
-          summary: "搭京成 Narita SKY ACCESS「アクセス特急」，約 50～60 分鐘，可刷 Suica，不需另買特急券。",
-          instruction: "上車前確認電子看板顯示停靠「押上 Oshiage」。",
-          transport: {mode: "train", from: "成田空港 T1", to: "押上 Oshiage", service: "Access Express"},
-          planB: "直達車要等太久時，在青砥轉一次；向京成站務員詢問最快路線。",
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Narita+Airport+Terminal+1&destination=Oshiage+Station&travelmode=transit"
-        },
-        {
-          id: "day-1-check-in",
-          time: "22:30",
-          label: "CHECK-IN",
-          title: "步行前往住宿",
-          summary: "押上站 B1 出口往業平方向，步行約 6～10 分鐘至 nestay suite 東京天空樹；大行李可改走有電梯的 B3。",
-          instruction: "超過 23:00 仍可自助入住；先存好大門／房門密碼、房號、房東聯絡方式。",
-          address: "東京都墨田区業平5丁目1-8",
-          navigationUrl: "https://www.google.com/maps/search/?api=1&query=東京都墨田区業平5丁目1-8"
+          "id": "hotel-self-checkin",
+          "label": "住宿入住碼",
+          "url": "tickets.html?day=1#hotel-self-checkin"
         }
-      ]
+      ],
+      "officialUrls": [
+        {
+          "label": "Visit Japan Web",
+          "url": "https://www.digital.go.jp/policies/visit_japan_web"
+        },
+        {
+          "label": "成田 T1 官方地圖",
+          "url": "https://www.narita-airport.jp/en/discover/official_guide/"
+        },
+        {
+          "label": "Welcome Suica",
+          "url": "https://www.jreast.co.jp/en/multi/welcomesuica/"
+        },
+        {
+          "label": "京成 Access 特急官方票價",
+          "url": "https://www.keisei.co.jp/keisei/tetudou/skyliner/jp/traffic/express_fares.php"
+        }
+      ],
+      "navigationUrls": [
+        {
+          "label": "成田 T1 → 押上",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=Narita+Airport+Terminal+1&destination=Oshiage+Station&travelmode=transit"
+        },
+        {
+          "label": "前往住宿",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=東京都墨田区業平5丁目1-8&travelmode=walking"
+        }
+      ],
+      "mapStops": [
+        {
+          "time": "20:00",
+          "title": "成田國際機場 T1",
+          "description": "入境、領行李、購買 Welcome Suica",
+          "lat": 35.7647,
+          "lng": 140.3864
+        },
+        {
+          "time": "約 21:30",
+          "title": "成田機場站",
+          "description": "Access 特急往押上；直通班次依當晚看板",
+          "lat": 35.7658,
+          "lng": 140.3855
+        },
+        {
+          "time": "約 22:30",
+          "title": "押上站",
+          "description": "抵達 Oshiage / Skytree",
+          "lat": 35.7101,
+          "lng": 139.8131
+        },
+        {
+          "time": "約 22:40",
+          "title": "nestay suite 東京天空樹",
+          "description": "步行前往住宿、自助入住",
+          "lat": 35.7058,
+          "lng": 139.8178
+        }
+      ],
+      "events": [
+        {
+          "id": "day-1-before-leaving",
+          "time": "出門前",
+          "label": "行前確認",
+          "title": "確認 TR874 航班與四人證件",
+          "summary": "9/25 酷航 TR874：桃園 TPE 第一航廈 → 成田 NRT 第一航廈。依提供的航班截圖：台灣 15:30 起飛、日本 20:00 抵達；日本比台灣快 1 小時。以下為建議安排，若航班異動請同步調整。",
+          "instruction": "護照、電子機票／訂位資料、手機與日圓隨身帶；四人都確認 Visit Japan Web 入境資料。櫃檯與登機門依當天機場看板。",
+          "ticketUrl": "tickets.html?day=1#flight-tr874",
+          "detailUrl": "day1-guide.html#departure"
+        },
+        {
+          "id": "day-1-airport-mrt",
+          "time": "11:15",
+          "label": "建議・台灣時間",
+          "title": "台北車站轉機捷 → A12 第一航廈",
+          "summary": "以台北車站出發為例：跟「桃園機場捷運／Taoyuan Airport MRT」指標走到 A1，預留 15～20 分鐘站內步行，再搭往機場的直達車；A1 → A12 車程約 35 分鐘，另留候車及走到報到大廳的時間。",
+          "instruction": "在 A12「機場第一航廈」下車；出站跟「出境／Departures」到第一航廈 1F 報到大廳。若搭計程車／接送，目的地設「桃園機場第一航廈出境大廳」。",
+          "transport": {
+            "mode": "train",
+            "from": "機場捷運 A1 台北車站",
+            "to": "A12 機場第一航廈",
+            "service": "直達車・往機場"
+          },
+          "officialUrl": "https://www.tymetro.com.tw/tymetro-new/tw/_pages/travel-guide/timetable-search.php",
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&destination=Taoyuan+Airport+Terminal+1&travelmode=transit"
+        },
+        {
+          "id": "day-1-airport-checkin",
+          "time": "12:30",
+          "label": "建議・起飛前 3 小時",
+          "title": "第一航廈 1F・酷航報到櫃檯 3、5",
+          "summary": "提供的航班截圖顯示登機報到櫃檯為 3、5，報到截止為台灣時間 14:30。到第一航廈 1F 後，先看 TR874／Scoot／Tokyo Narita 的現場看板確認櫃檯，再排隊報到。準備四人護照與訂位資料，領登機證；有加購託運才辦理交運。",
+          "instruction": "核對登機證的姓名、航班、登機時間、登機門與座位。報到櫃檯起飛前 60 分鐘關閉；若 15:30 起飛，14:30 截止，不要壓線抵達。",
+          "officialUrl": "https://www.flyscoot.com/zhtw/plan/before-you-fly/checking-in"
+        },
+        {
+          "id": "day-1-security",
+          "time": "13:15",
+          "label": "建議・台灣時間",
+          "title": "安檢 → 出境證照查驗 → 找登機門",
+          "summary": "完成報到後跟「出境／Departures」上樓，依現場動線完成安檢與證照查驗。護照與登機證放好拿的位置，安檢時依人員指示取出物品。",
+          "instruction": "進管制區先找 TR874 最新登機門，確認步行距離，再安排吃飯、補水與洗手間；登機門可能更改。"
+        },
+        {
+          "id": "day-1-boarding",
+          "time": "14:30",
+          "label": "建議・起飛前 60 分鐘",
+          "title": "四人一起抵達登機門候機",
+          "summary": "確認看板是 TR874、目的地 Tokyo Narita，依登機證與廣播分批登機。護照、登機證拿在手邊，上機後找座位並依空服員指示收好行李。",
+          "instruction": "酷航登機門在起飛前 15 分鐘關閉；若 15:30 起飛，15:15 關門。這是截止時間，不是建議抵達時間。",
+          "officialUrl": "https://www.flyscoot.com/en/plan/before-you-fly/checking-in"
+        },
+        {
+          "id": "day-1-flight",
+          "time": "15:30",
+          "label": "FLIGHT",
+          "title": "桃園機場出發",
+          "summary": "酷航 TR874，預計 20:00 抵達成田國際機場 T1。",
+          "ticketUrl": "tickets.html?day=1#flight-tr874",
+          "transport": {
+            "mode": "flight",
+            "from": "桃園機場 T1",
+            "to": "成田機場 T1",
+            "service": "酷航 TR874"
+          }
+        },
+        {
+          "id": "day-1-arrival",
+          "time": "20:00",
+          "label": "ARRIVAL",
+          "title": "成田入境與領行李",
+          "summary": "依序完成入國審查、領行李、海關，再到 1F 入境大廳；Visit Japan Web QR Code 先存到手機。預估 20:40–21:15 出關。",
+          "instruction": "完成海關後跟著「鉄道 / Train」前往 B1F。",
+          "officialUrl": "https://www.digital.go.jp/policies/visit_japan_web",
+          "navigationUrl": "https://www.narita-airport.jp/en/discover/official_guide/"
+        },
+        {
+          "id": "day-1-suica",
+          "time": "21:15",
+          "label": "SUICA",
+          "title": "購買／設定 Suica，再確認餘額",
+          "summary": "每人一張 Suica（西瓜卡），實體卡或已設定完成的手機 Suica 都可以。搭車前卡內至少 ¥1,200；建議儲值 ¥2,000 以上留餘裕。",
+          "instruction": "先完成購卡或手機設定，再看餘額；不足就到儲值機選 Charge／チャージ，加值完成才進站。晚間櫃檯可能已關，請找售票機或詢問現場人員。",
+          "officialUrl": "https://www.jreast.co.jp/en/multi/welcomesuica/",
+          "detailUrl": "https://matcha-jp.com/tw/30"
+        },
+        {
+          "id": "day-1-access-express",
+          "time": "約 21:30",
+          "label": "預估・依實際班次",
+          "title": "推薦：Access 特急 → 押上",
+          "summary": "搭 Narita SKY ACCESS「アクセス特急 / Access Express」往東京方向，車程約 1 小時，車資約 ¥1,200。可直接使用 Suica，不需要購買 Skyliner 指定席券。",
+          "instruction": "跟「京成電鉄 / Keisei」指標進站。確認列車種類是 Access 特急，且停靠「押上〈スカイツリー前〉 / Oshiage (Skytree)」，優先搭不需轉車的班次。約 21:30 是預估，不是確認班次；直通與否以當晚看板為準。",
+          "transport": {
+            "mode": "train",
+            "from": "成田機場 T1｜成田空港 / Narita Airport Terminal 1",
+            "to": "押上站｜押上〈スカイツリー前〉 / Oshiage (Skytree)",
+            "service": "Narita SKY ACCESS・アクセス特急 / Access Express"
+          },
+          "planB": "沒有合適直通車時，請京成站務員確認經青砥（青砥 / Aoto）或京成高砂（京成高砂 / Keisei-Takasago）轉往押上的班次與末班銜接。Skyliner 雖較快到上野／日暮里，但本次住宿在押上／晴空塔附近，還需額外轉車，因此不列首選。",
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=Narita+Airport+Terminal+1&destination=Oshiage+Station&travelmode=transit",
+          "officialUrl": "https://www.keisei.co.jp/keisei/tetudou/skyliner/jp/traffic/express_fares.php"
+        },
+        {
+          "id": "day-1-check-in",
+          "time": "約 22:40",
+          "label": "CHECK-IN",
+          "title": "押上 → nestay suite 東京天空樹",
+          "summary": "抵達押上後步行前往住宿：東京都墨田區業平 5-1-8（日文：東京都墨田区業平5丁目1-8）。預留約 10 分鐘，實際依出口與步速調整。",
+          "instruction": "跟出口與電梯指標到地面，再開步行導航；大行李以電梯優先。點「開啟票券」查看入住碼與住宿方入住說明，房號及門鎖操作依住宿方指示。",
+          "address": "東京都墨田区業平5丁目1-8",
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=東京都墨田区業平5丁目1-8&travelmode=walking",
+          "ticketUrl": "tickets.html?day=1#hotel-self-checkin"
+        }
+      ],
+      "arrivalSteps": [
+        {
+          "title": "下飛機",
+          "detail": "TR874 抵達成田 T1（日本時間）"
+        },
+        {
+          "title": "入境／領行李",
+          "detail": "入國審查 → 行李 → 海關"
+        },
+        {
+          "title": "Suica 儲值",
+          "detail": "每人卡內至少 ¥1,200；不足先加值"
+        },
+        {
+          "title": "找京成線",
+          "detail": "鉄道 / Train → B1F → 京成電鉄 / Keisei"
+        },
+        {
+          "title": "搭 Access 特急",
+          "detail": "アクセス特急 / Access Express；確認直通押上"
+        },
+        {
+          "title": "押上下車",
+          "detail": "押上〈スカイツリー前〉 / Oshiage (Skytree)"
+        },
+        {
+          "title": "步行到住宿",
+          "detail": "nestay suite 東京天空樹｜東京都墨田区業平5丁目1-8"
+        }
+      ],
+      "arrivalNotice": "搭車前請逐一確認：四個人的 Suica 餘額都至少 ¥1,200，不是四人合計！車資約 ¥1,200，建議先儲 ¥2,000 以上留餘裕。"
     },
     {
       day: 2,
@@ -298,7 +448,7 @@ var TOKYO_ITINERARY = {
         }
       ]
     },
-    {day: 4, date: "09/28", weekday: "MON", planned: false, status: "尚未安排"},
+    {day: 4, date: "09/28", weekday: "MON", planned: false, status: "休息日・各自自由活動"},
     {
       day: 5, date: "09/29", weekday: "TUE", planned: true,
       title: "搬飯店＋池上庭園散步",

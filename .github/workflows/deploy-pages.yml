@@ -27,6 +27,9 @@ jobs:
       - name: Check itinerary swipe behavior
         run: node tests/itinerary-swipe-tests.mjs
 
+      - name: Check visitor maps and integrated travel assets
+        run: node tests/visitor-maps-tests.mjs
+
       - name: Prepare static site
         shell: bash
         working-directory: public

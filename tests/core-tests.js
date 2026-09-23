@@ -102,10 +102,10 @@ assertEqual(typeof TripCore.visibleDayEvents, "function", "exposes visible day e
 if (typeof TripCore.visibleDayEvents === "function") {
   assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 3).length, 9, "returns Day 3 events");
   assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 4).length, 0, "returns no events for Day 4");
-  assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, "not-a-day").length, 5, "defaults invalid event day to Day 1");
+  assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, "not-a-day").length, TOKYO_ITINERARY.days[0].events.length, "defaults invalid event day to Day 1");
 }
 assertEqual(TOKYO_ITINERARY.days[3].planned, false, "marks Day 4 unplanned");
-assertEqual(TOKYO_ITINERARY.days[3].status, "\u5c1a\u672a\u5b89\u6392", "labels Day 4 as unplanned");
+assertEqual(TOKYO_ITINERARY.days[3].status, "\u4f11\u606f\u65e5\u30fb\u5404\u81ea\u81ea\u7531\u6d3b\u52d5", "labels Day 4 as a free rest day");
 assertEqual(TOKYO_ITINERARY.days[0].events[0].ticketUrl, "tickets.html?day=1#flight-tr874", "links the Day 1 flight event to its booking card");
 assertEqual(typeof TripCore.mapDocumentTitle, "function", "exposes map document titles");
 if (typeof TripCore.mapDocumentTitle === "function") {

@@ -165,7 +165,8 @@ foreach ($relativePage in $productionPages) {
 
 $dataContracts = @(
     @{ Path = "data/tickets.js"; Fields = @("image", "itineraryUrl", "detailUrl") },
-    @{ Path = "data/itinerary.js"; Fields = @("detailGuideUrl", "ticketUrl", "detailUrl") }
+    @{ Path = "data/itinerary.js"; Fields = @("detailGuideUrl", "ticketUrl", "detailUrl") },
+    @{ Path = "data/visitor-maps.js"; Fields = @("image", "thumbnail") }
 )
 
 foreach ($contract in $dataContracts) {
@@ -177,7 +178,7 @@ foreach ($contract in $dataContracts) {
 
     $fieldPattern = ($contract.Fields | ForEach-Object { [regex]::Escape($_) }) -join '|'
     $dataSource = Get-Content -Raw -Encoding UTF8 -LiteralPath $dataPath
-    foreach ($match in [regex]::Matches($dataSource, "(?m)\b(?:$fieldPattern)\s*:\s*([`"'])(.*?)\1")) {
+    foreach ($match in [regex]::Matches($dataSource, "(?m)(?<![\w])(?:[`"']?)(?:$fieldPattern)(?:[`"']?)\s*:\s*([`"'])(.*?)\1")) {
         $reference = $match.Groups[2].Value.Trim()
         $documentBase = Join-Path $resolvedSiteRoot "index.html"
         Test-LocalReference -Owner $contract.Path -OwnerPath $documentBase -Reference $reference -AllowKnownOptionalImage $true

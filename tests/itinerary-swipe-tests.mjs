@@ -142,3 +142,16 @@ assert.match(panel.innerHTML, /DAY 1/);
 assert.equal(animations.length, animationCount, 'reduced motion skips both animation phases');
 assert.deepEqual(navigationCalls, []);
 console.log('PASS: two-phase fade, height stability, cancellation and reduced-motion rendering.');
+
+// Arrival instructions must be rendered in the actual Day 1 panel, not just stored.
+assert.match(panel.innerHTML, /class="arrival-steps"/);
+assert.match(panel.innerHTML, /至少[^<]*¥1,200/);
+assert.match(panel.innerHTML, /成田空港.*Narita Airport/);
+assert.match(panel.innerHTML, /押上.*Oshiage/);
+assert.match(panel.innerHTML, /hotel-self-checkin/);
+assert.match(panel.innerHTML, /約 1 小時/);
+assert.equal(window.TOKYO_ITINERARY.days[0].arrivalSteps.length, 7);
+assert.equal(window.TOKYO_ITINERARY.days[4].planned, true);
+assert.equal(window.TOKYO_ITINERARY.days[5].planned, true);
+assert.match(JSON.stringify(window.TOKYO_ITINERARY.days[4]), /Nishio/);
+console.log('PASS: seven-step arrival route, balance warning and preserved later days.');
