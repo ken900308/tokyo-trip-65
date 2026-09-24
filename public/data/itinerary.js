@@ -408,13 +408,13 @@ var TOKYO_ITINERARY = {
       ]
     },
     {
-      day: 3,
-      date: "09/27",
-      weekday: "SUN",
-      planned: true,
-      quickGuide: {
-        "title": "今天照著走・神社與東京西側",
-        "notice": "今天步行較多，先吃飯、補水再進明治神宮。原宿→新宿認明山手線「新宿・池袋方面」；回程新宿→錦糸町搭黃色總武線各站停車，不是中央線快速。",
+      "day": 3,
+      "date": "09/27",
+      "weekday": "SUN",
+      "planned": true,
+      "quickGuide": {
+        "title": "今天照著走・神社到新宿霓虹",
+        "notice": "前四步照原計畫。下午搭 JR 到新宿後慢慢逛；花園神社可跳過，每走 20～30 分鐘安排坐下休息。約 17:30 起往歌舞伎町看霓虹，晚餐後回住宿；時間是彈性參考，不用趕。",
         "steps": [
           {
             "title": "押上出發到日枝神社",
@@ -439,25 +439,49 @@ var TOKYO_ITINERARY = {
             "detail": "從原宿口入場 → 南參道 → 御社殿，原路返回；碎石路不用趕。"
           },
           {
-            "title": "HARAKADO 坐下休息",
-            "detail": "步行到 HARAKADO 6F Food Hall，補水、洗手間；有體力再逛 7F。"
-          },
-          {
-            "title": "搭 JR 到新宿",
-            "detail": "步行至 JR 原宿 JY19（Harajuku）→ 新宿 JY17（Shinjuku）；逛東口、歌舞伎町與晚餐。",
+            "title": "明治神宮 → 新宿",
+            "detail": "原路回原宿 JY19；2 號月台山手線外回り「新宿・池袋方面」，2 站約 4～5 分鐘到新宿 JY17，從東口開始。",
             "eventIds": [
               "day-3-to-shinjuku"
             ]
           },
           {
-            "title": "經錦糸町回住宿",
-            "detail": "JR 新宿 → JR 錦糸町（Kinshicho）；出 JR 閘門再進 Metro Z13 → 押上 Z14。",
+            "title": "新宿東口、新宿通自由散步",
+            "detail": "下午慢逛新宿通／三丁目方向，喜歡才進店；每走 20～30 分鐘找咖啡店坐下、補水與詢問洗手間，不是固定店家巡禮。",
+            "eventIds": [
+              "day-3-east-walk"
+            ]
+          },
+          {
+            "title": "花園神社（可選／累了跳過）",
+            "detail": "已在靖國通東側才順路看 10～15 分鐘；若已到一番街或累了直接跳過，不專程折返。",
+            "eventIds": [
+              "day-3-hanazono"
+            ]
+          },
+          {
+            "title": "傍晚～晚上：歌舞伎町",
+            "detail": "17:30 左右起：一番街 → 哥吉拉頭（街上拍照）→ 歌舞伎町 TOWER；塔內咖啡店消費休息、找 WC，不排固定活動。",
+            "eventIds": [
+              "day-3-shinjuku"
+            ]
+          },
+          {
+            "title": "思出橫丁＋晚餐",
+            "detail": "歌舞伎町塔 → 西武新宿站前通 → 思出橫丁（Omoide Yokocho）；晚餐當天自由選，太擠就換附近餐廳。",
+            "eventIds": [
+              "day-3-omoide"
+            ]
+          },
+          {
+            "title": "新宿 → 押上住宿",
+            "detail": "晚餐後 JR 新宿 13 號月台黃色各站停車 → 錦糸町；出 JR 再進 Metro 2 號月台往押上 Z14。站到站預留 40～50 分鐘，下車步行回 nestay suite 東京天空樹。",
             "eventIds": [
               "day-3-return"
             ]
           }
         ],
-        "fareNote": "以每段刷 Suica 計算，未扣任何交通套票。押上→溜池山王全程 Metro、不出改札，按最短計費路徑收費；不要拆買兩段票。JR 使用 2026/03/14 調整後票價。",
+        "fareNote": "以每段刷 Suica 計算，未扣任何交通套票。押上→溜池山王全程 Metro、不出改札，按最短計費路徑收費；不要拆買兩段票。JR 使用 2026/03/14 調整後票價。 下午街區皆為步行，重新加總仍是每人 ¥973／四人 ¥3,892；花園神社與思出橫丁不增加電車費。",
         "sources": [
           {
             "label": "東京 Metro 普通票價",
@@ -466,121 +490,410 @@ var TOKYO_ITINERARY = {
           {
             "label": "JR 2026/03/14 改定票價",
             "url": "https://www.jreast.co.jp/2026unchin-kaitei/assets/pdf/kansen.pdf"
+          },
+          {
+            "label": "原宿站月台圖",
+            "url": "https://www.jreast.co.jp/estation/stations/1256.html"
+          },
+          {
+            "label": "新宿站月台指南",
+            "url": "https://www.jreast.co.jp/estation/stations/866.html"
+          },
+          {
+            "label": "錦糸町半藏門線構內圖",
+            "url": "https://www.tokyometro.jp/station/kinshicho/index.html"
           }
         ],
-        "checked": "2026-09-24"
+        "checked": "2026-09-25"
       },
-      title: "神社與東京西側",
-      routeSummary: ["押上", "日枝神社", "明治神宮", "HARAKADO", "新宿", "住宿"],
-      detailGuideUrl: "day3-guide.html",
-      ticketDeepLinks: [],
-      officialUrls: [
-        {label: "日枝神社", url: "https://www.hiejinja.net/"},
-        {label: "明治神宮", url: "https://www.meijijingu.or.jp/"},
-        {label: "HARAKADO", url: "https://www.tokyu-plaza.com/harakado/"},
-        {label: "JR 東日本", url: "https://www.jreast.co.jp/"},
-        {label: "東京 Metro", url: "https://www.tokyometro.jp/"}
+      "title": "神社與新宿慢逛",
+      "routeSummary": [
+        "押上",
+        "日枝神社",
+        "明治神宮",
+        "原宿",
+        "新宿東口／新宿通",
+        "花園神社（可選）",
+        "歌舞伎町",
+        "思出橫丁／晚餐",
+        "押上住宿"
       ],
-      navigationUrls: [
-        {label: "押上 → 日枝神社", url: "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=Hie+Shrine,+Tokyo&travelmode=transit"},
-        {label: "日枝神社 → 明治神宮", url: "https://www.google.com/maps/dir/?api=1&origin=Hie+Shrine,+Tokyo&destination=Meiji+Jingu&travelmode=transit"},
-        {label: "明治神宮 → HARAKADO", url: "https://www.google.com/maps/dir/?api=1&origin=Meiji+Jingu&destination=Tokyu+Plaza+Harajuku+HARAKADO&travelmode=walking"},
-        {label: "原宿 → 新宿", url: "https://www.google.com/maps/dir/?api=1&origin=Harajuku+Station&destination=Shinjuku+Station&travelmode=transit"},
-        {label: "新宿 → 住宿", url: "https://www.google.com/maps/dir/?api=1&origin=Shinjuku+Station&destination=東京都墨田区業平5丁目1-8&travelmode=transit"}
+      "detailGuideUrl": "day3-guide.html",
+      "ticketDeepLinks": [],
+      "officialUrls": [
+        {
+          "label": "日枝神社",
+          "url": "https://www.hiejinja.net/"
+        },
+        {
+          "label": "明治神宮",
+          "url": "https://www.meijijingu.or.jp/"
+        },
+        {
+          "label": "JR 東日本",
+          "url": "https://www.jreast.co.jp/"
+        },
+        {
+          "label": "東京 Metro",
+          "url": "https://www.tokyometro.jp/"
+        },
+        {
+          "label": "歌舞伎町 TOWER",
+          "url": "https://www.tokyu-kabukicho-tower.jp/floorguide/"
+        },
+        {
+          "label": "思出橫丁",
+          "url": "https://shinjuku-omoide.com/access"
+        }
       ],
-      mapStops: [
-        {time: "10:30", title: "押上站", description: "半藏門線至青山一丁目，轉銀座線", lat: 35.7101, lng: 139.8131},
-        {time: "11:20", title: "日枝神社", description: "溜池山王 Exit 7，搭山王橋電扶梯", lat: 35.6747, lng: 139.7397},
-        {time: "13:30", title: "明治神宮", description: "從原宿口走南參道至御社殿", lat: 35.6764, lng: 139.6993},
-        {time: "15:00", title: "HARAKADO", description: "6F Food Hall 休息與 Persona 30 活動", lat: 35.6686, lng: 139.7059},
-        {time: "16:40", title: "新宿・歌舞伎町", description: "東口、一番街、Godzilla Head 與晚餐", lat: 35.6948, lng: 139.7028},
-        {time: "20:30", title: "JR 新宿站", description: "中央・總武線各站停車往錦糸町", lat: 35.6909, lng: 139.7003},
-        {time: "21:10", title: "押上站", description: "錦糸町轉半藏門線 1 站返回", lat: 35.7101, lng: 139.8131}
+      "navigationUrls": [
+        {
+          "label": "押上 → 日枝神社",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=Hie+Shrine,+Tokyo&travelmode=transit"
+        },
+        {
+          "label": "日枝神社 → 明治神宮",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=Hie+Shrine,+Tokyo&destination=Meiji+Jingu&travelmode=transit"
+        },
+        {
+          "label": "明治神宮 → 原宿 → 新宿",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E5%8E%9F%E5%AE%BF%E9%A7%85%2C%20Tokyo&destination=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo&travelmode=transit"
+        },
+        {
+          "label": "新宿東口、新宿通自由散步",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%20%E6%9D%B1%E5%8F%A3%2C%20Tokyo&destination=%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E4%B8%80%E7%95%AA%E8%A1%97%E3%82%A2%E3%83%BC%E3%83%81%2C%20Tokyo&travelmode=walking&waypoints=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE%E4%BA%A4%E5%B7%AE%E7%82%B9%2C%20Tokyo%7C%E6%96%B0%E5%AE%BF%E5%8C%BA%E5%BD%B9%E6%89%80%2C%20Tokyo"
+        },
+        {
+          "label": "花園神社（可選／累了可直接跳過）",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=%E6%96%B0%E5%AE%BF%E5%8C%BA%E5%BD%B9%E6%89%80%2C%20Tokyo&destination=%E8%8A%B1%E5%9C%92%E7%A5%9E%E7%A4%BE%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E6%96%B0%E5%AE%BF5-17-3&travelmode=walking"
+        },
+        {
+          "label": "歌舞伎町一番街 → 哥吉拉頭 → 東急歌舞伎町 TOWER",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E4%B8%80%E7%95%AA%E8%A1%97%E3%82%A2%E3%83%BC%E3%83%81%2C%20Tokyo&destination=%E6%9D%B1%E6%80%A5%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E3%82%BF%E3%83%AF%E3%83%BC%2C%201-29-1%20Kabukicho%2C%20Tokyo&travelmode=walking&waypoints=Godzilla%20Head%2C%201-19-1%20Kabukicho%2C%20Tokyo"
+        },
+        {
+          "label": "思出橫丁＋新宿晚餐",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=%E6%9D%B1%E6%80%A5%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E3%82%BF%E3%83%AF%E3%83%BC%2C%201-29-1%20Kabukicho%2C%20Tokyo&destination=%E6%80%9D%E3%81%84%E5%87%BA%E6%A8%AA%E4%B8%81%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E8%A5%BF%E6%96%B0%E5%AE%BF1-2&travelmode=walking&waypoints=%E8%A5%BF%E6%AD%A6%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo"
+        },
+        {
+          "label": "新宿 → 錦糸町 → 押上住宿",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo&destination=nestay%20suite%20%E6%9D%B1%E4%BA%AC%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%84%E3%83%AA%E3%83%BC%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%A2%A8%E7%94%B0%E5%8C%BA%E6%A5%AD%E5%B9%B35-1-8&travelmode=transit"
+        },
+        {
+          "label": "明治神宮原宿口 → JR 原宿",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=%E6%98%8E%E6%B2%BB%E7%A5%9E%E5%AE%AE%20%E5%8D%97%E5%8F%82%E9%81%93%E5%85%A5%E5%8F%A3%2C%20Tokyo&destination=JR%20%E5%8E%9F%E5%AE%BF%E9%A7%85%20%E8%A1%A8%E5%8F%82%E9%81%93%E6%94%B9%E6%9C%AD%2C%20Tokyo&travelmode=walking"
+        },
+        {
+          "label": "押上 → 住宿（步行）",
+          "url": "https://www.google.com/maps/dir/?api=1&origin=%E6%8A%BC%E4%B8%8A%E9%A7%85%2C%20Tokyo&destination=nestay%20suite%20%E6%9D%B1%E4%BA%AC%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%84%E3%83%AA%E3%83%BC%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%A2%A8%E7%94%B0%E5%8C%BA%E6%A5%AD%E5%B9%B35-1-8&travelmode=walking"
+        }
       ],
-      events: [
+      "mapStops": [
         {
-          id: "day-3-to-hie",
-          fare: {"legs":[{"label":"押上 → 青山一丁目 → 溜池山王・Metro 聯程","yen":209}],"note":"全程不出改札，按最短計費路徑計算；半藏門線轉銀座線不另外加一筆起跳價。"},
-          time: "10:30",
-          label: "住宿出發",
-          title: "押上 → 溜池山王",
-          summary: "半藏門線往澀谷方向，在青山一丁目轉銀座線往淺草方向。",
-          transport: {mode: "train", from: "押上 Z14", transfer: "青山一丁目 Z03 → G04", to: "溜池山王 G06・Exit 7"},
-          instruction: "Exit 7 出站約 3 分鐘找山王鳥居，旁邊是山王橋・西參道電扶梯。",
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=Hie+Shrine,+Tokyo&travelmode=transit"
+          "time": "10:30",
+          "title": "押上站",
+          "description": "半藏門線至青山一丁目，轉銀座線",
+          "lat": 35.7101,
+          "lng": 139.8131
         },
         {
-          id: "day-3-hie-shrine",
-          time: "11:20",
-          label: "約 55 分鐘",
-          title: "日枝神社",
-          summary: "搭山王橋電扶梯上去，依序走南神門、本殿、神猿像與稻荷參道紅色鳥居。",
-          planB: "不想走鳥居階梯，可到入口拍照後原路返回，再搭電扶梯下去。",
-          officialUrl: "https://www.hiejinja.net/"
+          "time": "11:20",
+          "title": "日枝神社",
+          "description": "溜池山王 Exit 7，搭山王橋電扶梯",
+          "lat": 35.6747,
+          "lng": 139.7397
         },
         {
-          id: "day-3-to-harajuku",
-          fare: {"legs":[{"label":"赤坂 → 明治神宮前〈原宿〉・千代田線","yen":178}]},
-          time: "12:15",
-          label: "搭車前往原宿",
-          title: "赤坂 → 明治神宮前〈原宿〉",
-          summary: "從日枝神社步行到赤坂站 Exit 3a，搭千代田線往代代木上原方向，不用轉車。",
-          transport: {mode: "train", from: "赤坂 C06", via: "乃木坂 C05・表參道 C04", to: "明治神宮前〈原宿〉C03"},
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Hie+Shrine,+Tokyo&destination=Meiji+Jingu&travelmode=transit"
+          "time": "13:30",
+          "title": "明治神宮",
+          "description": "從原宿口走南參道至御社殿",
+          "lat": 35.6764,
+          "lng": 139.6993
         },
         {
-          id: "day-3-lunch",
-          time: "12:40",
-          label: "午餐與休息",
-          title: "原宿附近午餐",
-          summary: "先吃飯、上洗手間、補水和坐一下，再進明治神宮；餐廳依現場人潮選擇。"
+          "time": "15:00頃",
+          "title": "JR 原宿站",
+          "description": "2 號月台山手線外回り往新宿／池袋",
+          "lat": 35.6702,
+          "lng": 139.7027
         },
         {
-          id: "day-3-meiji",
-          time: "13:30",
-          label: "約 90 分鐘",
-          title: "明治神宮",
-          summary: "從原宿口進入，走南參道、大鳥居到御社殿後原路返回；距離長且部分為碎石路，不要趕。",
-          officialUrl: "https://www.meijijingu.or.jp/"
+          "time": "下午",
+          "title": "新宿東口／新宿通",
+          "description": "自由散步、咖啡休息",
+          "lat": 35.6921,
+          "lng": 139.7018
         },
         {
-          id: "day-3-harakado",
-          time: "15:00",
-          label: "休息＋逛街",
-          title: "HARAKADO・Persona 30 週年活動",
-          summary: "步行約 5～10 分鐘，先到 6F Food Hall 坐下、補水與上洗手間；有體力再上 7F 屋頂。",
-          instruction: "9/27 是活動最後一天，9/26 晚上確認官方公告與營業時間。",
-          officialUrl: "https://www.tokyu-plaza.com/harakado/",
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Meiji+Jingu&destination=Tokyu+Plaza+Harajuku+HARAKADO&travelmode=walking"
+          "time": "可選",
+          "title": "花園神社",
+          "description": "有體力才順路看，累了跳過",
+          "lat": 35.6934,
+          "lng": 139.7067
         },
         {
-          id: "day-3-to-shinjuku",
-          fare: {"legs":[{"label":"原宿 → 新宿・JR 山手線","yen":155}],"note":"採 2026/03/14 改定後成人 IC 票價。"},
-          time: "16:15",
-          label: "步行＋JR",
-          title: "HARAKADO → 新宿",
-          summary: "步行約 5～10 分鐘至 JR 原宿站，搭山手線外回り，認明「新宿・池袋方面」。",
-          transport: {mode: "train", from: "JR 原宿 JY19", via: "代代木 JY18", to: "JR 新宿 JY17", service: "山手線外回り・2 站"},
-          instruction: "不要搭往澀谷・品川方向。",
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Harajuku+Station&destination=Shinjuku+Station&travelmode=transit"
+          "time": "傍晚",
+          "title": "歌舞伎町一番街",
+          "description": "約 17:30 起往霓虹街區移動",
+          "lat": 35.6936,
+          "lng": 139.7014
         },
         {
-          id: "day-3-shinjuku",
-          time: "16:40",
-          label: "晚餐與自由活動",
-          title: "新宿東口・歌舞伎町",
-          summary: "由東口走歌舞伎町一番街、Godzilla Head、東急歌舞伎町 TOWER；依長輩體力縮短。"
+          "time": "傍晚～晚上",
+          "title": "哥吉拉頭",
+          "description": "新宿東寶大樓外・街上拍照",
+          "lat": 35.6953,
+          "lng": 139.702
         },
         {
-          id: "day-3-return",
-          fare: {"legs":[{"label":"新宿 → 錦糸町・JR 總武線","yen":253},{"label":"錦糸町 → 押上・Metro 半藏門線","yen":178}],"note":"JR 與 Metro 分別計費，合計 ¥431／人；錦糸町要刷出 JR 再刷入 Metro。"},
-          time: "20:30",
-          label: "返回住宿",
-          title: "新宿 → 錦糸町 → 押上",
-          summary: "搭中央・總武線各站停車往御茶之水／千葉方向；錦糸町刷出 JR，再進 Metro 半藏門線。",
-          transport: {mode: "train", from: "JR 新宿", transfer: "JR 錦糸町 → Metro Z13", to: "押上 Z14・1 站"},
-          instruction: "不要誤搭中央線快速。",
-          navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Shinjuku+Station&destination=東京都墨田区業平5丁目1-8&travelmode=transit"
+          "time": "晚上",
+          "title": "東急歌舞伎町 TOWER",
+          "description": "隨意看看、咖啡店休息與 WC",
+          "lat": 35.6954,
+          "lng": 139.7008
+        },
+        {
+          "time": "晚餐",
+          "title": "思出橫丁",
+          "description": "最後主要區域・晚餐自由選",
+          "lat": 35.6929,
+          "lng": 139.6996
+        },
+        {
+          "time": "晚餐後",
+          "title": "JR 新宿站",
+          "description": "13 號月台各站停車 → 錦糸町 → 押上",
+          "lat": 35.6909,
+          "lng": 139.7003
+        },
+        {
+          "time": "回住宿",
+          "title": "押上站",
+          "description": "步行回業平5-1-8",
+          "lat": 35.7101,
+          "lng": 139.8131
+        }
+      ],
+      "events": [
+        {
+          "id": "day-3-to-hie",
+          "fare": {
+            "legs": [
+              {
+                "label": "押上 → 青山一丁目 → 溜池山王・Metro 聯程",
+                "yen": 209
+              }
+            ],
+            "note": "全程不出改札，按最短計費路徑計算；半藏門線轉銀座線不另外加一筆起跳價。"
+          },
+          "time": "10:30",
+          "label": "住宿出發",
+          "title": "押上 → 溜池山王",
+          "summary": "半藏門線往澀谷方向，在青山一丁目轉銀座線往淺草方向。",
+          "transport": {
+            "mode": "train",
+            "from": "押上 Z14",
+            "transfer": "青山一丁目 Z03 → G04",
+            "to": "溜池山王 G06・Exit 7"
+          },
+          "instruction": "Exit 7 出站約 3 分鐘找山王鳥居，旁邊是山王橋・西參道電扶梯。",
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=Oshiage+Station&destination=Hie+Shrine,+Tokyo&travelmode=transit"
+        },
+        {
+          "id": "day-3-hie-shrine",
+          "time": "11:20",
+          "label": "約 55 分鐘",
+          "title": "日枝神社",
+          "summary": "搭山王橋電扶梯上去，依序走南神門、本殿、神猿像與稻荷參道紅色鳥居。",
+          "planB": "不想走鳥居階梯，可到入口拍照後原路返回，再搭電扶梯下去。",
+          "officialUrl": "https://www.hiejinja.net/"
+        },
+        {
+          "id": "day-3-to-harajuku",
+          "fare": {
+            "legs": [
+              {
+                "label": "赤坂 → 明治神宮前〈原宿〉・千代田線",
+                "yen": 178
+              }
+            ]
+          },
+          "time": "12:15",
+          "label": "搭車前往原宿",
+          "title": "赤坂 → 明治神宮前〈原宿〉",
+          "summary": "從日枝神社步行到赤坂站 Exit 3a，搭千代田線往代代木上原方向，不用轉車。",
+          "transport": {
+            "mode": "train",
+            "from": "赤坂 C06",
+            "via": "乃木坂 C05・表參道 C04",
+            "to": "明治神宮前〈原宿〉C03"
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=Hie+Shrine,+Tokyo&destination=Meiji+Jingu&travelmode=transit"
+        },
+        {
+          "id": "day-3-lunch",
+          "time": "12:40",
+          "label": "午餐與休息",
+          "title": "原宿附近午餐",
+          "summary": "先吃飯、上洗手間、補水和坐一下，再進明治神宮；餐廳依現場人潮選擇。"
+        },
+        {
+          "id": "day-3-meiji",
+          "time": "13:30",
+          "label": "約 90 分鐘",
+          "title": "明治神宮",
+          "summary": "從原宿口進入，走南參道、大鳥居到御社殿後原路返回；距離長且部分為碎石路，不要趕。",
+          "officialUrl": "https://www.meijijingu.or.jp/"
+        },
+        {
+          "id": "day-3-to-shinjuku",
+          "time": "15:00頃",
+          "label": "Step 5・不用趕",
+          "title": "明治神宮 → 原宿 → 新宿",
+          "summary": "參拜完原路回原宿口，再走到 JR 原宿站；山手線外回り 2 站，車程約 4～5 分鐘。含找電梯、等車與新宿出站，原宿站至新宿東口預留約 20～30 分鐘。",
+          "transport": {
+            "mode": "train",
+            "from": "JR 原宿 Harajuku JY19・2 號月台",
+            "via": "代代木 Yoyogi JY18",
+            "to": "JR 新宿 Shinjuku JY17・東口／新宿三丁目方向",
+            "service": "山手線外回り（Yamanote Line）・新宿／池袋方面"
+          },
+          "instruction": "依「表参道改札」找電梯與洗手間，再進 JR；不是 Metro 明治神宮前站。認「新宿・池袋方面」，不要往澀谷／品川。新宿下車跟著「東改札・東口」走；月台以現場看板為準。",
+          "fare": {
+            "legs": [
+              {
+                "label": "原宿 → 新宿・JR 山手線",
+                "yen": 155
+              }
+            ],
+            "note": "成人 IC ¥155／人、四人 ¥620；2026/03/14 改定票價。"
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E5%8E%9F%E5%AE%BF%E9%A7%85%2C%20Tokyo&destination=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo&travelmode=transit",
+          "detailUrl": "https://www.google.com/maps/dir/?api=1&origin=%E6%98%8E%E6%B2%BB%E7%A5%9E%E5%AE%AE%20%E5%8D%97%E5%8F%82%E9%81%93%E5%85%A5%E5%8F%A3%2C%20Tokyo&destination=JR%20%E5%8E%9F%E5%AE%BF%E9%A7%85%20%E8%A1%A8%E5%8F%82%E9%81%93%E6%94%B9%E6%9C%AD%2C%20Tokyo&travelmode=walking",
+          "officialUrl": "https://www.jreast.co.jp/estation/stations/1256.html"
+        },
+        {
+          "id": "day-3-east-walk",
+          "time": "下午",
+          "label": "Step 6・約 1～2 小時",
+          "title": "新宿東口、新宿通自由散步",
+          "summary": "新宿東口 → 新宿通／新宿三丁目交差點一帶 → 靖國通／新宿區役所方向 → 歌舞伎町一番街。交差點與區役所只是認路地標，不必入內；看到喜歡的小店再進去。",
+          "transport": {
+            "mode": "walk",
+            "from": "JR 新宿站東口",
+            "via": "新宿通、新宿三丁目、靖國通",
+            "to": "歌舞伎町一番街入口"
+          },
+          "instruction": "藥妝、Don Quijote、UNIQLO、遊戲中心／夾娃娃機、餐廳只是自由選項，不逐店打卡。每走約 20～30 分鐘問長輩要不要坐下；找沿路有四人座位的咖啡店消費休息、詢問洗手間，不假設各店都有免費座位。",
+          "planB": "累了直接縮短自由逛街，從東口往一番街或先吃飯，不必走到三丁目。導航只是方向參考，不要求走完途經點。",
+          "fare": {
+            "legs": [
+              {
+                "label": "新宿街區步行",
+                "yen": 0
+              }
+            ]
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%20%E6%9D%B1%E5%8F%A3%2C%20Tokyo&destination=%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E4%B8%80%E7%95%AA%E8%A1%97%E3%82%A2%E3%83%BC%E3%83%81%2C%20Tokyo&travelmode=walking&waypoints=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE%E4%BA%A4%E5%B7%AE%E7%82%B9%2C%20Tokyo%7C%E6%96%B0%E5%AE%BF%E5%8C%BA%E5%BD%B9%E6%89%80%2C%20Tokyo"
+        },
+        {
+          "id": "day-3-hanazono",
+          "time": "順路時",
+          "label": "Step 7・可選 10～15 分鐘",
+          "title": "花園神社（可選／累了可直接跳過）",
+          "summary": "已在新宿三丁目／靖國通東側且有體力，才順路到花園神社（Hanazono Shrine／花園神社）簡單參拜，再沿靖國通往西到歌舞伎町。",
+          "instruction": "不要專程繞來；若已到一番街或有人累了，整段跳過。短暫看看即可，不安排御朱印排隊，也不保證傍晚社務所仍開放。",
+          "fare": {
+            "legs": [
+              {
+                "label": "花園神社可選步行",
+                "yen": 0
+              }
+            ]
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=%E6%96%B0%E5%AE%BF%E5%8C%BA%E5%BD%B9%E6%89%80%2C%20Tokyo&destination=%E8%8A%B1%E5%9C%92%E7%A5%9E%E7%A4%BE%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E6%96%B0%E5%AE%BF5-17-3&travelmode=walking",
+          "officialUrl": "http://www.hanazono-jinja.or.jp/"
+        },
+        {
+          "id": "day-3-shinjuku",
+          "time": "17:30頃起",
+          "label": "Step 8・傍晚～晚上",
+          "title": "歌舞伎町一番街 → 哥吉拉頭 → 東急歌舞伎町 TOWER",
+          "summary": "一番街入口（Kabukicho Ichibangai）看招牌 → 哥吉拉頭（Godzilla Head／ゴジラヘッド）街上拍照 → 東急歌舞伎町 TOWER（Tokyu Kabukicho Tower）。分小段慢走看霓虹，不趕固定抵達時間。",
+          "transport": {
+            "mode": "walk",
+            "from": "歌舞伎町一番街入口",
+            "via": "哥吉拉頭・新宿東寶大樓外",
+            "to": "東急歌舞伎町 TOWER"
+          },
+          "instruction": "哥吉拉從街上抬頭看即可，不上 8F 露台（官方目前公告暫停開放）。塔內沒有固定活動，可找 1F 咖啡店消費坐下、依 WC 標示上洗手間，再決定要不要看看 2F。只逛一般開放區，不安排酒吧或成人娛樂，不跟街頭拉客走。",
+          "planB": "不用為等霓虹硬撐；累了可早到、少拍幾張就去吃飯。",
+          "fare": {
+            "legs": [
+              {
+                "label": "一番街 → 哥吉拉頭 → 歌舞伎町塔・步行",
+                "yen": 0
+              }
+            ]
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E4%B8%80%E7%95%AA%E8%A1%97%E3%82%A2%E3%83%BC%E3%83%81%2C%20Tokyo&destination=%E6%9D%B1%E6%80%A5%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E3%82%BF%E3%83%AF%E3%83%BC%2C%201-29-1%20Kabukicho%2C%20Tokyo&travelmode=walking&waypoints=Godzilla%20Head%2C%201-19-1%20Kabukicho%2C%20Tokyo",
+          "officialUrl": "https://www.tokyu-kabukicho-tower.jp/floorguide/"
+        },
+        {
+          "id": "day-3-omoide",
+          "time": "18:30頃起",
+          "label": "Step 9・晚餐自由選",
+          "title": "思出橫丁＋新宿晚餐",
+          "summary": "歌舞伎町塔 → 西武新宿站前通往南 → 思出橫丁（Omoide Yokocho／思い出横丁），作為今晚最後一個主要區域。慢看紅燈籠與小巷，再依四人座位、口味選晚餐。",
+          "transport": {
+            "mode": "walk",
+            "from": "東急歌舞伎町 TOWER",
+            "via": "西武新宿站前通",
+            "to": "思出橫丁・西新宿1丁目2番一帶"
+          },
+          "instruction": "步行預留約 10～15 分鐘（含等紅燈、慢走）。部分店狹窄、有煙味；四人坐不下就選新宿其他餐廳，不排長隊、不指定店家。吃飯時補水、上洗手間。",
+          "planB": "累了略看巷口即可，直接找有四人座位的餐廳，晚餐後提早回住宿。",
+          "fare": {
+            "legs": [
+              {
+                "label": "歌舞伎町塔 → 思出橫丁・步行",
+                "yen": 0
+              }
+            ]
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=%E6%9D%B1%E6%80%A5%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA%E3%82%BF%E3%83%AF%E3%83%BC%2C%201-29-1%20Kabukicho%2C%20Tokyo&destination=%E6%80%9D%E3%81%84%E5%87%BA%E6%A8%AA%E4%B8%81%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E8%A5%BF%E6%96%B0%E5%AE%BF1-2&travelmode=walking&waypoints=%E8%A5%BF%E6%AD%A6%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo",
+          "officialUrl": "https://shinjuku-omoide.com/access"
+        },
+        {
+          "id": "day-3-return",
+          "time": "晚餐後",
+          "label": "Step 10・約 20:00～20:30 出發",
+          "title": "新宿 → 錦糸町 → 押上住宿",
+          "summary": "思出橫丁走到 JR 新宿站西側入口，認 JR（不是西武新宿）。搭黃色中央・總武線各站停車到錦糸町，僅轉一次車；JR 車程估約 25～30 分鐘，Metro 約 2 分鐘。含等車、轉乘，站到站預留約 40～50 分鐘，再加押上步行約 10～15 分鐘。",
+          "transport": {
+            "mode": "train",
+            "from": "JR 新宿 Shinjuku JB10・13 號月台",
+            "transfer": "錦糸町 Kinshicho JB22 → Metro Z13・2 號月台",
+            "to": "押上〈晴空塔前〉Oshiage (Skytree) Z14",
+            "service": "中央・總武線各站停車往御茶ノ水／千葉 → 半藏門線往押上"
+          },
+          "instruction": "新宿看黃色「各駅停車」，不要搭中央線快速。錦糸町刷出 JR，依半藏門線 Z 標示進 Metro 再刷入，找 2 號月台「押上方面」，1 站下車。需要電梯就跟無障礙標誌；月台以現場看板為準。押上步行到 nestay suite 東京天空樹，東京都墨田區業平 5-1-8。",
+          "fare": {
+            "legs": [
+              {
+                "label": "新宿 → 錦糸町・JR 總武線",
+                "yen": 253
+              },
+              {
+                "label": "錦糸町 → 押上・Metro 半藏門線",
+                "yen": 178
+              }
+            ],
+            "note": "回程成人 IC ¥431／人、四人 ¥1,724；JR 與 Metro 分別計費。Google Maps 可能按即時班次改薦路線，請對照此卡「錦糸町轉乘」；時間為規劃估計，非指定班次。"
+          },
+          "navigationUrl": "https://www.google.com/maps/dir/?api=1&origin=JR%20%E6%96%B0%E5%AE%BF%E9%A7%85%2C%20Tokyo&destination=nestay%20suite%20%E6%9D%B1%E4%BA%AC%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%84%E3%83%AA%E3%83%BC%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%A2%A8%E7%94%B0%E5%8C%BA%E6%A5%AD%E5%B9%B35-1-8&travelmode=transit",
+          "detailUrl": "https://www.google.com/maps/dir/?api=1&origin=%E6%8A%BC%E4%B8%8A%E9%A7%85%2C%20Tokyo&destination=nestay%20suite%20%E6%9D%B1%E4%BA%AC%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%84%E3%83%AA%E3%83%BC%2C%20%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%A2%A8%E7%94%B0%E5%8C%BA%E6%A5%AD%E5%B9%B35-1-8&travelmode=walking",
+          "officialUrl": "https://www.jreast.co.jp/estation/stations/866.html"
         }
       ]
     },

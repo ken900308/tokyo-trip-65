@@ -161,13 +161,6 @@ window.TOKYO_VISITOR_MAPS = {
         "url": "https://ameyokomap.com/"
       }
     ],
-    "day-3-harakado": [
-      {
-        "title": "HARAKADO 官方樓層圖（選 6F／7F）",
-        "url": "https://www.tokyu-plaza.com/harakado/shop/floor",
-        "note": "官網可由 Language 切換「中文繁体」，再選 6F／7F。這是網頁翻譯；尚未找到獨立的官方中文樓層圖片。"
-      }
-    ],
     "day-2-sensoji": [
       {
         "title": "淺草寺官方繁中寺院導覽",

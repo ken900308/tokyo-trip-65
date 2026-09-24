@@ -100,7 +100,7 @@ if (typeof TripCore.sanitizeChecklistState === "function") {
 }
 assertEqual(typeof TripCore.visibleDayEvents, "function", "exposes visible day events lookup");
 if (typeof TripCore.visibleDayEvents === "function") {
-  assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 3).length, 9, "returns Day 3 events");
+  assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 3).length, 11, "returns all Day 3 events including optional shrine and dinner");
   assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, 4).length, 0, "returns no events for Day 4");
   assertEqual(TripCore.visibleDayEvents(TOKYO_ITINERARY.days, "not-a-day").length, TOKYO_ITINERARY.days[0].events.length, "defaults invalid event day to Day 1");
 }

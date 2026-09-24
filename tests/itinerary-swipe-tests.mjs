@@ -183,3 +183,25 @@ assert.ok(panel.innerHTML.includes('data-fare-group="3056"'));
 mutableFare.yen = oldFare;
 assert.deepEqual(navigationCalls, [], 'new guides must not add scrolling');
 console.log('PASS: Day 2/3/5 guides, individual ride fares, transfer discount and derived adult totals.');
+
+// Catch a missing evening stop or a navigation button pointing at a vague city.
+selector.click({target:{closest(){return buttons[2];}}});
+const revisedDay3 = window.TOKYO_ITINERARY.days[2];
+assert.equal(revisedDay3.quickGuide.steps.length, 10, 'all ten steps reach the itinerary');
+for (const name of ['花園神社', '思出橫丁', '13 號月台', '2 號月台']) {
+  assert.ok(panel.innerHTML.includes(name), name + ' is visible in the rendered day');
+}
+const evening = revisedDay3.events.slice(5);
+assert.equal(evening.length, 6);
+for (const event of evening) {
+  const link = new URL(event.navigationUrl);
+  assert.equal(link.hostname, 'www.google.com');
+  assert.equal(link.pathname, '/maps/dir/');
+  assert.ok(link.searchParams.get('destination'));
+  assert.notEqual(link.searchParams.get('destination'), 'Shinjuku');
+  assert.ok(panel.innerHTML.includes(event.navigationUrl.replace(/&/g, '&amp;')), 'navigation rendered');
+}
+assert.equal(new URL(evening[3].navigationUrl).searchParams.get('travelmode'), 'walking');
+assert.match(new URL(evening[3].navigationUrl).searchParams.get('waypoints'), /Godzilla/);
+assert.ok(panel.innerHTML.includes('data-fare-person="973"'));
+console.log('PASS: Day 3 evening route, specific navigation and retained transit total.');
