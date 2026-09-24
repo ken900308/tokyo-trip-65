@@ -155,3 +155,31 @@ assert.equal(window.TOKYO_ITINERARY.days[4].planned, true);
 assert.equal(window.TOKYO_ITINERARY.days[5].planned, true);
 assert.match(JSON.stringify(window.TOKYO_ITINERARY.days[4]), /Nishio/);
 console.log('PASS: seven-step arrival route, balance warning and preserved later days.');
+
+// Catch missing guides, omitted ride prices, double-counted transfers/alternatives,
+// and totals that do not follow their underlying fares.
+for (const [number, perPerson, fourAdults] of [[2,714,2856], [3,973,3892], [5,1569,6276]]) {
+  selector.click({target: {closest() { return buttons[number - 1]; }}});
+  assert.match(panel.innerHTML, /class="arrival-steps"/, 'daily guide is visible');
+  assert.ok(panel.innerHTML.includes('data-fare-person="' + perPerson + '"'));
+  assert.ok(panel.innerHTML.includes('data-fare-group="' + fourAdults + '"'));
+  const dayData = window.TOKYO_ITINERARY.days[number - 1];
+  for (const ride of dayData.events.filter(e => ['train','bus'].includes(e.transport?.mode))) {
+    assert.ok(panel.innerHTML.includes('data-event-fare="' + ride.id + '"'), 'fare beside every ride');
+  }
+}
+const fareFixture = {legs:[{label:'A',yen:178},{label:'B',yen:178}], adjustments:[{label:'Transfer',yen:-70}], alternativeYen:157};
+assert.equal(window.TripCore.fareAmount(fareFixture), 286);
+assert.equal(window.TripCore.fareAmount({legs:[{yen:0}]}), 0, 'walking stays free');
+assert.equal(window.TripCore.fareAmount({legs:[{yen:null}]}), null, 'unknown is never free');
+assert.equal(window.TripCore.dayFareTotal({events:[{fare:fareFixture},{fare:{legs:[{yen:250}]}}]}),536);
+assert.equal(window.TripCore.dayFareTotal({events:[{transport:{mode:'train'}}]}),null,'missing ride fare cannot understate a total');
+const mutableFare = window.TOKYO_ITINERARY.days[1].events.find(e=>e.id==='day-2-to-asakusa').fare.legs[0];
+const oldFare = mutableFare.yen;
+mutableFare.yen = 300;
+selector.click({target:{closest(){return buttons[1];}}});
+assert.ok(panel.innerHTML.includes('data-fare-person="764"'), 'changing a ride updates the total');
+assert.ok(panel.innerHTML.includes('data-fare-group="3056"'));
+mutableFare.yen = oldFare;
+assert.deepEqual(navigationCalls, [], 'new guides must not add scrolling');
+console.log('PASS: Day 2/3/5 guides, individual ride fares, transfer discount and derived adult totals.');

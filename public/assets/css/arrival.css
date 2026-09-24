@@ -5,4 +5,19 @@
 .arrival-steps li { counter-increment: arrival; display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 2px 12px; align-items: start; }
 .arrival-steps li::before { content: counter(arrival); grid-row: span 2; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #176b4d; color: white; font-weight: 700; }
 .arrival-steps span { grid-column: 2; font-size: .95rem; line-height: 1.7; }
+.arrival-steps li { align-content: start; }
+.arrival-steps .step-fare { color: #176b4d; font-weight: 750; }
+.fare-total { margin-top: 24px; padding: 18px; border-radius: 14px; background: #edf5ef; }
+.fare-total h4 { margin: 0 0 12px; font-size: 1.05rem; }
+.fare-total dl { display: flex; flex-wrap: wrap; gap: 16px 36px; margin: 0; }
+.fare-total dt { font-size: .9rem; }
+.fare-total dd { margin: 0; color: #176b4d; font-size: 1.65rem; font-weight: 800; }
+.fare-total p, .event-fare p { font-size: .9rem; line-height: 1.7; }
+.fare-sources summary { min-height: 44px; padding-top: 10px; cursor: pointer; }
+.fare-sources ul { margin: 0; padding-left: 18px; }
+.event-fare { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.event-fare > strong { color: #176b4d; }
+.event-fare dl { margin: 8px 0; font-size: .9rem; }
+.event-fare dl div { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.event-fare dd { margin: 0; white-space: nowrap; font-weight: 700; }
 @media (min-width: 640px) { .arrival-steps { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; } }

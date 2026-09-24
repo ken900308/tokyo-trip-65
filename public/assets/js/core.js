@@ -40,6 +40,35 @@ var TripCore = (function () {
     return selected && selected.events ? selected.events.slice() : [];
   }
 
+  function fareAmount(fare) {
+    if (!fare || !fare.legs || !fare.legs.length) { return null; }
+    var entries = fare.legs.concat(fare.adjustments || []);
+    var total = 0;
+    for (var i = 0; i < entries.length; i += 1) {
+      var yen = entries[i].yen;
+      if (typeof yen !== "number" || !isFinite(yen) || yen !== Math.floor(yen) ||
+          (i < fare.legs.length && yen < 0)) { return null; }
+      total += yen;
+    }
+    return total >= 0 ? total : null;
+  }
+
+  function dayFareTotal(day) {
+    var events = day.events || [];
+    var total = 0;
+    for (var i = 0; i < events.length; i += 1) {
+      var event = events[i];
+      if (!event.fare) {
+        if (event.transport && /^(train|bus|flight)$/.test(event.transport.mode)) { return null; }
+        continue;
+      }
+      var amount = fareAmount(event.fare);
+      if (amount === null) { return null; }
+      total += amount;
+    }
+    return total;
+  }
+
   function checklistProgress(items, state) {
     var list = items || [];
     var saved = state || {};
@@ -132,6 +161,8 @@ var TripCore = (function () {
     swipeDay: swipeDay,
     getDay: getDay,
     visibleDayEvents: visibleDayEvents,
+    fareAmount: fareAmount,
+    dayFareTotal: dayFareTotal,
     checklistProgress: checklistProgress,
     updateChecklistState: updateChecklistState,
     sanitizeChecklistState: sanitizeChecklistState,

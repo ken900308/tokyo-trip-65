@@ -231,6 +231,76 @@ var TOKYO_ITINERARY = {
       date: "09/26",
       weekday: "SAT",
       planned: true,
+      quickGuide: {
+        "title": "今天照著走・下町散策",
+        "notice": "先確認四張水族館 QR 都能開啟。晴空塔去淺草：巴士 15 分鐘內有車才等；回程淺草轉線要在 60 分鐘內完成，四人各用自己的同一張 Suica。",
+        "steps": [
+          {
+            "title": "步行到水族館",
+            "detail": "住宿 → Solamachi West Yard 4F → 專用電梯至 5F；10:50 出示四人 QR。",
+            "eventIds": [
+              "day-2-aquarium-walk"
+            ]
+          },
+          {
+            "title": "晴空塔城吃午餐",
+            "detail": "12:30 留在 Solamachi 用餐、上洗手間，13:45 開始移動。"
+          },
+          {
+            "title": "搭車到淺草",
+            "detail": "晴空塔城 3 號乘車處 → 淺草雷門；Skytree Shuttle。",
+            "eventIds": [
+              "day-2-to-asakusa"
+            ]
+          },
+          {
+            "title": "參拜淺草寺",
+            "detail": "雷門 → 仲見世通 → 寶藏門 → 本堂；16:00 前到本堂，階梯不便就找左側電梯。"
+          },
+          {
+            "title": "銀座線到上野",
+            "detail": "淺草 G19（Asakusa）→ 上野 G16（Ueno），往澀谷方向；逛阿美橫、吃晚餐。",
+            "eventIds": [
+              "day-2-to-ueno"
+            ]
+          },
+          {
+            "title": "轉淺草線回押上",
+            "detail": "上野 G16 → 淺草 G19／A18 → 押上 A20（Oshiage），再步行回住宿。",
+            "eventIds": [
+              "day-2-return"
+            ]
+          }
+        ],
+        "fareNote": "以晴空塔→淺草搭 Shuttle、回程享轉乘折扣計算。若第一段改搭東武普通電車，當日每人 ¥621／四人 ¥2,484（少 ¥93／人）。若回程超過轉乘時限，每人另加 ¥70。其他臨時改線或計程車另計。",
+        "sources": [
+          {
+            "label": "Skytree Shuttle",
+            "url": "https://www.tobu-bus.com/pc/skytree_shuttle/01.html"
+          },
+          {
+            "label": "東武電車票價表",
+            "url": "https://www.tobu.co.jp/pdf/ticket/unchinTable.pdf"
+          },
+          {
+            "label": "東京 Metro 普通票價",
+            "url": "https://www.tokyometro.jp/ticket/types/regular/index.html"
+          },
+          {
+            "label": "都營地下鐵票價",
+            "url": "https://www.kotsu.metro.tokyo.jp/subway/fare/regular.html"
+          },
+          {
+            "label": "Metro／都營轉乘折扣",
+            "url": "https://ssl.tokyometro.jp/support/faq_answer?faqno=OpenFAQ-000205&lang=ja"
+          },
+          {
+            "label": "改札外轉乘 60 分鐘限制",
+            "url": "https://www.tokyometro.jp/ticket/guide/transfertime/index.html"
+          }
+        ],
+        "checked": "2026-09-24"
+      },
       title: "東京下町散策",
       routeSummary: ["住宿", "墨田水族館", "淺草寺", "上野・阿美橫", "住宿"],
       detailGuideUrl: "day2-guide.html",
@@ -259,6 +329,7 @@ var TOKYO_ITINERARY = {
       events: [
         {
           id: "day-2-aquarium-walk",
+          fare: {"legs":[{"label":"住宿 → 墨田水族館・步行","yen":0}]},
           time: "10:30",
           label: "步行出發",
           title: "住宿 → 墨田水族館",
@@ -285,6 +356,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-2-to-asakusa",
+          fare: {"legs":[{"label":"晴空塔城 → 淺草雷門・Shuttle","yen":250}],"note":"替代：東武東京晴空塔站 TS02 → 淺草 TS01，普通電車 IC ¥157／人（四人 ¥628），不需特急券；與巴士二選一，不重複計入。"},
           time: "13:45",
           label: "搭車前往淺草",
           title: "晴空塔 → 淺草雷門",
@@ -305,6 +377,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-2-to-ueno",
+          fare: {"legs":[{"label":"淺草 → 上野・銀座線","yen":178}],"note":"若改搭 Shuttle，成人 ¥250／人，不含在此路線總額。"},
           time: "16:30",
           label: "搭車前往上野",
           title: "淺草 → 上野",
@@ -323,6 +396,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-2-return",
+          fare: {"legs":[{"label":"上野 → 淺草・Metro 銀座線","yen":178},{"label":"淺草 → 押上・都營淺草線","yen":178}],"adjustments":[{"label":"Metro／都營轉乘折扣","yen":-70}],"note":"每人以同一張 Suica 在淺草出閘後 60 分鐘內轉入都營線，合計 ¥286。超時或分開計費為 ¥356／人。臨時計程車按實際計價，未列入總額。"},
           time: "20:00",
           label: "返回住宿",
           title: "上野 → 淺草 → 押上",
@@ -338,6 +412,64 @@ var TOKYO_ITINERARY = {
       date: "09/27",
       weekday: "SUN",
       planned: true,
+      quickGuide: {
+        "title": "今天照著走・神社與東京西側",
+        "notice": "今天步行較多，先吃飯、補水再進明治神宮。原宿→新宿認明山手線「新宿・池袋方面」；回程新宿→錦糸町搭黃色總武線各站停車，不是中央線快速。",
+        "steps": [
+          {
+            "title": "押上出發到日枝神社",
+            "detail": "押上 Z14 → 青山一丁目 Z03／G04 → 溜池山王 G06（Tameike-sanno）；全程 Metro、轉乘不出站。",
+            "eventIds": [
+              "day-3-to-hie"
+            ]
+          },
+          {
+            "title": "搭電扶梯參拜",
+            "detail": "溜池山王 Exit 7 → 山王鳥居 → 西參道電扶梯；不想爬鳥居階梯就原路搭電扶梯下來。"
+          },
+          {
+            "title": "千代田線到原宿",
+            "detail": "步行到赤坂 C06（Akasaka），搭往代代木上原 → 明治神宮前〈原宿〉C03；先吃午餐休息。",
+            "eventIds": [
+              "day-3-to-harajuku"
+            ]
+          },
+          {
+            "title": "明治神宮慢慢走",
+            "detail": "從原宿口入場 → 南參道 → 御社殿，原路返回；碎石路不用趕。"
+          },
+          {
+            "title": "HARAKADO 坐下休息",
+            "detail": "步行到 HARAKADO 6F Food Hall，補水、洗手間；有體力再逛 7F。"
+          },
+          {
+            "title": "搭 JR 到新宿",
+            "detail": "步行至 JR 原宿 JY19（Harajuku）→ 新宿 JY17（Shinjuku）；逛東口、歌舞伎町與晚餐。",
+            "eventIds": [
+              "day-3-to-shinjuku"
+            ]
+          },
+          {
+            "title": "經錦糸町回住宿",
+            "detail": "JR 新宿 → JR 錦糸町（Kinshicho）；出 JR 閘門再進 Metro Z13 → 押上 Z14。",
+            "eventIds": [
+              "day-3-return"
+            ]
+          }
+        ],
+        "fareNote": "以每段刷 Suica 計算，未扣任何交通套票。押上→溜池山王全程 Metro、不出改札，按最短計費路徑收費；不要拆買兩段票。JR 使用 2026/03/14 調整後票價。",
+        "sources": [
+          {
+            "label": "東京 Metro 普通票價",
+            "url": "https://www.tokyometro.jp/ticket/types/regular/index.html"
+          },
+          {
+            "label": "JR 2026/03/14 改定票價",
+            "url": "https://www.jreast.co.jp/2026unchin-kaitei/assets/pdf/kansen.pdf"
+          }
+        ],
+        "checked": "2026-09-24"
+      },
       title: "神社與東京西側",
       routeSummary: ["押上", "日枝神社", "明治神宮", "HARAKADO", "新宿", "住宿"],
       detailGuideUrl: "day3-guide.html",
@@ -368,6 +500,7 @@ var TOKYO_ITINERARY = {
       events: [
         {
           id: "day-3-to-hie",
+          fare: {"legs":[{"label":"押上 → 青山一丁目 → 溜池山王・Metro 聯程","yen":209}],"note":"全程不出改札，按最短計費路徑計算；半藏門線轉銀座線不另外加一筆起跳價。"},
           time: "10:30",
           label: "住宿出發",
           title: "押上 → 溜池山王",
@@ -387,6 +520,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-3-to-harajuku",
+          fare: {"legs":[{"label":"赤坂 → 明治神宮前〈原宿〉・千代田線","yen":178}]},
           time: "12:15",
           label: "搭車前往原宿",
           title: "赤坂 → 明治神宮前〈原宿〉",
@@ -421,6 +555,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-3-to-shinjuku",
+          fare: {"legs":[{"label":"原宿 → 新宿・JR 山手線","yen":155}],"note":"採 2026/03/14 改定後成人 IC 票價。"},
           time: "16:15",
           label: "步行＋JR",
           title: "HARAKADO → 新宿",
@@ -438,6 +573,7 @@ var TOKYO_ITINERARY = {
         },
         {
           id: "day-3-return",
+          fare: {"legs":[{"label":"新宿 → 錦糸町・JR 總武線","yen":253},{"label":"錦糸町 → 押上・Metro 半藏門線","yen":178}],"note":"JR 與 Metro 分別計費，合計 ¥431／人；錦糸町要刷出 JR 再刷入 Metro。"},
           time: "20:30",
           label: "返回住宿",
           title: "新宿 → 錦糸町 → 押上",
@@ -451,6 +587,87 @@ var TOKYO_ITINERARY = {
     {day: 4, date: "09/28", weekday: "MON", planned: false, status: "休息日・各自自由活動"},
     {
       day: 5, date: "09/29", weekday: "TUE", planned: true,
+      quickGuide: {
+        "title": "今天照著走・搬飯店與池上散步",
+        "notice": "退房時全部行李帶走，先到 MYSTAYS 羽田寄放再輕裝出門。本門寺不要走正面 96 階；去回都走池上會館電梯，務必在 17:00 前離開。",
+        "steps": [
+          {
+            "title": "退房・帶齊行李",
+            "detail": "09:30 巡房：護照、手機、Suica、充電器、冰箱與浴室；拖行李到押上站。"
+          },
+          {
+            "title": "搭車到羽田飯店",
+            "detail": "押上都營淺草線 → 京急直通 → 穴守稻荷 KK14（Anamori-inari）。確認會停穴守稻荷，下車步行到飯店。",
+            "eventIds": [
+              "day-5-to-haneda"
+            ]
+          },
+          {
+            "title": "寄放行李・訂早餐",
+            "detail": "MYSTAYS 羽田櫃台寄存，預訂明天四人早餐；確認隔日 09:30 接駁和集合處。"
+          },
+          {
+            "title": "巴士到蒲田",
+            "detail": "穴守稻荷巴士站 → 蒲田駅（Kamata）。下車找東急蒲田，不是京急蒲田，也不是 JR 月台。",
+            "eventIds": [
+              "day-5-bus-kamata"
+            ]
+          },
+          {
+            "title": "池上線・先吃午餐",
+            "detail": "東急蒲田 → 池上 IK13（Ikegami），往五反田方向 2 站。先找舒服的熟食午餐、休息。",
+            "eventIds": [
+              "day-5-train-ikegami"
+            ]
+          },
+          {
+            "title": "搭巴士去池上梅園",
+            "detail": "池上站 → 本門寺裏（Honmonji-ura），上池上循環外回り；下車步行入園，不勉強走坡道。",
+            "eventIds": [
+              "day-5-to-baien"
+            ]
+          },
+          {
+            "title": "搭電梯上本門寺",
+            "detail": "步行至池上會館（Ikegami Kaikan）搭電梯；參拜後 17:00 前搭電梯下來，再步行到池上站。"
+          },
+          {
+            "title": "原路回飯店入住",
+            "detail": "池上 → 東急蒲田；轉往穴守稻荷的京急巴士 → 步行回 MYSTAYS，取行李、拿房卡。",
+            "eventIds": [
+              "day-5-return"
+            ]
+          },
+          {
+            "title": "步行吃鰻魚飯",
+            "detail": "Nishio no unagi／西尾の鰻晚餐候選；先確認四人座位與營業，再步行回飯店整理行李。"
+          }
+        ],
+        "fareNote": "包含搬飯店單程，以及穴守稻荷↔蒲田巴士、蒲田↔池上電車的去回程。景點間與鰻魚飯晚餐按步行計；東急巴士 IC ¥240（現金 ¥250）。不含臨時計程車。",
+        "sources": [
+          {
+            "label": "都營地下鐵票價",
+            "url": "https://www.kotsu.metro.tokyo.jp/subway/fare/regular.html"
+          },
+          {
+            "label": "京急穴守稻荷票價表",
+            "url": "https://www.keikyu.co.jp/ride/ticket/pdf/KK14.pdf"
+          },
+          {
+            "label": "京急巴士 2026/03 票價",
+            "url": "https://www.keikyu-bus.co.jp/8f71300e9f4d0212933bf9637b5f8e00e6b17948.pdf"
+          },
+          {
+            "label": "東急電車票價",
+            "url": "https://www.tokyu.co.jp/railway/ticket/fares/"
+          },
+          {
+            "label": "東急巴士票價",
+            "url": "https://www.tokyubus.co.jp/route/ticket/fare/table.html"
+          }
+        ],
+        "checked": "2026-09-24"
+      },
       title: "搬飯店＋池上庭園散步",
       routeSummary: ["押上退房", "MYSTAYS 羽田", "蒲田", "池上梅園", "池上本門寺", "飯店休息"],
       mapStops: [
@@ -466,6 +683,7 @@ var TOKYO_ITINERARY = {
           summary: "住宿：5-chōme-1-8 Narihira, Sumida-ku, Tokyo。今天先搬飯店，再輕裝去池上；爸媽以少走路、少爬樓梯為優先。",
           instruction: "確認護照、手機、充電器、行動電源、錢包、Suica、戰利品與全部行李；巡查冰箱、浴室及插座。"},
         {id: "day-5-to-haneda", time: "10:00–11:15", label: "步行＋電車", title: "押上 → 穴守稻荷 → MYSTAYS 羽田",
+          fare: {"legs":[{"label":"押上 → 泉岳寺・都營淺草線","yen":272},{"label":"泉岳寺 → 穴守稻荷・京急","yen":277}],"note":"直通車不用在泉岳寺下車，但跨兩家公司，合計 ¥549／人；中途不要出站。"},
           summary: "拉行李到押上站，找都營淺草線，不要進半藏門線月台。優先搭往羽田空港第1・第2ターミナル且停靠穴守稻荷的京急直通車，電車約 45～50 分鐘。",
           transport: {mode: "train", service: "都營淺草線 → 京急本線 → 京急空港線直通", from: "押上 Oshiage", via: "泉岳寺・品川・京急蒲田", to: "穴守稻荷 Anamori-inari / KK14"},
           instruction: "上車前同時確認「羽田空港方向」與「停靠穴守稻荷」，不要只看目的地。直通車不用下車；下車後導航 HOTEL MYSTAYS Haneda，步行約 4 分鐘直接到櫃台。",
@@ -478,11 +696,13 @@ var TOKYO_ITINERARY = {
           ticketUrl: "tickets.html?day=5#hotel-mystays-haneda",
           officialUrl: "https://iconia.co.jp/location-hotel-mystays-haneda-tokyo"},
         {id: "day-5-bus-kamata", time: "11:30", label: "京急巴士", title: "穴守稻荷巴士站 → 蒲田站",
+          fare: {"legs":[{"label":"穴守稻荷 → 蒲田駅・京急巴士","yen":250}]},
           summary: "輕裝步行到穴守稻荷站附近的京急巴士站。找車頭／站牌寫「蒲田駅」的班次，約 25～30 分鐘，可用 Suica。行程列蒲32、蒲33、蒲73為候選，當天仍要核對停站。",
           transport: {mode: "bus", service: "京急巴士・往蒲田駅", from: "穴守稻荷巴士站", to: "蒲田駅"},
           instruction: "確認方向再上車。下車找東急線蒲田站，不是 JR 月台，也不是京急蒲田站；避免從京急蒲田再步行轉到蒲田。",
           navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=HOTEL+MYSTAYS+Haneda&destination=Tokyu+Kamata+Station&travelmode=transit"},
         {id: "day-5-train-ikegami", time: "約 12:00–12:30", label: "東急池上線", title: "蒲田 → 池上",
+          fare: {"legs":[{"label":"東急蒲田 → 池上・池上線","yen":140}]},
           summary: "從東急蒲田站搭池上線往五反田方向，2 站約 4～5 分鐘；整段飯店至池上預留到 12:30。",
           transport: {mode: "train", service: "東急池上線・往五反田", from: "東急蒲田", via: "蓮沼", to: "池上 Ikegami / IK13"},
           navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Tokyu+Kamata+Station&destination=Ikegami+Station&travelmode=transit"},
@@ -490,6 +710,7 @@ var TOKYO_ITINERARY = {
           summary: "不硬排名店，以爸媽吃得舒服為主。可找烏龍麵、蕎麥麵、親子丼、鰻魚飯、茶碗蒸、豆腐或柔軟熟食定食。",
           instruction: "避開生魚片、生蛋、半熟肉、厚切牛排與太有嚼勁的燒肉；點餐確認全熟。"},
         {id: "day-5-to-baien", time: "13:15–13:40", label: "巴士＋步行", title: "池上站 → 本門寺裏 → 池上梅園",
+          fare: {"legs":[{"label":"池上站 → 本門寺裏・東急巴士","yen":240}],"note":"IC 成人 ¥240，現金 ¥250；用 Suica 計入總額。"},
           summary: "不從池上站硬走約 20 分鐘。出站找東急巴士「上池上循環 外回り」，確認停靠本門寺裏；下車後步行約 3 分鐘。",
           transport: {mode: "bus", service: "東急巴士・上池上循環 外回り", from: "池上站", to: "本門寺裏 Honmonji-ura"},
           navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Ikegami+Station&destination=Ikegami+Baien&travelmode=transit"},
@@ -499,6 +720,7 @@ var TOKYO_ITINERARY = {
           officialUrl: "https://www.city.ota.tokyo.jp/shisetsu/park/ikegamibaien.html",
           navigationUrl: "https://www.google.com/maps/search/?api=1&query=Ikegami+Baien"},
         {id: "day-5-to-kaikan", time: "14:40–15:00", label: "步行＋電梯", title: "池上梅園 → 池上會館",
+          fare: {"legs":[{"label":"池上梅園 → 池上會館・步行","yen":0}]},
           summary: "長輩同行預留 10～15 分鐘找入口。導航「池上会館 Ikegami Kaikan」，地址 1-32-8 Ikegami, Ota City, Tokyo。",
           transport: {mode: "walk", from: "池上梅園", to: "池上會館電梯入口"},
           instruction: "不要導航到本門寺正面石階。進池上會館後搭電梯到寺院境內；官方可利用時間 08:30–17:00。",
@@ -509,11 +731,13 @@ var TOKYO_ITINERARY = {
           instruction: "不走此經難持坂 96 階，也不要先下階再爬回來。回程仍從池上會館電梯離開，務必在 17:00 前使用。",
           officialUrl: "https://honmonji.jp/outline/access.html"},
         {id: "day-5-to-station", time: "16:30–17:00", label: "電梯＋步行", title: "池上會館 → 池上站",
+          fare: {"legs":[{"label":"池上會館 → 池上站・步行","yen":0}],"note":"若改搭計程車，依跳表另計，未含在當日總額。"},
           summary: "搭池上會館電梯離開，再步行約 10 分鐘到東急池上線池上站；不要走正面 96 階。",
           transport: {mode: "walk", from: "池上本門寺・池上會館電梯", to: "東急池上站"},
           planB: "爸媽累了就改叫計程車。",
           navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=Ikegami+Kaikan&destination=Ikegami+Station&travelmode=walking"},
         {id: "day-5-return", time: "17:00–18:00", label: "電車＋巴士", title: "池上 → 蒲田 → 穴守稻荷 → 飯店",
+          fare: {"legs":[{"label":"池上 → 東急蒲田・池上線","yen":140},{"label":"蒲田駅 → 穴守稻荷・京急巴士","yen":250}],"note":"電車＋巴士合計 ¥390／人。"},
           summary: "池上線往蒲田搭 2 站，經蓮沼到終點蒲田；出站轉京急巴士，確認是穴守稻荷／羽田方向且停靠穴守稻荷。",
           transport: {mode: "train", service: "東急池上線 → 京急巴士", from: "池上 IK13", transfer: "東急蒲田 → 蒲田駅京急巴士站", to: "穴守稻荷巴士站"},
           instruction: "當天搜尋「蒲田駅 → HOTEL MYSTAYS Haneda」確認回程班次。穴守稻荷下車，步行約 4 分鐘回飯店。",
@@ -523,6 +747,7 @@ var TOKYO_ITINERARY = {
           instruction: "早餐還沒訂就現在訂：明日の朝食を4名分予約したいです。",
           ticketUrl: "tickets.html?day=5#hotel-mystays-haneda"},
         {id: "day-5-dinner", time: "約 18:30–19:30", label: "晚餐候選", title: "Nishio no unagi・西尾の鰻",
+          fare: {"legs":[{"label":"飯店 ↔ 西尾の鰻・步行","yen":0}]},
           summary: "入住、放好行李後，步行前往吃鰻魚飯。地址：東京都大田区羽田4-20-7 須山ビル1F，位於穴守稻荷站附近。四位成人同行，先確認是否有四人座位。",
           instruction: "店家刊載晚間營業 17:00–20:30，最後點餐 20:00；可能臨時休業，出發前請再確認。若客滿、休息或爸媽累了，就改在飯店附近簡單吃，不必硬等。用餐後回 MYSTAYS 羽田整理行李。",
           navigationUrl: "https://www.google.com/maps/dir/?api=1&origin=HOTEL+MYSTAYS+Haneda&destination=Nishio+no+unagi+Haneda+4-20-7&travelmode=walking",

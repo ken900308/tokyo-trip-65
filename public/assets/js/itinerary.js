@@ -81,18 +81,50 @@
       escapeHtml(event.label) + "</span></div><div class=\"timeline-card__body\"><h3>" +
       escapeHtml(event.title) + "</h3><p>" + escapeHtml(event.summary) + "</p>" +
       (event.instruction ? "<p class=\"instruction\"><strong>到現場：</strong>" + escapeHtml(event.instruction) + "</p>" : "") +
-      renderTransport(event.transport) +
+      renderTransport(event.transport) + renderFare(event) +
       (event.planB ? "<details class=\"plan-b\"><summary>Plan B</summary><p>" + escapeHtml(event.planB) + "</p></details>" : "") +
       renderActions(event) + (window.VisitorMaps ? window.VisitorMaps.render(event.id) : "") + "</div></li>";
   }
 
   function renderArrival(day) {
-    if (!day.arrivalSteps) { return ""; }
-    return '<section class="arrival-guide surface-card" aria-label="機場到住宿操作步驟">' +
-      '<h3>下飛機後，照著走</h3><p class="arrival-notice"><strong>' + escapeHtml(day.arrivalNotice) +
-      '</strong></p><ol class="arrival-steps">' + day.arrivalSteps.map(function (step) {
-        return '<li><strong>' + escapeHtml(step.title) + '</strong><span>' + escapeHtml(step.detail) + '</span></li>';
-      }).join('') + '</ol></section>';
+    var guide = day.quickGuide || (day.arrivalSteps && {title: '下飛機後，照著走', notice: day.arrivalNotice, steps: day.arrivalSteps});
+    if (!guide) { return ""; }
+    return '<section class="arrival-guide surface-card" aria-label="當日操作步驟">' +
+      '<h3>' + escapeHtml(guide.title) + '</h3><p class="arrival-notice"><strong>' + escapeHtml(guide.notice) +
+      '</strong></p><ol class="arrival-steps">' + guide.steps.map(function (step) {
+        var subtotal = 0;
+        (step.eventIds || []).forEach(function (id) {
+          var event = day.events.filter(function (item) { return item.id === id; })[0];
+          var amount = event ? window.TripCore.fareAmount(event.fare) : null;
+          subtotal = subtotal === null || amount === null ? null : subtotal + amount;
+        });
+        var fare = step.eventIds ? '<span class="step-fare">' + (subtotal === null ? '車資待確認' : subtotal === 0 ? '步行免費' : '成人 IC ' + yen(subtotal) + '／人') + '</span>' : '';
+        return '<li><strong>' + escapeHtml(step.title) + '</strong><span>' + escapeHtml(step.detail) + '</span>' + fare + '</li>';
+      }).join('') + '</ol>' + (day.quickGuide ? renderFareSummary(day) : '') + '</section>';
+  }
+
+  function yen(amount) {
+    return (amount < 0 ? '−' : '') + '¥' + String(Math.abs(amount)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function renderFare(event) {
+    if (!event.fare) { return ''; }
+    var amount = window.TripCore.fareAmount(event.fare);
+    var entries = event.fare.legs.concat(event.fare.adjustments || []);
+    return '<section class="event-fare" data-event-fare="' + escapeHtml(event.id) + '" aria-label="本段車資"><strong>本段成人車資：' +
+      (amount === null ? '待確認' : yen(amount) + '／人') + '</strong><dl>' + entries.map(function (entry) {
+        return '<div><dt>' + escapeHtml(entry.label) + '</dt><dd>' + (typeof entry.yen === 'number' ? yen(entry.yen) : '待確認') + '</dd></div>';
+      }).join('') + '</dl>' + (event.fare.note ? '<p>' + escapeHtml(event.fare.note) + '</p>' : '') + '</section>';
+  }
+
+  function renderFareSummary(day) {
+    var total = window.TripCore.dayFareTotal(day);
+    var guide = day.quickGuide;
+    return '<section class="fare-total" aria-label="今日車資合計"><h4>今日預估 TOTAL 車資</h4>' +
+      (total === null ? '<p>尚有車資待確認，暫不顯示完整合計。</p>' : '<dl><div><dt>每位成人</dt><dd data-fare-person="' + total + '">' + yen(total) + '</dd></div><div><dt>四位成人合計</dt><dd data-fare-group="' + total * 4 + '">' + yen(total * 4) + '</dd></div></dl>') +
+      '<p>以原定路線、成人 Suica／IC 票價計算；不含餐費、門票及臨時計程車。</p><p>' + escapeHtml(guide.fareNote) +
+      '</p><details class="fare-sources"><summary>票價查核與官方來源（' + escapeHtml(guide.checked) + '）</summary><ul>' +
+      guide.sources.map(function (source) { return '<li>' + actionLink(source.url, source.label) + '</li>'; }).join('') + '</ul></details></section>';
   }
 
   function renderPlannedDay(day) {
